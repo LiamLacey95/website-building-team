@@ -7,7 +7,7 @@ The ComfyUI location comes from team.config.json (comfyui.path, comfyui.python, 
 Examples:
   generate.py --smoke                                   (first-start check: WEB1, WEB3, WEB6b, timings)
   generate.py --list
-  generate.py WEB3 --prompt "..." --count 8 --out design/concepts/a-calm/explore
+  generate.py WEB3 --prompt "..." --count 8 --out projects/<slug>/concepts/a-calm/explore
   generate.py WEB1 --prompt "..." --size 21:9 --mp 2 --seed 42
   generate.py WEB1 --prompt "..." --size 1920x816 --model fast          (exact size, distilled drafts)
   generate.py WEB2 --image pick.png --ref hero.png --prompt "... <ref_image_1> ..."
@@ -590,8 +590,8 @@ def smoke(manifest, client_id, comfy_version, server_start_s, timeout):
             report["images"].append({"workflow": key, "file": res["file"], "seconds": res["elapsed_s"],
                                      "size": png_size(os.path.join(REPO, res["file"]))})
         report["status"] = "ok"
-    except SystemExit as e:
-        report.update(status="failed", error=str(e))
+    except (SystemExit, Exception) as e:
+        report.update(status="failed", error=str(e) or type(e).__name__)
         raise
     finally:
         report["total_s"] = round(time.time() - t0, 1)
@@ -664,6 +664,17 @@ def main():
         for k, m in manifest.items():
             print(f"{k:6} {m['name']:38} kind={m['kind']}")
         return
+    if args.smoke and args.dry_run:
+        ap.error("--smoke always runs; it has no --dry-run")
+    if args.smoke:
+        try:
+            unset = comfy_config.load(require_path=False)["path"] is None
+        except comfy_config.ConfigError as e:
+            sys.exit(str(e))
+        if unset:
+            # Machines without ComfyUI (bootstrap --skip-comfyui): nothing to test. See .team/roles/concept.md.
+            print("Smoke test: SKIPPED (no comfyui.path in team.config.json: running without ComfyUI)")
+            return
     apply_config(require=not args.dry_run)
     if args.stop:
         stop_server()

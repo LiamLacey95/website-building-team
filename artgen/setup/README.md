@@ -14,8 +14,8 @@ Owned by Concept. `scripts/bootstrap.mjs` (Backend) calls these. Everything here
 
 ```json
 "comfyui": {
-  "path": "F:/ArtGen/ComfyUI",
-  "python": "F:/ArtGen/ComfyUI/venv/Scripts/python.exe",
+  "path": "D:/AI/ComfyUI",
+  "python": "D:/AI/ComfyUI/venv/Scripts/python.exe",
   "port": 8188,
   "profile": "12gb"
 }
@@ -47,7 +47,7 @@ Environment overrides for all scripts: `TEAM_CONFIG`, `COMFYUI_PATH`, `COMFYUI_P
 | `install_comfyui.py --verify` | green | red: required model missing or wrong hash, ComfyUI older than `minVersion`, venv python or torch broken | usage | amber: optional model missing, ComfyUI newer than tested, no CUDA, manager missing |
 | `install_comfyui.py --install / --models-only` | done (or dry run feasible) | blocked or failed (see `blockers`) | usage | |
 | `configure.py` | green | red | usage | |
-| `generate.py --smoke` | all three images made | failed (`smoke.json` has `error`) | usage | |
+| `generate.py --smoke` | all three images made, or SKIPPED when `comfyui.path` is unset (no ComfyUI on this machine) | failed (`smoke.json` has `error`) | usage | |
 
 Logs always go to stderr; with `--json`, stdout carries exactly one JSON object.
 

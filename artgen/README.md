@@ -26,7 +26,7 @@ Tuned for a 12 GB NVIDIA GPU (built on an RTX 4070 SUPER).
    ```
    Only `path` is required. `python` defaults to `<path>/venv/Scripts/python.exe` (Windows) or `<path>/venv/bin/python` (Linux); `port` to 8188; `profile` to `12gb`. Environment overrides: `COMFYUI_PATH`, `COMFYUI_PYTHON`, `COMFYUI_PORT`, `COMFYUI_PROFILE`, `TEAM_CONFIG`.
 4. **Launchers.** `python artgen/setup/configure.py` writes this machine's launchers from the templates in `artgen/setup/templates/` (`--check` validates without writing).
-5. **Smoke test.** `python artgen/generate.py --smoke` makes one image each with WEB3, WEB1 and WEB6b, prints timings and writes `artgen/output/_smoke/<timestamp>/smoke.json`.
+5. **Smoke test.** `python artgen/generate.py --smoke` makes one image each with WEB3, WEB1 and WEB6b, prints timings and writes `artgen/output/_smoke/<timestamp>/smoke.json`. Without ComfyUI (no `comfyui.path`, bootstrap `--skip-comfyui`) it prints SKIPPED and exits 0; see "No GPU" in `.team/roles/concept.md`.
 
 ### What gets downloaded
 
