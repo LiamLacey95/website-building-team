@@ -2,6 +2,10 @@
  * Design tokens: the ONE file a direction's style tile replaces (Gate 2 -> DESIGN.md -> here).
  * Every value below is a neutral placeholder. Components read only these custom properties;
  * they never hard-code colour, type, space, radius or motion.
+ *
+ * Several themes at once (for a "re-skin at the gate" set piece): additional themes live in
+ * styles/themes/<name>.css as [data-theme='<name>'] { ... } blocks overriding these BASE tokens.
+ * Any element with data-theme becomes a full theme scope (see the DERIVED block and global.css).
  */
 :root {
   /* Colour: placeholder neutrals, contrast-checked (ink on paper 16.4:1, muted on paper 7.5:1, white on accent 6.7:1). */
@@ -12,8 +16,6 @@
   --color-line: #d5d8de;
   --color-accent: #1d4ed8;        /* links, focus; 6.1:1 on paper */
   --color-accent-ink: #ffffff;    /* text on accent */
-  --color-focus: #1d4ed8;
-  --color-selection: #c9d6f7;
 
   /* Type: placeholder stacks until the direction's self-hosted faces land. */
   --font-display: system-ui, sans-serif;
@@ -53,4 +55,15 @@
   --duration-fast: 160ms;
   --duration-base: 320ms;
   --duration-slow: 640ms;
+}
+
+/*
+ * DERIVED tokens: anything defined in terms of another token goes here, declared on every theme scope.
+ * Custom properties inherit their computed value, so a derived token declared on :root alone would keep
+ * :root's colours inside a [data-theme] subtree. Themes override base tokens only, never these.
+ */
+:root,
+[data-theme] {
+  --color-focus: var(--color-accent);
+  --color-selection: color-mix(in oklab, var(--color-accent) 25%, var(--color-surface));
 }

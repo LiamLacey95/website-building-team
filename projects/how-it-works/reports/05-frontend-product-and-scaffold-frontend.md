@@ -145,3 +145,36 @@ I messaged Backend about its draft `server/contracts/schema.ts`:
 - **Wire the content collections** when Backend publishes the contract. This is a small change: the components already take props.
 - **Replace `tokens.css` and the system font stacks** with the chosen direction at Gate 2/3. Then self-host the faces: Concept's `_fonts/` has the OFL licence texts.
 - **Gate 3 needs one setup step:** each variant worktree needs `npm ci` in `projects/how-it-works/web`.
+
+## Addenda (after DONE)
+
+### CSP moved to a real header (with Backend)
+
+Backend's contract puts the CSP in a Vercel header (`script-src 'self'; style-src 'self'`, no hashes), which is stricter than the meta tag. Commit 2c74ad3 makes `web/` comply:
+- Astro's `security.csp` meta is removed, so there is one policy, the header.
+- `build.inlineStylesheets: 'never'` and `vite.build.assetsInlineLimit: 0`: Astro had been inlining the small `site.ts` module and one stylesheet.
+- The pre-paint snippet is now `public/motion.js`.
+
+The built pages contain 0 inline scripts, styles or `style=` attributes. The behaviour suite passes with the header injected on every response, with 0 CSP violations. `projects/how-it-works/vercel.json` is Backend's; `web/` is entirely Front-end's.
+
+### Several themes at once (PM note on Research's set piece 3)
+
+"You are the human" re-skins the page in the chosen G2 direction, so the token layer must hold several themes at once.
+
+**How it works:**
+- `tokens.css` holds the **base** tokens on `:root`. A **derived** block on `:root, [data-theme]` recomputes in every themed subtree, because custom properties inherit computed values.
+- `styles/themes/<slug>.css` holds one `[data-theme='<slug>']` block per direction. It is empty until Gate 2.
+- In `global.css`, `[data-theme]` re-applies color, background and font.
+
+**Spike `/spikes/themes/`** (behind `SPIKES=1`). Three placeholder themes are shown side by side, and choosing one re-skins `<main>` through a same-document View Transition (about 0.3 KB JS).
+
+**Tested under the header CSP, with motion on and reduced (12 of 12 checks):**
+- the three scopes compute distinct colours;
+- links take their own theme's accent;
+- the derived `--color-focus` equals each theme's accent;
+- the re-skin works and is announced;
+- there are 0 errors.
+
+Evidence: `screenshots/2026-11-01/spikes/1720-spike-themes-reskinned-1280.png`.
+
+**GSAP** may be used inside `web/` if a scrubbed set piece needs it (about 28 KB plus 18 KB for ScrollTrigger, self-hosted, which is fine under the CSP). It never goes into the kit's `tools/` or templates (DECISIONS, 2026-11-01).

@@ -1,0 +1,6 @@
+/*
+ * Extra themes, one file per Gate 2 direction, imported here. Empty until Gate 2.
+ * Each file holds ONE block: [data-theme='<direction-slug>'] { --color-paper: ...; ... }, overriding the
+ * BASE tokens in ../tokens.css only (never the derived ones). Self-hosted @font-face rules for a theme's
+ * faces go in the same file. Example: @import './a-paper-trail.css';
+ */

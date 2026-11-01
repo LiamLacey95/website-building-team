@@ -1,4 +1,5 @@
 @import './tokens.css';
+@import './themes/index.css';
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: var(--space-xl); }
@@ -9,6 +10,12 @@ body {
   line-height: var(--leading-body);
   color: var(--color-ink);
   background: var(--color-paper);
+}
+/* A themed subtree re-applies the inherited properties, or they keep the parent theme's computed values. */
+[data-theme] {
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  font-family: var(--font-body);
 }
 img, svg, video, canvas { display: block; max-width: 100%; height: auto; }
 h1, h2, h3 { font-family: var(--font-display); line-height: var(--leading-tight); text-wrap: balance; margin: 0; }

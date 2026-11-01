@@ -1,0 +1,76 @@
+---
+/**
+ * Set piece 3 ("You are the human") readiness: several themes live at once, and the page re-skins at a gate.
+ *  - Three placeholder themes rendered side by side as [data-theme] subtrees (the G2 "three directions" row).
+ *  - Picking one re-skins the whole <main> through a same-document View Transition (~0.3 KB JS).
+ *  - Motion off: the switch is instant. Without JS: all three stay visible and nothing is chosen.
+ * The theme blocks below are spike placeholders; real ones come from Concept's tiles into styles/themes/.
+ */
+---
+<p>Each card below is its own theme scope. Choose one to re-skin this page.</p>
+<div class="row" data-theme-row>
+  <section class="card" data-theme="spike-a" aria-labelledby="ta">
+    <h2 id="ta">Direction A</h2>
+    <p>Paper, pencil and stamps.</p>
+    <a href="#ta">A link in this theme</a>
+    <button type="button" class="pick" data-pick="spike-a" data-js-only>Choose A</button>
+  </section>
+  <section class="card" data-theme="spike-b" aria-labelledby="tb">
+    <h2 id="tb">Direction B</h2>
+    <p>Signal, scope and switches.</p>
+    <a href="#tb">A link in this theme</a>
+    <button type="button" class="pick" data-pick="spike-b" data-js-only>Choose B</button>
+  </section>
+  <section class="card" data-theme="spike-c" aria-labelledby="tc">
+    <h2 id="tc">Direction C</h2>
+    <p>Marble, track and clay.</p>
+    <a href="#tc">A link in this theme</a>
+    <button type="button" class="pick" data-pick="spike-c" data-js-only>Choose C</button>
+  </section>
+</div>
+<p role="status" aria-live="polite" data-pick-status></p>
+
+<script>
+  const main = document.querySelector<HTMLElement>('main');
+  const status = document.querySelector<HTMLElement>('[data-pick-status]');
+  const motionOff = () =>
+    document.documentElement.dataset.motion === 'off' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLButtonElement>('[data-pick]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const apply = () => {
+        if (main) main.dataset.theme = b.dataset.pick;
+        if (status) status.textContent = `The page now uses ${b.textContent?.replace('Choose ', 'direction ')}.`;
+      };
+      if (motionOff() || !document.startViewTransition) apply();
+      else document.startViewTransition(apply);
+    }),
+  );
+</script>
+
+<style>
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-m); margin-block: var(--space-l); }
+  .card { display: grid; gap: var(--space-xs); padding: var(--space-m); border: 1px solid var(--color-line); border-radius: var(--radius-l); }
+  .card h2 { font-size: var(--step-2); }
+  .pick {
+    justify-self: start; font: inherit; font-weight: 600; min-height: 44px; padding: var(--space-2xs) var(--space-m);
+    border: 1px solid var(--color-accent); border-radius: var(--radius-m); background: var(--color-accent); color: var(--color-accent-ink); cursor: pointer;
+  }
+
+  /* Placeholder themes: BASE tokens only (derived ones recompute per scope). Contrast >= 4.5:1 each. */
+  :global([data-theme='spike-a']) {
+    --color-paper: #f3ede2; --color-surface: #fbf8f2; --color-ink: #2a2219; --color-ink-muted: #5c5043;
+    --color-line: #d6cbb8; --color-accent: #a33a17; --color-accent-ink: #ffffff;
+    --font-display: Georgia, serif; --font-body: Georgia, serif; --radius-l: 2px; --radius-m: 2px;
+  }
+  :global([data-theme='spike-b']) {
+    --color-paper: #0e0f11; --color-surface: #17191d; --color-ink: #f2e6cf; --color-ink-muted: #c2b59c;
+    --color-line: #3a3d44; --color-accent: #ffb547; --color-accent-ink: #14110b;
+    --font-display: ui-monospace, monospace; --font-body: system-ui, sans-serif; --radius-l: 6px; --radius-m: 4px;
+  }
+  :global([data-theme='spike-c']) {
+    --color-paper: #e8f1f7; --color-surface: #ffffff; --color-ink: #13283a; --color-ink-muted: #3d5368;
+    --color-line: #bcd0de; --color-accent: #b4232c; --color-accent-ink: #ffffff;
+    --font-display: system-ui, sans-serif; --font-body: system-ui, sans-serif; --radius-l: 28px; --radius-m: 999px;
+  }
+  :global(main[data-theme]) { padding-inline: var(--gutter); border-radius: var(--radius-l); }
+</style>

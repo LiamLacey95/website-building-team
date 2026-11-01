@@ -10,6 +10,7 @@ import Scope from '../../spikes/Scope.astro';
 import Stamp from '../../spikes/Stamp.astro';
 import Gl from '../../spikes/Gl.astro';
 import Vt from '../../spikes/Vt.astro';
+import Themes from '../../spikes/Themes.astro';
 
 const SPIKES = {
   draw: { title: 'Spike: scroll-drawn SVG path', C: Draw },
@@ -19,11 +20,12 @@ const SPIKES = {
   gl: { title: 'Spike: WebGL layer (OGL)', C: Gl },
   'vt-a': { title: 'Spike: view transition, page A', C: Vt },
   'vt-b': { title: 'Spike: view transition, page B', C: Vt },
+  themes: { title: 'Spike: several themes at once, re-skin at a gate', C: Themes },
 } as const;
 
 export function getStaticPaths() {
   if (process.env.SPIKES !== '1') return [];
-  return ['draw', 'follow', 'scope', 'stamp', 'gl', 'vt-a', 'vt-b'].map((spike) => ({ params: { spike } }));
+  return ['draw', 'follow', 'scope', 'stamp', 'gl', 'vt-a', 'vt-b', 'themes'].map((spike) => ({ params: { spike } }));
 }
 
 const key = Astro.params.spike as keyof typeof SPIKES;
