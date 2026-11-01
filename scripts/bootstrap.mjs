@@ -57,7 +57,7 @@ const FLAGS = [
   ['yes', 'bool', 'Non-interactive: take flags, then the existing config, then defaults. Implied when stdin is not a terminal.'],
   ['dry-run', 'bool', 'Print what would happen without changing anything.'],
   ['comfyui-path', 'dir', 'Connect an existing ComfyUI install and verify it.'],
-  ['install-comfyui', 'dir', 'Install a fresh ComfyUI (venv, CUDA torch, ~31 GB of models; needs HF_TOKEN) into <dir>.'],
+  ['install-comfyui', 'dir', 'Install a fresh ComfyUI (venv, CUDA torch, ~29 GB of models; needs a Hugging Face token) into <dir>.'],
   ['skip-comfyui', 'bool', 'Leave ComfyUI unconfigured (image generation unavailable).'],
   ['comfyui-python', 'file', "Python of ComfyUI's venv. Default: auto-detected inside the ComfyUI folder."],
   ['comfyui-port', 'n', 'ComfyUI port. Default 8188.'],
@@ -66,7 +66,7 @@ const FLAGS = [
   ['worktrees-dir', 'dir', 'Folder for variant worktrees. Default: sibling "<repo-folder>.worktrees".'],
   ['project', 'slug', 'Active project slug (folder under projects/). Default: keep current, else none.'],
   ['providers', 'list', 'Harness providers for Impeccable, comma-separated. Default: claude,codex.'],
-  ['python', 'exe', 'System Python 3.11/3.12 used for the ComfyUI scripts. Default: auto-detected.'],
+  ['python', 'exe', 'System Python 3.11 to 3.13 used for the ComfyUI scripts. Default: auto-detected.'],
   ['skip-node', 'bool', 'Skip npm install in tools/ and docs/review/tools/.'],
   ['skip-playwright', 'bool', 'Skip the Playwright Chromium download.'],
   ['with-deps', 'bool', 'Linux: also install Chromium system libraries (playwright --with-deps, needs sudo).'],
@@ -138,8 +138,10 @@ const result = (item, status, detail = '', fix = '') => ({ item, status, detail,
 function printResults(results) {
   const w = Math.min(36, Math.max(...results.map((r) => r.item.length))) + 2;
   for (const r of results) {
-    const item = r.item.length > w - 2 ? `${r.item.slice(0, w - 3)}…` : r.item;
-    console.log(`  ${LABEL[r.status]} ${item.padEnd(w)}${r.detail}`);
+    // Long names (model files) get their own line so they are never truncated.
+    if (r.item.length > w - 2) console.log(`  ${LABEL[r.status]} ${r.item}
+         ${' '.repeat(w)}${r.detail}`);
+    else console.log(`  ${LABEL[r.status]} ${r.item.padEnd(w)}${r.detail}`);
     if (r.fix && r.status !== 'green' && r.status !== 'info') console.log(`         ${' '.repeat(w)}${paint(2, `-> ${r.fix}`)}`);
   }
 }
@@ -251,14 +253,14 @@ function listProjects() {
 
 const verOf = (s) => (s.match(/(\d+)\.(\d+)(?:\.(\d+))?/) || []).slice(1).map((n) => Number(n || 0));
 
-/** Find a system Python, preferring 3.12 then 3.11. Returns { exe, version, status } or null. */
+/** Find a system Python, preferring 3.13 (as ComfyUI recommends), then 3.12, then 3.11. Returns { exe, version, status } or null. */
 function findPython(override) {
   const probe = ['-c', 'import sys;print("%d.%d.%d" % sys.version_info[:3]);print(sys.executable)'];
   const candidates = override
     ? [[override, []]]
     : IS_WIN
-      ? [['py', ['-3.12']], ['py', ['-3.11']], ['python3.12', []], ['python3.11', []], ['python3', []], ['python', []], ['py', ['-3']]]
-      : [['python3.12', []], ['python3.11', []], ['python3', []], ['python', []]];
+      ? [['py', ['-3.13']], ['py', ['-3.12']], ['py', ['-3.11']], ['python3.13', []], ['python3.12', []], ['python3.11', []], ['python3', []], ['python', []], ['py', ['-3']]]
+      : [['python3.13', []], ['python3.12', []], ['python3.11', []], ['python3', []], ['python', []]];
   let fallback = null;
   for (const [cmd, pre] of candidates) {
     const r = capture(cmd, [...pre, ...probe], { timeout: 15_000 });
@@ -268,7 +270,7 @@ function findPython(override) {
     if (!exe || /WindowsApps/i.test(exe)) continue;
     const [maj, min] = verOf(verLine);
     const found = { exe: fwd(exe.trim()), version: verLine.trim() };
-    if (maj === 3 && (min === 11 || min === 12)) return { ...found, status: 'green' };
+    if (maj === 3 && min >= 11 && min <= 13) return { ...found, status: 'green' };
     if (maj === 3 && min >= 10 && !fallback) fallback = { ...found, status: 'amber' };
     if (override) return { ...found, status: 'red' };
   }
@@ -294,9 +296,9 @@ function checkPrereqs(opts, { comfyTarget } = {}) {
   out.push(npm.ok ? result('npm', 'green', npm.out) : result('npm', 'red', 'not found', 'Reinstall Node.js from https://nodejs.org/ (npm ships with it)'));
 
   const py = findPython(opts.python);
-  if (!py) out.push(result('Python', 'red', 'no Python 3.10+ found', 'Install Python 3.12 from https://www.python.org/downloads/ (tick "Add to PATH" / install the py launcher)'));
+  if (!py) out.push(result('Python', 'red', 'no Python 3.10+ found', 'Install Python 3.13 from https://www.python.org/downloads/ (tick "Add to PATH" / install the py launcher)'));
   else out.push(result('Python', py.status, `${py.version}  ${py.exe}`,
-    py.status === 'amber' ? 'Works for the scripts, but install Python 3.11 or 3.12 for a fresh ComfyUI venv' : 'Use Python 3.11 or 3.12'));
+    py.status === 'amber' ? 'Works for the scripts, but a fresh ComfyUI venv needs Python 3.11 to 3.13 (3.13 recommended)' : 'Use Python 3.11 to 3.13'));
 
   const gh = capture('gh', ['--version']);
   if (!gh.ok) out.push(result('gh (optional)', 'amber', 'not found', 'Optional, for GitHub: https://cli.github.com/'));
@@ -357,7 +359,7 @@ async function resolveSettings(opts, cfg, interactive, vram) {
   else if (opts['skip-comfyui']) comfyMode = 'skip';
   else if (cfg.comfyui.path) comfyMode = 'connect';
   else if (interactive) {
-    note('ComfyUI generates the concept art. Options: [c] connect an existing install, [i] install a fresh one (~31 GB download, needs a Hugging Face token), [s] skip for now.');
+    note('ComfyUI generates the concept art. Options: [c] connect an existing install, [i] install a fresh one (~29 GB download, needs a Hugging Face token), [s] skip for now.');
     const a = (await ask('ComfyUI', 'c')).toLowerCase()[0];
     comfyMode = a === 'i' ? 'install' : a === 's' ? 'skip' : 'connect';
   } else comfyMode = 'skip';
@@ -478,7 +480,7 @@ function impeccable(...args) {
 // ---------------------------------------------------------------------------------------------
 
 const VERIFY_STATUS = { 0: 'green', 3: 'amber', 1: 'red' };
-const ITEM_STATUS = { ok: 'green', pass: 'green', green: 'green', warn: 'amber', amber: 'amber', fail: 'red', red: 'red', info: 'info' };
+const ITEM_STATUS = { ok: 'green', pass: 'green', green: 'green', warn: 'amber', amber: 'amber', fail: 'red', error: 'red', red: 'red', info: 'info' };
 
 /**
  * Concept's verifier as health items: install_comfyui.py --verify <dir> [--quick] --json.
@@ -493,7 +495,7 @@ function comfyVerify(cfg, py, { quick = false } = {}) {
   const items = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.items) ? parsed.items : Array.isArray(parsed?.checks) ? parsed.checks : null;
   const fix = `Run: python ${COMFY_INSTALLER} --verify "${cfg.comfyui.path}"`;
   if (items?.length) {
-    return items.map((it) => result(`ComfyUI: ${it.item ?? it.name ?? it.file ?? '?'}`,
+    return items.map((it) => result(String(it.item ?? it.name ?? it.file ?? '?'),
       ITEM_STATUS[String(it.status).toLowerCase()] ?? 'amber', it.detail ?? it.message ?? '', it.fix ?? (it.status === 'ok' ? '' : fix)));
   }
   const tail = (r.err || r.out).split(/\r?\n/).filter(Boolean).slice(-1)[0] ?? '';
@@ -502,19 +504,68 @@ function comfyVerify(cfg, py, { quick = false } = {}) {
 
 function comfyConfigureCheck(py) {
   if (!exists(rel(COMFY_CONFIGURE))) return result('ComfyUI launchers', 'amber', `${COMFY_CONFIGURE} not found`);
-  const r = capture(py, [rel(COMFY_CONFIGURE), '--check'], { timeout: 60_000 });
-  const tail = (r.out || r.err).split(/\r?\n/).filter(Boolean).slice(-1)[0] ?? '';
-  return result('ComfyUI launchers', r.ok ? 'green' : 'red', tail || (r.ok ? 'configured' : `exit ${r.code}`), `Run: python ${COMFY_CONFIGURE}`);
+  const r = capture(py, [rel(COMFY_CONFIGURE), '--check', '--json'], { timeout: 60_000 });
+  let j = null;
+  try { j = JSON.parse(r.out); } catch { /* not JSON */ }
+  const bad = (j?.checks ?? []).filter((c) => !['ok', 'info'].includes(String(c.status).toLowerCase()));
+  const detail = bad.length ? bad.map((c) => `${c.item}: ${c.detail ?? c.status}`).join('; ')
+    : r.ok ? 'launchers match team.config.json' : (r.err.split(/\r?\n/).pop() || `exit ${r.code}`);
+  return result('ComfyUI launchers', r.ok ? 'green' : 'red', detail, `Run: python ${COMFY_CONFIGURE}`);
 }
 
 const HF_HELP = [
   'The FLUX 3 Klein models come from a gated Hugging Face repo. Before installing:',
   '  1. Create a free account at https://huggingface.co/join',
   '  2. Click "Agree" once at https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy',
-  '  3. Create a read token at https://huggingface.co/settings/tokens and set it as HF_TOKEN',
-  IS_WIN ? '     PowerShell: $env:HF_TOKEN = "hf_..."   (or setx HF_TOKEN hf_... and open a new terminal)' : '     export HF_TOKEN=hf_...',
-  'Then re-run bootstrap. Total download is about 31 GB including optional files.',
+  '  3. Create a read token at https://huggingface.co/settings/tokens and either set it as HF_TOKEN',
+  IS_WIN ? '     (PowerShell: $env:HF_TOKEN = "hf_..."; or setx HF_TOKEN hf_... and open a new terminal)' : '     (export HF_TOKEN=hf_...)',
+  '     or save it with: hf auth login',
+  'Then re-run bootstrap.',
 ];
+
+const gb = (n) => `${(Number(n || 0) / GB).toFixed(1)} GB`;
+
+/**
+ * install_comfyui.py --install|--models-only: dry run with --json first (feasibility, sizes, token, blockers),
+ * then, after confirmation, the real run with --yes --json (logs on stderr, one JSON object on stdout).
+ * Returns the final JSON object (the plan in --dry-run), or null if blocked, declined or failed.
+ */
+async function runInstaller(action, dir, sysPy, interactive) {
+  const base = [rel(COMFY_INSTALLER), action, dir];
+  note(paint(2, `$ ${display(sysPy, [...base, '--dry-run', '--json'])}`));
+  const plan = capture(sysPy, [...base, '--dry-run', '--json'], { timeout: 300_000 });
+  let p = null;
+  try { p = JSON.parse(plan.out); } catch { /* not JSON */ }
+  if (!p) { note(paint(31, `Installer dry run failed: ${plan.err.split(/\r?\n/).pop() || `exit ${plan.code}`}`)); return null; }
+
+  const todo = p.models_to_download ?? [];
+  note(`Download: ${gb(p.download_bytes)} (${todo.length} model file${todo.length === 1 ? '' : 's'}${todo.some((m) => m.gated) ? ', some gated' : ''}). Disk needed ${gb(p.need_bytes)}, free ${gb(p.free_bytes)}.`);
+  if (p.gpu?.name) note(`GPU: ${p.gpu.name}, ${p.gpu.vram_mb} MB, driver ${p.gpu.driver}, CUDA ${p.gpu.cuda}. Torch: ${p.torch?.pin ?? '?'}`);
+  note(`Hugging Face token: ${p.hf_token ?? '?'}, gated access: ${p.gated_access ?? '?'}`);
+  for (const w of p.warnings ?? []) note(paint(33, `warning: ${w}`));
+  if (p.status === 'blocked' || (p.blockers ?? []).length) {
+    for (const b of p.blockers ?? []) note(paint(31, `blocked: ${b}`));
+    // The installer's blocker already explains the Hugging Face steps; ours is a fallback.
+    if (p.gated_access && p.gated_access !== 'ok' && !(p.blockers ?? []).some((b) => /huggingface\.co/.test(b))) HF_HELP.forEach((l) => note(paint(33, l)));
+    return null;
+  }
+  if (DRY) { note(paint(36, `[dry-run] would run: ${display(sysPy, [...base, '--yes', '--json'])}`)); return p; }
+  if (interactive && !(await confirm(`Download ${gb(p.download_bytes)} and ${action === '--install' ? 'install ComfyUI' : 'add the models'} now?`))) {
+    note('Skipped.');
+    return null;
+  }
+  note(paint(2, `$ ${display(sysPy, [...base, '--yes', '--json'])}`));
+  const r = spawnSync(sysPy, [...base, '--yes', '--json'], { cwd: REPO, stdio: ['inherit', 'pipe', 'inherit'], encoding: 'utf8' });
+  let out = null;
+  try { out = JSON.parse((r.stdout || '').trim()); } catch { /* not JSON */ }
+  if (r.status !== 0 || out?.status !== 'ok') {
+    note(paint(31, `Installer failed (exit ${r.status}).`));
+    for (const b of out?.blockers ?? []) note(paint(31, `blocked: ${b}`));
+    return null;
+  }
+  note(`Done in ${out.minutes ?? '?'} min. Downloaded: ${(out.downloaded ?? []).join(', ') || 'nothing'}.`);
+  return out;
+}
 
 /** Install-level checks that need nothing from artgen/setup. */
 async function comfyBasics(cfg) {
@@ -548,35 +599,35 @@ async function setupComfy(mode, cfg, opts, sysPy, interactive) {
   if (mode === 'skip') { note('Skipped. Image generation stays unavailable until you re-run with --comfyui-path or --install-comfyui.'); return true; }
   const dir = cfg.comfyui.path;
   if (!sysPy) { note(paint(31, 'No system Python found; cannot run the ComfyUI setup scripts.')); return false; }
-  const installer = exists(rel(COMFY_INSTALLER));
-  const downloading = mode === 'install' || opts['models-only'];
+  if (!exists(rel(COMFY_INSTALLER))) { note(paint(31, `${COMFY_INSTALLER} is missing.`)); return false; }
 
-  if (downloading) {
-    if (!installer) { note(paint(31, `${COMFY_INSTALLER} is missing; cannot download.`)); return false; }
-    if (!process.env.HF_TOKEN && !DRY) { HF_HELP.forEach((l) => note(paint(33, l))); return false; }
-    const action = mode === 'install' ? '--install' : '--models-only';
-    if (mode === 'install' && exists(path.join(dir, 'main.py'))) note(`ComfyUI already present in ${dir}; the installer verifies it and fills in what is missing.`);
-    if (interactive && !DRY) {
-      note('Planned changes and download sizes (dry run):');
-      stream(sysPy, [rel(COMFY_INSTALLER), action, dir, '--dry-run']);
-      if (!(await confirm('Start the download now?'))) { note('ComfyUI download skipped.'); return false; }
+  if (mode === 'install') {
+    if (exists(path.join(dir, 'main.py'))) note(`ComfyUI already present in ${dir}; the installer verifies it and fills in what is missing.`);
+    const out = await runInstaller('--install', dir, sysPy, interactive);
+    if (!out) return false;
+    if (out.python) cfg.comfyui.python = fwd(out.python);
+  } else {
+    let wantModels = Boolean(opts['models-only']);
+    if (!wantModels) {
+      note('Verifying the install and models (the first run hashes ~37 GB in a few minutes; later runs use a cache).');
+      const args = [rel(COMFY_INSTALLER), '--verify', dir];
+      if (DRY) note(paint(36, `[dry-run] ${display(sysPy, args)}`));
+      else {
+        note(paint(2, `$ ${display(sysPy, args)}`));
+        const code = spawnSync(sysPy, args, { cwd: REPO, stdio: 'inherit' }).status;
+        if (code === 1 || code === 3) {
+          note(paint(code === 1 ? 31 : 33, code === 1 ? 'Verification failed (red).' : 'Verified with warnings (amber).'));
+          note('Missing models can be downloaded with --models-only.');
+          wantModels = interactive && (await confirm('Check for missing models and download them now?', code === 1));
+          if (!wantModels && code === 1) return false;
+        } else if (code !== 0) { note(paint(31, `Verification could not run (exit ${code}).`)); return false; }
+      }
     }
-    if (!stream(sysPy, [rel(COMFY_INSTALLER), action, dir, '--yes', ...(DRY ? ['--dry-run'] : [])])) return false;
+    if (wantModels && !(await runInstaller('--models-only', dir, sysPy, interactive))) return false;
   }
 
   if (!cfg.comfyui.python) cfg.comfyui.python = detectComfyPython(dir);
   if (!cfg.comfyui.python && !DRY) note(paint(33, `No venv python found in ${dir}; pass --comfyui-python.`));
-
-  if (mode === 'connect' && !opts['models-only'] && installer) {
-    note('Verifying the install and models (the first run hashes ~37 GB and takes a few minutes; later runs use a cache).');
-    if (DRY) note(paint(36, `[dry-run] ${display(sysPy, [rel(COMFY_INSTALLER), '--verify', dir])}`));
-    else {
-      note(paint(2, `$ ${display(sysPy, [rel(COMFY_INSTALLER), '--verify', dir])}`));
-      const code = spawnSync(sysPy, [rel(COMFY_INSTALLER), '--verify', dir], { cwd: REPO, stdio: 'inherit' }).status;
-      if (code === 3) note(paint(33, 'Verified with warnings (optional models missing or ComfyUI newer than pinned).'));
-      else if (code !== 0) { note(paint(31, 'Verification failed. To fetch missing models, re-run with --models-only.')); return false; }
-    }
-  }
 
   if (exists(rel(COMFY_CONFIGURE))) {
     // configure.py reads team.config.json, so the config must be on disk first.
