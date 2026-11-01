@@ -11,7 +11,7 @@ The single source of truth for how this team works. Every agent reads this first
 | Project manager (PM) | the project's main thread | `.team/`, `README.md`, `BOOTSTRAP.md` | `BRIEF.md`, `briefs/`, `gates/`, merges to `master` | n/a |
 | Research | `Team · Research` | `docs/research/` (templates, method) | `research/` | `roles/research.md` |
 | Concept creator | `Team · Concept (ComfyUI)` | `artgen/` | `concepts/`, `web/public/assets/generated/` (final picks only) | `roles/concept.md` |
-| Front-end design | `Team · Front-end Design` | `tools/`, `.claude/skills/` (Impeccable) | `web/`, `variants/`, `screenshots/`, `PRODUCT.md`, `DESIGN.md`, variant worktrees | `roles/frontend.md` |
+| Front-end design | `Team · Front-end Design` | `tools/`, Impeccable install and config: `.claude/skills/`, `.claude/agents/`, `.claude/settings.json`, `.agents/`, `.codex/`, `.impeccable/` | `web/`, `variants/`, `screenshots/`, `PRODUCT.md`, `DESIGN.md`, variant worktrees | `roles/frontend.md` |
 | Backend developer | `Team · Backend` | `scripts/`, `docs/api/` (templates, stack playbook), `team.config.example.json` | `server/`, `api/` | `roles/backend.md` |
 | Review | `Team · Review` | `docs/review/` (checklists, tools) | `review/` (read-only everywhere else) | `roles/review.md` |
 
@@ -76,13 +76,17 @@ The human answers with a choice (A/B/C, a combination, or "revise: ..."). The PM
 | After Gate 1 | `/impeccable init` writes `projects/<slug>/PRODUCT.md` from BRIEF and research | Front-end |
 | Before each Gate 3 variation | `/impeccable shape` turns the variation's hypothesis into a design brief | Front-end |
 | Building | `/impeccable <request>`, then steer with `layout`, `typeset`, `colorize`, `bolder`, `quieter`, `distill`, `animate`, `delight`, `overdrive` | Front-end |
-| Before screenshots for a gate | `/impeccable critique <target>`, fix what it ranks first; `npx impeccable detect <path>` must be clean or each finding justified in the variant file | Front-end |
+| Before screenshots for a gate | `/impeccable critique <target>`, fix what it ranks first; the detector (`cd tools && npx impeccable detect <path>`) must be clean or each finding justified in the variant file | Front-end |
 | After Gate 2 and Gate 3 | `/impeccable document` writes or updates `projects/<slug>/DESIGN.md` | Front-end |
 | Build phase | `harden`, `adapt`, `clarify`, `optimize`, `onboard`, `extract` as needed | Front-end |
 | Before Gate 4 | `/impeccable audit`, then `/impeccable polish` per page | Front-end |
-| Every review | `npx impeccable detect` plus its own checks; may run `/impeccable critique` for a second opinion | Review |
+| Every review | the detector (`cd tools && npx impeccable detect <path>`) plus its own checks; may run `/impeccable critique` for a second opinion | Review |
 
 Narrow targets beat whole pages: critique one section at a time.
+
+- **Run the detector from `tools/`**, where the CLI is pinned. From the repo root, `npx` can pick up a stale global copy.
+- **Design hook:** `.claude/settings.json` runs `tools/impeccable-hook.mjs` after edits. It only scans files under `projects/<slug>/web/` (in the main checkout or a variant worktree); every other edit exits silently. A hook change takes effect in threads started after it.
+- **Telemetry is off** for this team (`IMPECCABLE_NO_TELEMETRY=1`, set in `.claude/settings.json` and by the bootstrap). A team that wants it can remove the variable.
 
 ## Communication protocol
 

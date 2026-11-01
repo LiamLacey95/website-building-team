@@ -10,3 +10,5 @@ Human decisions at gates, and any PM decisions that change scope. Newest last.
 | 2026-11-01 | kit | Human request | Publish the system as GitHub repo "website-building-team", bootstrappable by a fresh PM thread via BOOTSTRAP.md | Human instruction. Repo created private; human decides public |
 | 2026-11-01 | kit | Repo layout | Shared kit at root, one folder per website in `projects/<slug>/`, machine paths in git-ignored `team.config.json` | PM decision |
 | 2026-11-01 | how-it-works | Intake | First project: creative site explaining how the team works, built by the process it describes | Human prompt |
+| 2026-11-01 | kit | Impeccable telemetry | Off by default (`IMPECCABLE_NO_TELEMETRY=1`) for anyone running the kit | PM decision: opt-in is the safer default for a handed-off kit |
+| 2026-11-01 | kit | Ownership | Front-end owns Impeccable's install and config: `.claude/` (skills, agents, settings), `.agents/`, `.codex/`, `.impeccable/` | PM decision |
