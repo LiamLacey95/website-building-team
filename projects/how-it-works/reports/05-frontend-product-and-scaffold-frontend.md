@@ -212,3 +212,5 @@ Backend's collections are now wired: `web/src/content.config.ts` follows the con
 - "the same afternoon" in the G1 revise outcome.
 
 **Typing:** `slotSchema(image)` types `src` as `unknown`. `Slot.astro` casts it to `ImageMetadata` for now, and I've asked Backend to make the helper generic.
+
+**Update (contract 0.3.2):** `slotSchema` is now generic, so the `ImageMetadata` cast in `Slot.astro` is removed (`astro check`: 0 errors). Backend reworded all the Q6 time/cost phrases and added a word-level test: `grep -io "cost\|afternoon\|budget\|minutes" web/dist/index.html` finds nothing.
