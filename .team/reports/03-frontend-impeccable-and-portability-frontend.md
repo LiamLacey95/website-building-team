@@ -68,13 +68,13 @@ Impeccable's hook is a PostToolUse step after every Edit or Write, plus a full-r
 
 ## 3. Can I use `/impeccable` in this session?
 
-**No.** Invoking the `impeccable` skill in this thread returns `Unknown skill: impeccable`. Claude Code reads skills and hooks at session start, and this thread started before the install, so the committed hook isn't active here either.
+**Yes, as of the end of this brief.**
 
-Until the thread is restarted:
-- I follow the skill files directly (`SKILL.md`, then the command's `reference/<cmd>.md`).
-- I run `impeccable context --target ...` and `detect` through the launcher (`sh .claude/skills/impeccable/scripts/impeccable ...`). Both work in this session.
+- **First attempt:** right after the install, invoking the skill returned `Unknown skill: impeccable`.
+- **Later:** the harness added `impeccable` to this thread's skill list partway through the session. `/impeccable hooks status` then loaded the skill and ran its launcher successfully.
+- **Before that point:** the launcher (`sh .claude/skills/impeccable/scripts/impeccable context|detect`) already worked.
 
-A fresh Front-end thread gets `/impeccable` natively. The same applies to every thread started before this commit, including Review if it wants `/impeccable critique`.
+Hooks are a separate question. Claude Code takes its hook configuration from settings at session start, so the committed `.claude/settings.json` hook may not be active in threads that started before commit `13ad02a`. Restarting a thread guarantees both the skill and the hook. That applies to every team thread, including Review if it wants `/impeccable critique`.
 
 ## 4. Portability of `tools/`
 
@@ -129,6 +129,21 @@ While testing a custom `worktreesDir`, I overwrote `F:\ArtGen\Website Test\team.
 - **Recreated** in `bootstrap.mjs`'s `writeConfig` shape with the values on record: `activeProject` "how-it-works", the default `worktreesDir`, providers claude and codex, and `comfyui` path `F:/ArtGen/ComfyUI` with its venv python, port 8188 and profile 12gb. The venv python path exists.
 - **Backend has been told** and asked to regenerate the file if their run wrote anything different.
 - **Lesson:** from now on, all my config tests run against a scratch root.
+
+## Incident: my commit 8cc32b9 swept in Concept's staged deletions
+
+To fix the launchers' executable bit I used `git commit --include -- <2 files>`. `--include` also commits everything else staged, so commit `8cc32b9` ("frontend: mark Impeccable launchers executable") also contains three deletions Concept had staged:
+- `artgen/Launch ComfyUI (Website).bat`
+- `artgen/Launch ComfyUI (Website, headless).bat`
+- `artgen/smoke_jobs.json`
+
+**What I checked:**
+- **The deletions are Concept's intended change.** Both `.bat` files are still on disk and are now git-ignored by Concept's modified `artgen/.gitignore`. `smoke_jobs.json` was deleted from the working tree.
+- **Only the attribution is wrong.** Nothing was lost.
+
+**Why I didn't undo it:** I tried to rebuild the commit without those deletions, but the PM's `a860573` already sits on top, so I didn't rewrite history.
+
+**Concept should know** that those three deletions are already committed. From now on I follow the new rule: run `git diff --cached --name-only`, then `git commit -m ... -- <my paths>`.
 
 ## Paths outside the playbook's ownership table (please confirm)
 
