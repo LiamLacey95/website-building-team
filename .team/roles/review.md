@@ -27,7 +27,7 @@ Verdict: PASS | PASS WITH NOTES | REVISE
 Scope: what you looked at (paths, commits, URLs)
 Findings:
   [BLOCKER|MAJOR|MINOR|NIT] <area> <file or screenshot path>: what is wrong, why it matters, suggested fix
-Scorecard (G3 only): per variation, 1 to 5 on hierarchy, clarity, brand fit, accessibility, responsiveness, with one line each
+Creativity scorecard (G2, G3, G4): per option, 1 to 10 on each axis of docs/review/checklists/creativity.md, with evidence for each score and the memorability sentence
 ```
 
 Only BLOCKER and MAJOR prevent a PASS. Be specific: cite file and line, screenshot path, measured contrast ratio, Lighthouse number.

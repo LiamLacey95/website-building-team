@@ -136,7 +136,8 @@ projects/<slug>/       one folder per website (see Project layout)
 - Accessibility: WCAG 2.2 AA. Text contrast at least 4.5:1, visible focus, keyboard reachable, alt text, reduced-motion support.
 - Performance budget unless the brief says otherwise: LCP under 2.5 s on mobile, CLS under 0.1, JS under 150 KB gzipped on content pages, images responsive and in AVIF or WebP.
 - Responsive at 390, 768, 1440 and 1920 px wide.
-- No generic AI defaults: Impeccable's detector is clean, or each finding is justified.
+- No generic AI defaults: Impeccable's detector is clean, or each finding is justified. A clean detector run is necessary, not sufficient.
+- Creativity and polish are scored with `docs/review/checklists/creativity.md` at Gates 2, 3 and 4. Concept and Front-end should read it before they start.
 - No lorem ipsum at Gate 3 or later; use real or realistic draft copy.
 - Every generated image used on the site has its prompt and workflow recorded next to it (see `roles/concept.md`). Shipped images use commercially licensed models only (see `artgen/README.md`).
 

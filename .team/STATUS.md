@@ -28,7 +28,7 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | how-it-works/05-concept-directions | Concept | in progress (critical path to G2) |
 | how-it-works/05-frontend-product-and-scaffold | Front-end | in progress |
 | how-it-works/05-backend-contract-vercel | Backend | in progress |
-| how-it-works/05-review-creativity-rubric | Review | in progress |
+| how-it-works/05-review-creativity-rubric | Review | done (6b2d024) |
 | how-it-works/05-research-creative-benchmark | Research | in progress |
 | 05-frontend-telemetry-off | Front-end | done (945a8b7) |
 | 03-concept-comfyui-installer | Concept | done (1980bdb) |
