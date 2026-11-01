@@ -602,7 +602,10 @@ async function setupComfy(mode, cfg, opts, sysPy, interactive) {
   if (!exists(rel(COMFY_INSTALLER))) { note(paint(31, `${COMFY_INSTALLER} is missing.`)); return false; }
 
   if (mode === 'install') {
-    if (exists(path.join(dir, 'main.py'))) note(`ComfyUI already present in ${dir}; the installer verifies it and fills in what is missing.`);
+    if (exists(path.join(dir, 'main.py'))) {
+      note(paint(31, `ComfyUI is already installed in ${dir}. Use --comfyui-path "${dir}" to connect it (add --models-only for missing models).`));
+      return false;
+    }
     const out = await runInstaller('--install', dir, sysPy, interactive);
     if (!out) return false;
     if (out.python) cfg.comfyui.python = fwd(out.python);
