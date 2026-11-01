@@ -167,3 +167,34 @@ All three are edits to `README.md`, `contact-sheet.html` and `research/define/ga
 4. Optional in the same pass: the six evidence rewordings (MINOR 2), the Gate 4 reviewer caveat (MINOR 1), the positioning wording (MINOR 4), and the accent colour `#b83a1b` (MINOR 8).
 
 The rest (stale kit facts, accessibility statement, redaction and licence-guard patterns, metric owner) can be picked up in Phase 4 briefs without blocking Gate 1. I'm happy to re-check the revised packet; that's a 10-minute diff review.
+
+---
+
+## Addendum: re-check of the revised packet (commit 6704fd2)
+
+Verdict: **PASS WITH NOTES.** The packet can go to the human.
+
+Scope: the revised `README.md` and `contact-sheet.html`. I re-ran axe on the contact sheet at 390 and 1440 px.
+
+### The three MAJOR findings are closed
+
+| Finding | Status | Evidence |
+|---|---|---|
+| Q7 letters inconsistent; no letters on the contact sheet | **Closed** | Every question in the README and the contact sheet carries letters, and they match, all eleven checked. Q7 now has A–D, matching Concept's note, and says it sets kit scope, not this project's imagery. The README states that it wins over `gate1-questions.md` until Research aligns that file (brief 04-define-alignment). |
+| Klein condition never put to the human | **Closed** | New Q11: A confirms revenue under US$5M including affiliates, names the output review (Review's G2 check) and the AI disclosure on `/credits/`. B falls back to Z-Image only for shipped images. |
+| Q10 one-sided | **Closed** | All four options are listed, with Review's pick (D, fresh squashed repo) shown beside the PM's (C, rewrite at G4) and a short paragraph giving both reasons. The contact sheet labels both picks. |
+
+### Minor findings
+
+- **Closed:**
+  - MINOR 1: the G4 reviewer caveat and its order of steps; Q2 B now says the approval rule is lost.
+  - MINOR 2: the wording in the packet. It now says "use or plan to use (2025 survey)", "supported in Chrome, Safari 26+, Firefox 159+" with no date, and GoatCounter is "free for reasonable public use".
+  - MINOR 8: the accent is `#b83a1b`, and axe now reports **0 violations** at both widths (it was 2 serious).
+- **Closed in the packet; the source files are still being aligned:**
+  - MINOR 5: an accessibility statement is now listed under `/credits/`.
+  - Part of MINOR 6: the licence guard now checks "anywhere in their chain".
+- **Still open, not blocking G1:** MINOR 3 (stale kit facts in the sitemap and journeys), MINOR 4 (positioning wording), the redaction-pattern half of MINOR 6, and MINOR 7 (the hallway-test owner). These belong to Research and Backend's alignment work (04-define-alignment) or the Phase 3 and 4 briefs.
+
+### One new NIT
+
+- **Q10 C side effects:** rewriting history changes every commit hash after the first screenshot commit. Every clone and variant worktree then has to be re-synced, and any "at `<short sha>`" excerpt caption has to be rebuilt after the rewrite. That fits "at G4" and needs no change now, but the human may want to know if they lean towards C.
