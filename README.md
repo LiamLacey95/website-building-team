@@ -30,7 +30,7 @@ Clone this repo, open it in Claude Code or T3 Code, start a thread and say:
 
 That thread becomes the project manager. It installs or connects ComfyUI and the image models, installs Impeccable and the screenshot and review tooling, creates the five agent threads, and asks you for your first website prompt. See [`BOOTSTRAP.md`](BOOTSTRAP.md).
 
-Requirements: Windows or Linux, an NVIDIA GPU with 12 GB VRAM (8 GB with reduced settings), about 40 GB of disk, git, Node.js 20+, Python 3.11 or 3.12.
+Requirements: Windows or Linux, an NVIDIA GPU with 12 GB VRAM (an 8 GB profile exists but is untested), about 40 GB of disk, git, Node.js 20+, Python 3.11 to 3.13. A fresh ComfyUI install also needs a free Hugging Face account to download FLUX Klein. Full details are in [`BOOTSTRAP.md`](BOOTSTRAP.md).
 
 ## Layout
 

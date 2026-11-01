@@ -16,9 +16,10 @@ Read `.team/PLAYBOOK.md` before you start; it is how the team works once it exis
 | Need | Minimum | Notes |
 |---|---|---|
 | OS | Windows 10/11 or Linux | Built and tested on Windows 11. macOS works for everything except fast image generation (no CUDA) |
-| GPU | NVIDIA, 12 GB VRAM, recent driver | Tuned for an RTX 4070 SUPER. 8 GB works with the distilled Klein model and smaller sizes |
-| Disk | about 40 GB free | ComfyUI, Python venv with CUDA torch, models |
-| Tools | git, Node.js 20+, Python 3.11 or 3.12, `gh` (optional, for GitHub) | |
+| GPU | NVIDIA, 12 GB VRAM; driver 580+ (CUDA 13) recommended | Tuned and tested on an RTX 4070 SUPER. An 8 GB profile exists (distilled Klein, smaller sizes) but is **untested** on a real 8 GB card. No GPU: `--skip-comfyui` (see the Concept role's fallback) |
+| Disk | about 40 GB free | Models are about 29 GB (37 GB with optional extras), plus ComfyUI and its CUDA torch venv |
+| Tools | git, Node.js 20+, Python 3.11 to 3.13 (3.13 recommended, as ComfyUI recommends), `gh` (optional, for GitHub) | |
+| Accounts | A free Hugging Face account, **only for a fresh ComfyUI install** | FLUX Klein is only in Black Forest Labs' gated repo: accept its licence once and set a read token as `HF_TOKEN` (see step 2) |
 
 If something is missing, tell the human exactly what to install and stop until it is there. Do not install system-wide software without asking.
 
@@ -39,7 +40,7 @@ node scripts/bootstrap.mjs --yes --skip-comfyui                       # no image
 ```
 
 - **ComfyUI:** connect an existing install (`--comfyui-path <dir>`); bootstrap verifies the ComfyUI version and every model's hash (the first run takes a few minutes and is cached after that). Or install a fresh one (`--install-comfyui <dir>`): this clones ComfyUI at the pinned commit, creates its venv with CUDA torch, and downloads the models in `artgen/setup/models.json` with hash checks. A fresh install needs, **before you run it**:
-  - the human's go-ahead for about **31 GB** of downloads (preview the plan with `--dry-run`);
+  - the human's go-ahead for about **29 GB** of model downloads (37 GB with optional extras) plus CUDA torch (preview the plan with `--dry-run`);
   - a free Hugging Face account that has clicked "Agree" once at https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy, with a read token set as the `HF_TOKEN` environment variable. Ask the human for this; never invent a token. Without it, bootstrap prints these steps and skips the download.
 - **Worktree folder** for design variations (`--worktrees-dir`, default: sibling folder `<repo-folder>.worktrees`).
 - **Active project** (`--project <slug>`): leave it unset for a new team; it is set at intake.
