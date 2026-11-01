@@ -41,11 +41,11 @@ node scripts/bootstrap.mjs --yes --skip-comfyui                       # no image
 
 - **ComfyUI:** connect an existing install (`--comfyui-path <dir>`); bootstrap verifies the ComfyUI version and every model's hash (the first run takes a few minutes and is cached after that). Or install a fresh one (`--install-comfyui <dir>`): this clones ComfyUI at the pinned commit, creates its venv with CUDA torch, and downloads the models in `artgen/setup/models.json` with hash checks. A fresh install needs, **before you run it**:
   - the human's go-ahead for about **29 GB** of model downloads (37 GB with optional extras) plus CUDA torch (preview the plan with `--dry-run`);
-  - a free Hugging Face account that has clicked "Agree" once at https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy, with a read token set as the `HF_TOKEN` environment variable. Ask the human for this; never invent a token. Without it, bootstrap prints these steps and skips the download.
+  - a free Hugging Face account that has clicked "Agree" once at https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy, with a read token set as the `HF_TOKEN` environment variable (or saved with `hf auth login`). Ask the human for this; never invent a token. Without it, bootstrap prints these steps and skips the download.
 - **Worktree folder** for design variations (`--worktrees-dir`, default: sibling folder `<repo-folder>.worktrees`).
 - **Active project** (`--project <slug>`): leave it unset for a new team; it is set at intake.
 
-It then writes `team.config.json` (machine-specific, git-ignored; keys in `scripts/README.md`), installs the Node tooling (`tools/`, `docs/review/tools/`) and Playwright Chromium, checks the committed Impeccable skills and warms their engine, generates the ComfyUI launchers, creates the worktree folder, and finishes with a health check (green, amber, red). Every step is idempotent: if something fails, fix it and re-run. Re-check any time with `--check`; add `--selftest` to also run the Front-end, Review and ComfyUI self-tests.
+It then writes `team.config.json` (machine-specific, git-ignored; keys in `scripts/README.md`), installs the Node tooling (`tools/`, `docs/review/tools/`) and Playwright Chromium, checks the committed Impeccable skills, warms their engine and turns Impeccable telemetry off for the machine, generates the ComfyUI launchers, creates the worktree folder, and finishes with a health check (green, amber, red). Every step is idempotent: if something fails, fix it and re-run. Re-check any time with `--check`; add `--selftest` to also run the Front-end, Review and ComfyUI self-tests.
 
 After it finishes, reload your harness so the Impeccable skills are picked up.
 
