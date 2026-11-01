@@ -10,4 +10,5 @@ Elapsed time per phase, kept by the PM from git commit times and thread messages
 | 1 Discover | 12:41 | 13:01 | 20 min | Research: 8 teardowns, 46 screenshots |
 | 2 Define | 13:03 | 13:41 | 38 min | Research define done 13:07; stack proposal waited for Backend's kit work |
 | G1 packet | 13:41 | 16:40 (approx.) | about 3 h | Review: REVISE, packet fixed, PASS WITH NOTES. Includes a 2 h 16 min pause (usage limit) |
-| G1 with the human | 16:40 (approx.) | | | |
+| G1 with the human | 16:40 (approx.) | decided | | Internal only: Q6 says no time or cost on the site |
+| 3 Concept | after G1 | | | |

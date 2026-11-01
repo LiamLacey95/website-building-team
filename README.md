@@ -30,7 +30,7 @@ Clone this repo, open it in Claude Code or T3 Code, start a thread and say:
 
 That thread becomes the project manager. It installs or connects ComfyUI and the image models, checks the bundled Impeccable skills, installs the screenshot and review tooling, creates the five agent threads, and asks you for your first website prompt. See [`BOOTSTRAP.md`](BOOTSTRAP.md).
 
-Requirements: Windows 11 (tested; Linux is supported by the scripts but untested; macOS works except for local image generation), an NVIDIA GPU with 12 GB VRAM (an 8 GB profile exists but is untested), about 40 GB of disk, git, Node.js 20+, Python 3.11 to 3.13. A fresh ComfyUI install also needs a free Hugging Face account to download FLUX Klein. Full details are in [`BOOTSTRAP.md`](BOOTSTRAP.md).
+Requirements: **an NVIDIA GPU is required; the kit is not suited to machines without one.** Windows 11 (tested; Linux is supported by the scripts but untested; macOS works except for local image generation), an NVIDIA GPU with 12 GB VRAM (an 8 GB profile exists but is untested), about 40 GB of disk, git, Node.js 20+, Python 3.11 to 3.13. A fresh ComfyUI install also needs a free Hugging Face account to download FLUX Klein. Full details are in [`BOOTSTRAP.md`](BOOTSTRAP.md).
 
 ## Layout
 
@@ -46,7 +46,7 @@ Requirements: Windows 11 (tested; Linux is supported by the scripts but untested
 
 ## Licences
 
-**This repo:** licence not chosen yet.
+**This repo:** Apache-2.0 (see `LICENSE` and `NOTICE`).
 
 **Third-party components.** Impeccable 4.8.0 (https://impeccable.style) is vendored unmodified in `.claude/skills/impeccable/`, `.agents/skills/impeccable/` and `.claude/agents/impeccable-*.md`. It is © 2025 Paul Bakaus, licensed under Apache-2.0; see `LICENSE` and `NOTICE.md` in each skill folder. Its iOS and Android references are derived from ehmo's `platform-design-skills` (MIT; `LICENSE-platform-design-skills`), and its `scripts/modern-screenshot.umd.js` is modern-screenshot © 2021-present wxm (MIT; `scripts/LICENSE-modern-screenshot`). `THIRD-PARTY.md` in each skill folder maps every file to its licence. npm dependencies installed by the bootstrap (Playwright, Apache-2.0; the Impeccable CLI, Apache-2.0) are not committed.
 

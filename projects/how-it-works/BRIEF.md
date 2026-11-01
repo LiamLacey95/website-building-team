@@ -1,5 +1,7 @@
 # Project brief: How the Website Building Team works
 
+> **Gate 1 decided (2026-11-01):** see `gates/G1-strategy/DECISION.md`, which overrides this brief where they differ. In short: a highly creative showcase measured on creativity, interest and polish; hosted on Vercel; quotes and decisions written for the story; no time or cost figures; no analytics.
+
 Slug: `how-it-works`  ·  Opened: 2026-11-01  ·  PM thread: `fa660062-b3b4-4292-a789-b6fb4858c4e7`
 
 ## The prompt (verbatim)

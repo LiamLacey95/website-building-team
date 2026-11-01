@@ -14,7 +14,7 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 
 ## Active project
 
-`how-it-works`: a creative website that explains how this team works (`projects/how-it-works/BRIEF.md`). Phase 2 Define (Discover done: `research/SUMMARY.md`).
+`how-it-works`: a creative website that explains how this team works (`projects/how-it-works/BRIEF.md`). Phase 3 Concept (Gate 1 decided).
 
 ## Briefs in flight
 
@@ -25,6 +25,11 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | how-it-works/02-backend-stack-proposal | Backend + Front-end | done (6990cf9) |
 | how-it-works/03-review-gate1 | Review | done: REVISE, then PASS WITH NOTES after the packet revision (71e1b37) |
 | how-it-works/04-define-alignment | Research, Backend | done (9c48e5c, d5f0dbc) |
+| how-it-works/05-concept-directions | Concept | in progress (critical path to G2) |
+| how-it-works/05-frontend-product-and-scaffold | Front-end | in progress |
+| how-it-works/05-backend-contract-vercel | Backend | in progress |
+| how-it-works/05-review-creativity-rubric | Review | in progress |
+| how-it-works/05-research-creative-benchmark | Research | in progress |
 | 05-frontend-telemetry-off | Front-end | done (945a8b7) |
 | 03-concept-comfyui-installer | Concept | done (1980bdb) |
 | concept no-GPU fallback note | Concept | done (fc7fc3f); option B (remote GPU support) is a Gate 1 question |
@@ -41,7 +46,7 @@ Setup history: `.team/history/2026-11-01-initial-setup/`.
 
 | Gate | State | Decision |
 |---|---|---|
-| G1 Strategy and scope | **with the human** (`gates/G1-strategy/`) | |
-| G2 Creative direction | not started | |
+| G1 Strategy and scope | **decided** | `gates/G1-strategy/DECISION.md` |
+| G2 Creative direction | Phase 3 in progress | |
 | G3 Design selection | not started | |
 | G4 Release sign-off | not started | |

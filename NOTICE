@@ -1,0 +1,20 @@
+Website Building Team
+Copyright 2026 Website Building Team contributors
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This repository includes third-party software:
+
+- Impeccable 4.8.0 (https://impeccable.style), Copyright 2025 Paul Bakaus,
+  Apache License 2.0. Vendored unmodified in .claude/skills/impeccable/,
+  .agents/skills/impeccable/ and .claude/agents/impeccable-*.md. Its own
+  NOTICE.md is in each skill folder and applies to those files.
+- platform-design-skills by ehmo (MIT), from which Impeccable's iOS and
+  Android references derive. See LICENSE-platform-design-skills in each
+  skill folder.
+- modern-screenshot, Copyright 2021-present wxm (MIT), vendored as
+  scripts/modern-screenshot.umd.js inside each Impeccable skill folder.
+  See scripts/LICENSE-modern-screenshot.
+
+Image-generation models are not part of this repository. They are downloaded
+at setup and remain under their own licences; see artgen/README.md.
