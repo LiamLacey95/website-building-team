@@ -30,6 +30,8 @@ import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ARTGEN = os.path.dirname(HERE)
+sys.path.insert(0, ARTGEN)
+import comfy_config  # noqa: E402
 REPO = os.path.dirname(ARTGEN)
 MANIFEST = os.path.join(HERE, "models.json")
 PROJECT_MODELS = os.path.join(ARTGEN, "models")
@@ -69,7 +71,8 @@ def config_python(comfy_dir):
             return c["python"]
     except (OSError, ValueError):
         pass
-    return venv_python(comfy_dir)
+    cands = comfy_config.python_candidates(comfy_dir)
+    return next((c for c in cands if os.path.isfile(c)), cands[0])
 
 
 def model_path(m, comfy_dir):

@@ -18,10 +18,19 @@ class ConfigError(Exception):
     pass
 
 
-def default_python(comfy_path):
+def python_candidates(comfy_path):
+    """Same search order as scripts/bootstrap.mjs uses when comfyui.python is blank."""
     if os.name == "nt":
-        return os.path.join(comfy_path, "venv", "Scripts", "python.exe")
-    return os.path.join(comfy_path, "venv", "bin", "python")
+        return [os.path.join(comfy_path, "venv", "Scripts", "python.exe"),
+                os.path.join(comfy_path, ".venv", "Scripts", "python.exe"),
+                os.path.join(comfy_path, "python_embeded", "python.exe"),
+                os.path.join(os.path.dirname(comfy_path), "python_embeded", "python.exe")]  # portable build layout
+    return [os.path.join(comfy_path, "venv", "bin", "python"), os.path.join(comfy_path, ".venv", "bin", "python")]
+
+
+def default_python(comfy_path):
+    cands = python_candidates(comfy_path)
+    return next((c for c in cands if os.path.isfile(c)), cands[0])
 
 
 def load(require_path=True):
