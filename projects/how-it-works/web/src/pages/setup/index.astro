@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import SetupSentence from '../../components/SetupSentence.astro';
+import { SITE } from '../../data/site';
+---
+<Base title="Set it up">
+  <h1>Set it up</h1>
+  <p class="lede">Everything you need before and during setup. Most of it installs itself.</p>
+  <SetupSentence sentence={SITE.setupSentence} id="setup-page" label="The sentence:" />
+  <section id="requirements" aria-labelledby="requirements-title">
+    <h2 id="requirements-title">Requirements</h2>
+    <p>An NVIDIA GPU, Node.js, Python, git, and Claude Code or T3 Code. This kit is not suited to machines without an NVIDIA GPU.</p>
+  </section>
+  <section id="what-happens" aria-labelledby="what-happens-title">
+    <h2 id="what-happens-title">What happens next</h2>
+    <p>The thread you paste the sentence into becomes the project manager, runs the bootstrap, creates five agent threads and asks for your first website prompt.</p>
+  </section>
+  <section id="claude-or-t3" aria-labelledby="claude-or-t3-title">
+    <h2 id="claude-or-t3-title">Claude Code alone or T3 Code</h2>
+    <p>Placeholder: the comparison is written in Phase 5.</p>
+  </section>
+  <section id="health-check" aria-labelledby="health-check-title">
+    <h2 id="health-check-title">Health check</h2>
+    <p>Placeholder: sample bootstrap output, captured by Backend.</p>
+  </section>
+  <section id="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions and troubleshooting</h2>
+    <p>Placeholder: written in Phase 5.</p>
+  </section>
+  <section id="glossary" aria-labelledby="glossary-title">
+    <h2 id="glossary-title">Glossary</h2>
+    <p>Thread, brief, gate, worktree, variation, contact sheet, sidecar, Impeccable, detector.</p>
+  </section>
+</Base>
+
+<style>
+  h1 { margin-block-end: var(--space-s); }
+  .lede { color: var(--color-ink-muted); margin-block-end: var(--space-xl); }
+  .lede + :global(.setup) { margin-block-end: var(--space-xl); }
+  section { display: grid; gap: var(--space-s); padding-block: var(--space-l); border-top: 1px solid var(--color-line); }
+</style>

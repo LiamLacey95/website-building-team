@@ -1,0 +1,53 @@
+---
+/**
+ * Direction A's stamp (and B's guarded switch: same pattern). A real <button aria-pressed>; the press is a
+ * 120 ms keyframe, the impression an SVG ring with HTML text. Plus a type-on line whose full text is always
+ * in the DOM (screen readers get it at once). ~0.3 KB JS; motion off = no animation, final state shown.
+ */
+---
+<p class="typed"><span>Set up the website building team from BOOTSTRAP.md.</span></p>
+
+<div class="gate">
+  <button type="button" class="stamp" aria-pressed="false" data-stamp>Approve Gate 1</button>
+  <div class="impression" data-impression hidden>
+    <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" /></svg>
+    <p>Approved: strategy and scope</p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-stamp]').forEach((b) => {
+    const mark = b.parentElement?.querySelector<HTMLElement>('[data-impression]');
+    b.addEventListener('click', () => {
+      const on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', String(on));
+      if (mark) mark.hidden = !on;
+    });
+  });
+</script>
+
+<style>
+  .typed { font-family: var(--font-mono); font-size: var(--step-1); margin-block: var(--space-l); }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .typed span {
+      display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom;
+      animation: type 1.5s steps(51, end) both;
+    }
+  }
+  @keyframes type { from { max-width: 0; } to { max-width: 51ch; } }
+
+  .gate { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-l); }
+  .stamp {
+    font: inherit; font-weight: 700; min-height: 44px; padding: var(--space-s) var(--space-l);
+    border: 2px solid var(--color-ink); border-radius: var(--radius-m); background: var(--color-surface); color: var(--color-ink); cursor: pointer;
+  }
+  .stamp[aria-pressed='true'] { background: var(--color-ink); color: var(--color-paper); }
+  .impression { position: relative; width: 9rem; aspect-ratio: 1; display: grid; place-items: center; text-align: center; }
+  .impression svg { position: absolute; inset: 0; }
+  .impression circle { fill: none; stroke: var(--color-accent); stroke-width: 6; }
+  .impression p { font-weight: 700; color: var(--color-accent); font-size: var(--step--1); max-width: 7rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .impression:not([hidden]) { animation: thump 120ms var(--ease-out) both; }
+  }
+  @keyframes thump { from { opacity: 0; transform: scale(1.25) translateY(-6px); } to { opacity: 1; transform: none; } }
+</style>

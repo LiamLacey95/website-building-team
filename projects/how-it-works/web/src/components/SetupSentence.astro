@@ -1,0 +1,73 @@
+---
+/**
+ * The setup sentence with a copy button. Accessible without JS: the sentence is a selectable <code>
+ * with a "select and copy" hint. site.ts reveals the button and announces the result in a live region.
+ */
+interface Props {
+  sentence: string;
+  id?: string;
+  label?: string;
+}
+const { sentence, id = 'setup', label = 'Yours starts with this one:' } = Astro.props;
+---
+<div class="setup" data-copy-block>
+  <p class="setup__label" id={`${id}-label`}>{label}</p>
+  <div class="setup__row">
+    <code class="setup__sentence" id={`${id}-sentence`}>{sentence}</code>
+    <button type="button" class="setup__button" data-copy-target={`${id}-sentence`} aria-describedby={`${id}-label`} data-js-only>
+      Copy
+    </button>
+  </div>
+  <p class="setup__hint">Select the sentence and copy it.</p>
+  <p class="visually-hidden" role="status" aria-live="polite" data-copy-status></p>
+</div>
+
+<style>
+  .setup {
+    display: grid;
+    gap: var(--space-2xs);
+    max-width: 44rem;
+  }
+  .setup__label,
+  .setup__hint {
+    color: var(--color-ink-muted);
+    font-size: var(--step--1);
+  }
+  .setup__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: var(--space-2xs);
+  }
+  .setup__sentence {
+    flex: 1 1 18rem;
+    padding: var(--space-xs) var(--space-s);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-m);
+    user-select: all;
+    overflow-wrap: anywhere;
+  }
+  .setup__button {
+    font: inherit;
+    font-weight: 600;
+    min-height: 44px;
+    padding: var(--space-xs) var(--space-m);
+    border-radius: var(--radius-m);
+    border: 1px solid var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
+  }
+  .setup__button:hover {
+    transform: translateY(-1px);
+  }
+  .setup__button[data-state='copied'] {
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+  :global(html.js) .setup__hint {
+    display: none;
+  }
+</style>

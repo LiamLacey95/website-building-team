@@ -1,0 +1,56 @@
+---
+/**
+ * Direction A (pencil diamond) and the spine for all three: a double diamond drawn by scroll position.
+ * 0 KB JS. stroke-dashoffset driven by a view() timeline; pathLength="1" keeps it resolution-independent.
+ * Motion off or no support: the static default is the fully drawn path.
+ */
+---
+<p>Scroll: the double diamond draws itself as this figure crosses the viewport. Gates sit at fixed points.</p>
+<div class="spacer" aria-hidden="true"></div>
+<figure class="diamond">
+  <svg viewBox="0 0 1000 300" role="img" aria-labelledby="dd-title">
+    <title id="dd-title">The double diamond: Discover and Define, Gate 1, then Develop and Deliver with Gates 2, 3 and 4.</title>
+    <path class="track" pathLength="1" d="M20 150 L260 30 L500 150 L260 270 Z M500 150 L740 30 L980 150 L740 270 Z" />
+    <path class="ink" pathLength="1" d="M20 150 L260 30 L500 150 L260 270 Z M500 150 L740 30 L980 150 L740 270 Z" />
+    <g class="gates">
+      <circle cx="500" cy="150" r="10" /><circle cx="640" cy="80" r="10" /><circle cx="840" cy="80" r="10" /><circle cx="980" cy="150" r="10" />
+    </g>
+  </svg>
+  <figcaption>G1 at the first point; G2 and G3 inside the second diamond; G4 at the end.</figcaption>
+</figure>
+<div class="spacer" aria-hidden="true"></div>
+
+<style>
+  .spacer { height: 80vh; }
+  /* Named timeline on the static container: animated children must not be their own view() subjects. */
+  .diamond { view-timeline-name: --diamond; }
+  .diamond svg { width: 100%; overflow: visible; }
+  .track, .ink { fill: none; stroke-linejoin: round; }
+  .track { stroke: var(--color-line); stroke-width: 2; }
+  .ink { stroke: var(--color-ink); stroke-width: 3; stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+  .gates circle { fill: var(--color-paper); stroke: var(--color-ink); stroke-width: 3; }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      :global(:root:not([data-motion='off'])) .ink {
+        animation-name: draw;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --diamond;
+        animation-range-start: entry 10%;
+        animation-range-end: cover 60%;
+      }
+      :global(:root:not([data-motion='off'])) .gates circle {
+        animation-name: pop;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --diamond;
+        animation-range-start: cover 55%;
+        animation-range-end: cover 62%;
+      }
+    }
+  }
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes pop { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+  .gates circle { transform-box: fill-box; transform-origin: center; }
+</style>

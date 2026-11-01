@@ -1,0 +1,31 @@
+---
+/**
+ * Cross-document View Transitions: 0 KB JS, CSS opt-in only (no <ClientRouter/>, which the CSP rules out).
+ * The figure morphs between /spikes/vt-a/ and /spikes/vt-b/ through a shared view-transition-name.
+ * Motion off: the opt-in is never applied, so navigation is instant.
+ */
+interface Props { page: string; }
+const { page } = Astro.props;
+const other = page === 'vt-a' ? 'vt-b' : 'vt-a';
+---
+<p><a href={`/spikes/${other}/`}>Go to {other === 'vt-a' ? 'page A' : 'page B'}</a>: the panel morphs into its new place.</p>
+<div class:list={['panel', page]}>Gate card</div>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition { navigation: auto; }
+  }
+  /* The on-page toggle can't remove the @view-transition opt-in, so it cancels the animation instead. */
+  :global(:root[data-motion='off'])::view-transition-group(*),
+  :global(:root[data-motion='off'])::view-transition-old(*),
+  :global(:root[data-motion='off'])::view-transition-new(*) {
+    animation: none;
+  }
+  .panel {
+    view-transition-name: gate-card;
+    display: grid; place-items: center; font-weight: 700;
+    border: 2px solid var(--color-ink); border-radius: var(--radius-l); background: var(--color-surface);
+  }
+  .vt-a { width: 12rem; height: 8rem; margin-block-start: var(--space-l); }
+  .vt-b { width: min(100%, 40rem); height: 20rem; margin: var(--space-xl) 0 0 auto; }
+</style>

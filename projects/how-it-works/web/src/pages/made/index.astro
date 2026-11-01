@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="How this site was made">
+  <h1>How this site was made</h1>
+  <p class="lede">Every gate packet in full, with links to the files in the repo. Sections fill in as the project reaches each gate.</p>
+  <section id="run" aria-labelledby="run-title">
+    <h2 id="run-title">The run at a glance</h2>
+    <p>Phases and gates in order, from the first sentence to launch.</p>
+  </section>
+  <section id="intake" aria-labelledby="intake-title">
+    <h2 id="intake-title">Intake</h2>
+    <p>The brief the project manager wrote from one sentence.</p>
+  </section>
+  <section id="discover" aria-labelledby="discover-title">
+    <h2 id="discover-title">Discover</h2>
+    <p>Research: competitors, personas, references and constraints.</p>
+  </section>
+  <section id="define" aria-labelledby="define-title">
+    <h2 id="define-title">Define and Gate 1</h2>
+    <p>Positioning, pages, the stack, and the human’s answers at Gate 1.</p>
+  </section>
+  <section id="concept" aria-labelledby="concept-title">
+    <h2 id="concept-title">Concept and Gate 2</h2>
+    <p>Three creative directions. Arrives at Gate 2.</p>
+  </section>
+  <section id="variations" aria-labelledby="variations-title">
+    <h2 id="variations-title">Variations and Gate 3</h2>
+    <p>Three coded variations at four widths. Arrives at Gate 3.</p>
+  </section>
+  <section id="release" aria-labelledby="release-title">
+    <h2 id="release-title">Build, review and Gate 4</h2>
+    <p>The audit and the release decision. Arrives at Gate 4.</p>
+  </section>
+</Base>
+
+<style>
+  h1 { margin-block-end: var(--space-s); }
+  .lede { color: var(--color-ink-muted); margin-block-end: var(--space-xl); }
+  section { display: grid; gap: var(--space-s); padding-block: var(--space-l); border-top: 1px solid var(--color-line); }
+</style>

@@ -1,0 +1,26 @@
+{
+  "name": "how-it-works-web",
+  "private": true,
+  "type": "module",
+  "description": "Website Building Team: how it works. Astro 7, static, deployed to Vercel at the site root.",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "spikes": "cross-env SPIKES=1 astro dev"
+  },
+  "dependencies": {
+    "astro": "7.4.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@types/node": "24.19.2",
+    "cross-env": "7.0.3",
+    "ogl": "1.0.11",
+    "typescript": "6.0.3"
+  }
+}

@@ -1,0 +1,130 @@
+[
+  {
+    "file": "1714-master-scaffold-home-390.png",
+    "label": "master-scaffold",
+    "route": "/",
+    "width": 390,
+    "url": "http://127.0.0.1:4330/",
+    "takenAt": "2026-11-01T17:14:01.284Z"
+  },
+  {
+    "file": "1714-master-scaffold-made-390.png",
+    "label": "master-scaffold",
+    "route": "/made",
+    "width": 390,
+    "url": "http://127.0.0.1:4330/made",
+    "takenAt": "2026-11-01T17:14:02.058Z"
+  },
+  {
+    "file": "1714-master-scaffold-setup-390.png",
+    "label": "master-scaffold",
+    "route": "/setup",
+    "width": 390,
+    "url": "http://127.0.0.1:4330/setup",
+    "takenAt": "2026-11-01T17:14:02.825Z"
+  },
+  {
+    "file": "1714-master-scaffold-credits-390.png",
+    "label": "master-scaffold",
+    "route": "/credits",
+    "width": 390,
+    "url": "http://127.0.0.1:4330/credits",
+    "takenAt": "2026-11-01T17:14:03.614Z"
+  },
+  {
+    "file": "1714-master-scaffold-home-768.png",
+    "label": "master-scaffold",
+    "route": "/",
+    "width": 768,
+    "url": "http://127.0.0.1:4330/",
+    "takenAt": "2026-11-01T17:14:04.506Z"
+  },
+  {
+    "file": "1714-master-scaffold-made-768.png",
+    "label": "master-scaffold",
+    "route": "/made",
+    "width": 768,
+    "url": "http://127.0.0.1:4330/made",
+    "takenAt": "2026-11-01T17:14:05.220Z"
+  },
+  {
+    "file": "1714-master-scaffold-setup-768.png",
+    "label": "master-scaffold",
+    "route": "/setup",
+    "width": 768,
+    "url": "http://127.0.0.1:4330/setup",
+    "takenAt": "2026-11-01T17:14:05.933Z"
+  },
+  {
+    "file": "1714-master-scaffold-credits-768.png",
+    "label": "master-scaffold",
+    "route": "/credits",
+    "width": 768,
+    "url": "http://127.0.0.1:4330/credits",
+    "takenAt": "2026-11-01T17:14:06.652Z"
+  },
+  {
+    "file": "1714-master-scaffold-home-1440.png",
+    "label": "master-scaffold",
+    "route": "/",
+    "width": 1440,
+    "url": "http://127.0.0.1:4330/",
+    "takenAt": "2026-11-01T17:14:07.571Z"
+  },
+  {
+    "file": "1714-master-scaffold-made-1440.png",
+    "label": "master-scaffold",
+    "route": "/made",
+    "width": 1440,
+    "url": "http://127.0.0.1:4330/made",
+    "takenAt": "2026-11-01T17:14:08.300Z"
+  },
+  {
+    "file": "1714-master-scaffold-setup-1440.png",
+    "label": "master-scaffold",
+    "route": "/setup",
+    "width": 1440,
+    "url": "http://127.0.0.1:4330/setup",
+    "takenAt": "2026-11-01T17:14:09.084Z"
+  },
+  {
+    "file": "1714-master-scaffold-credits-1440.png",
+    "label": "master-scaffold",
+    "route": "/credits",
+    "width": 1440,
+    "url": "http://127.0.0.1:4330/credits",
+    "takenAt": "2026-11-01T17:14:09.886Z"
+  },
+  {
+    "file": "1714-master-scaffold-home-1920.png",
+    "label": "master-scaffold",
+    "route": "/",
+    "width": 1920,
+    "url": "http://127.0.0.1:4330/",
+    "takenAt": "2026-11-01T17:14:10.840Z"
+  },
+  {
+    "file": "1714-master-scaffold-made-1920.png",
+    "label": "master-scaffold",
+    "route": "/made",
+    "width": 1920,
+    "url": "http://127.0.0.1:4330/made",
+    "takenAt": "2026-11-01T17:14:11.594Z"
+  },
+  {
+    "file": "1714-master-scaffold-setup-1920.png",
+    "label": "master-scaffold",
+    "route": "/setup",
+    "width": 1920,
+    "url": "http://127.0.0.1:4330/setup",
+    "takenAt": "2026-11-01T17:14:12.361Z"
+  },
+  {
+    "file": "1714-master-scaffold-credits-1920.png",
+    "label": "master-scaffold",
+    "route": "/credits",
+    "width": 1920,
+    "url": "http://127.0.0.1:4330/credits",
+    "takenAt": "2026-11-01T17:14:13.112Z"
+  }
+]

@@ -1,0 +1,59 @@
+---
+/**
+ * A WebGL layer through OGL (Unlicense, tree-shakeable): a full-bleed shader plane (paper grain / CRT glow
+ * family). Loaded with a dynamic import only when the canvas nears the viewport, paused off-screen,
+ * one static frame when motion is off, and a CSS background when WebGL is unavailable.
+ */
+---
+<div class="gl" data-gl aria-hidden="true">
+  <canvas></canvas>
+</div>
+<p>The plane above is decorative; with WebGL missing it falls back to a flat surface.</p>
+
+<script>
+  const host = document.querySelector<HTMLElement>('[data-gl]');
+  const motionOff = () =>
+    document.documentElement.dataset.motion === 'off' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (host) {
+    const io = new IntersectionObserver(async ([entry]) => {
+      if (!entry?.isIntersecting) return;
+      io.disconnect();
+      const { Renderer, Program, Mesh, Triangle } = await import('ogl');
+      const canvas = host.querySelector('canvas')!;
+      let renderer;
+      try { renderer = new Renderer({ canvas, dpr: Math.min(devicePixelRatio, 2), alpha: true }); } catch { host.classList.add('no-gl'); return; }
+      const gl = renderer.gl;
+      const program = new Program(gl, {
+        vertex: `attribute vec2 position; attribute vec2 uv; varying vec2 vUv;
+          void main() { vUv = uv; gl_Position = vec4(position, 0., 1.); }`,
+        fragment: `precision highp float; varying vec2 vUv; uniform float uTime;
+          float h(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+          void main() {
+            float n = h(floor(vUv * 220.) + floor(uTime * 8.));
+            float band = smoothstep(.0, .5, .5 - abs(vUv.y - .5 - .08 * sin(vUv.x * 9. + uTime)));
+            vec3 c = mix(vec3(.96, .96, .97), vec3(.11, .3, .85), band * .55) - n * .05;
+            gl_FragColor = vec4(c, 1.);
+          }`,
+        uniforms: { uTime: { value: 0 } },
+      });
+      const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
+      const resize = () => renderer.setSize(host.clientWidth, host.clientHeight);
+      addEventListener('resize', resize);
+      resize();
+      let visible = true;
+      new IntersectionObserver(([e]) => { visible = !!e?.isIntersecting; }).observe(host);
+      const frame = (t: number) => {
+        program.uniforms.uTime.value = t / 1000;
+        renderer.render({ scene: mesh });
+        if (!motionOff()) requestAnimationFrame((n) => (visible ? frame(n) : requestAnimationFrame(frame)));
+      };
+      frame(0);
+    }, { rootMargin: '200px' });
+    io.observe(host);
+  }
+</script>
+
+<style>
+  .gl { height: 60vh; border-radius: var(--radius-l); overflow: hidden; background: var(--color-surface); margin-block: var(--space-l); }
+  .gl canvas { width: 100%; height: 100%; }
+</style>

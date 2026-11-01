@@ -1,0 +1,56 @@
+/*
+ * Design tokens: the ONE file a direction's style tile replaces (Gate 2 -> DESIGN.md -> here).
+ * Every value below is a neutral placeholder. Components read only these custom properties;
+ * they never hard-code colour, type, space, radius or motion.
+ */
+:root {
+  /* Colour: placeholder neutrals, contrast-checked (ink on paper 16.4:1, muted on paper 7.5:1, white on accent 6.7:1). */
+  --color-paper: #f4f5f7;
+  --color-surface: #ffffff;
+  --color-ink: #15171c;
+  --color-ink-muted: #4a4f5a;
+  --color-line: #d5d8de;
+  --color-accent: #1d4ed8;        /* links, focus; 6.1:1 on paper */
+  --color-accent-ink: #ffffff;    /* text on accent */
+  --color-focus: #1d4ed8;
+  --color-selection: #c9d6f7;
+
+  /* Type: placeholder stacks until the direction's self-hosted faces land. */
+  --font-display: system-ui, sans-serif;
+  --font-body: system-ui, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
+
+  /* Type scale: fluid, ~1.25 ratio. */
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.25rem, 1.17rem + 0.4vw, 1.5rem);
+  --step-2: clamp(1.56rem, 1.42rem + 0.7vw, 2rem);
+  --step-3: clamp(1.95rem, 1.7rem + 1.25vw, 2.75rem);
+  --step-4: clamp(2.44rem, 2rem + 2.2vw, 4rem);
+  --leading-tight: 1.1;
+  --leading-body: 1.6;
+  --measure: 68ch;
+
+  /* Space: 4px-based steps. */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --page-max: 80rem;
+
+  /* Radius */
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --radius-l: 16px;
+
+  /* Motion: durations collapse to 0 when motion is off (see global.css). */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+  --duration-slow: 640ms;
+}

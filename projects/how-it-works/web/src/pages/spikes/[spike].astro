@@ -1,0 +1,35 @@
+---
+/**
+ * Set-piece technique spikes (brief 05, item 3). Behind a flag: pages exist only when SPIKES=1
+ * (`npm run spikes` for dev, `SPIKES=1 astro build` to measure). A normal build emits none of them.
+ */
+import Base from '../../layouts/Base.astro';
+import Draw from '../../spikes/Draw.astro';
+import Follow from '../../spikes/Follow.astro';
+import Scope from '../../spikes/Scope.astro';
+import Stamp from '../../spikes/Stamp.astro';
+import Gl from '../../spikes/Gl.astro';
+import Vt from '../../spikes/Vt.astro';
+
+const SPIKES = {
+  draw: { title: 'Spike: scroll-drawn SVG path', C: Draw },
+  follow: { title: 'Spike: object following a path on scroll', C: Follow },
+  scope: { title: 'Spike: canvas trace plotted from scroll', C: Scope },
+  stamp: { title: 'Spike: stamp press and type-on', C: Stamp },
+  gl: { title: 'Spike: WebGL layer (OGL)', C: Gl },
+  'vt-a': { title: 'Spike: view transition, page A', C: Vt },
+  'vt-b': { title: 'Spike: view transition, page B', C: Vt },
+} as const;
+
+export function getStaticPaths() {
+  if (process.env.SPIKES !== '1') return [];
+  return ['draw', 'follow', 'scope', 'stamp', 'gl', 'vt-a', 'vt-b'].map((spike) => ({ params: { spike } }));
+}
+
+const key = Astro.params.spike as keyof typeof SPIKES;
+const { title, C } = SPIKES[key];
+---
+<Base title={title}>
+  <h1>{title}</h1>
+  <C page={key} />
+</Base>

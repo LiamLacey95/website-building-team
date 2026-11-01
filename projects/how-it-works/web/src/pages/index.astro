@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import SetupSentence from '../components/SetupSentence.astro';
+import { CHAPTERS, SITE } from '../data/site';
+---
+<Base>
+  <section class="hero" aria-labelledby="hero-title">
+    <h1 id="hero-title">{SITE.heroLine}</h1>
+    <SetupSentence sentence={SITE.setupSentence} id="hero-setup" />
+    <p class="next">{SITE.whatHappensNext}</p>
+  </section>
+
+  <nav class="chapters" aria-label="Chapters">
+    <ol>
+      {CHAPTERS.map((c) => <li><a href={`#${c.id}`}>{c.title}</a></li>)}
+    </ol>
+  </nav>
+
+  {CHAPTERS.map((c) => (
+    <section class="chapter" id={c.id} aria-labelledby={`${c.id}-title`}>
+      <h2 id={`${c.id}-title`}>{c.title}</h2>
+      <p>{c.summary}</p>
+      {c.gate && <p class="pending">This chapter’s artefacts arrive at Gate {c.gate.slice(1)}.</p>}
+      {c.id === 'your-turn' && <SetupSentence sentence={SITE.setupSentence} id="end-setup" label="The same sentence, once more:" />}
+    </section>
+  ))}
+
+  <p class="scaffold-note">Scaffold: structure and working copy only. The visual design is chosen at Gate 3.</p>
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    gap: var(--space-m);
+    padding-block: var(--space-xl) var(--space-2xl);
+  }
+  .hero h1 {
+    max-width: 20ch;
+  }
+  .next {
+    color: var(--color-ink-muted);
+  }
+  .chapters ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-m);
+    padding-inline-start: var(--space-m);
+    margin: 0 0 var(--space-xl);
+  }
+  .chapter {
+    display: grid;
+    gap: var(--space-s);
+    padding-block: var(--space-xl);
+    border-top: 1px solid var(--color-line);
+  }
+  .pending,
+  .scaffold-note {
+    color: var(--color-ink-muted);
+    font-size: var(--step--1);
+  }
+</style>

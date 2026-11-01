@@ -1,0 +1,62 @@
+---
+/**
+ * Direction B (oscilloscope). A sticky <canvas> whose trace is plotted from scroll progress, not time:
+ * the band widens through "Discover" and narrows to a point at each gate (the double diamond as an envelope).
+ * aria-hidden: the same information is in the text. Motion off: one static frame of the whole trace.
+ * DPR-aware; redraws only on scroll/resize; ~1 KB JS.
+ */
+---
+<div class="scope-wrap">
+  <canvas class="scope" width="800" height="200" aria-hidden="true" data-scope></canvas>
+</div>
+<section class="steps">
+  <p>Discover: the signal widens into many possibilities.</p>
+  <p>Define: it narrows to one decision at Gate 1.</p>
+  <p>Develop: it widens again into three directions and three variations.</p>
+  <p>Deliver: it narrows to the release at Gate 4.</p>
+</section>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-scope]');
+  const ctx = canvas?.getContext('2d');
+  const motionOff = () =>
+    document.documentElement.dataset.motion === 'off' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Envelope of the double diamond: 0 at x=0, 0.5, 1 and max at 0.25, 0.75.
+  const envelope = (x: number) => 1 - Math.abs(((x * 2) % 1) * 2 - 1);
+  if (canvas && ctx) {
+    const ink = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || '#1d4ed8';
+    let queued = false;
+    const draw = () => {
+      queued = false;
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if (canvas.width !== w * dpr) { canvas.width = w * dpr; canvas.height = h * dpr; }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      const doc = document.documentElement;
+      const progress = motionOff() ? 1 : Math.min(1, scrollY / Math.max(1, doc.scrollHeight - innerHeight));
+      ctx.strokeStyle = ink;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      const steps = Math.floor(w * progress);
+      for (let i = 0; i <= steps; i++) {
+        const x = i / w;
+        const amp = envelope(x) * (h * 0.42);
+        const y = h / 2 + Math.sin(i * 0.9) * amp * (0.6 + 0.4 * Math.sin(i * 0.13));
+        i === 0 ? ctx.moveTo(i, y) : ctx.lineTo(i, y);
+      }
+      ctx.stroke();
+    };
+    const queue = () => { if (!queued) { queued = true; requestAnimationFrame(draw); } };
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue);
+    new MutationObserver(queue).observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion'] });
+    draw();
+  }
+</script>
+
+<style>
+  .scope-wrap { position: sticky; top: 0; z-index: 1; background: var(--color-paper); padding-block: var(--space-s); }
+  .scope { width: 100%; height: 12rem; border: 1px solid var(--color-line); border-radius: var(--radius-m); background: var(--color-surface); }
+  .steps { display: grid; gap: 70vh; padding-block: 40vh 80vh; }
+</style>
