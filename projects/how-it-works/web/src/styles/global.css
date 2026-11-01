@@ -87,7 +87,7 @@ html.js [data-no-js] { display: none !important; }
   background: var(--c-surface); color: var(--c-text);
   border: var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-rest);
 }
-.card a { color: var(--c-link); }
+.card a:not(.btn) { color: var(--c-link); }
 .ticket {
   display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3);
   background: var(--c-surface); color: var(--c-text);
