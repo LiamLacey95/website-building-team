@@ -14,7 +14,7 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 
 ## Active project
 
-`how-it-works`: a creative website that explains how this team works (`projects/how-it-works/BRIEF.md`). Phase 4 Design variations (Gate 2 decided: C · Marble Run).
+`how-it-works`: a creative website that explains how this team works (`projects/how-it-works/BRIEF.md`). Phase 4 Design variations (Gate 2 decided: C · Marble Run); variations done, Gate 3 review in progress.
 
 ## Briefs in flight
 
@@ -27,7 +27,8 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | how-it-works/04-define-alignment | Research, Backend | done (9c48e5c, d5f0dbc) |
 | how-it-works/05-concept-directions | Concept | done (4a01d18) |
 | how-it-works/06-review-gate2 | Review | done: PASS WITH NOTES, C 7.7 / A 7.6 / B 7.3 (dc772b4); findings sent to Concept and Front-end |
-| how-it-works/07-frontend-g3-variations | Front-end | in progress (critical path to G3) |
+| how-it-works/07-frontend-g3-variations | Front-end | done (46e914b); three variants live on :4321/:4322/:4323, contact sheet `screenshots/g3/` |
+| how-it-works/08-review-gate3 | Review | in progress (critical path to G3) |
 | how-it-works/07-concept-marble-run-assets | Concept | done (62ba09d); 18 production images, six-figure cast fixed |
 | how-it-works/05-frontend-product-and-scaffold | Front-end | done (624e028) |
 | how-it-works/05-backend-contract-vercel | Backend | done (118bc48, b806124) |
