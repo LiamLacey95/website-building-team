@@ -6,6 +6,8 @@
  * Base. Every value comes from a token (tokens.css, shared schema across the three themes).
  * ------------------------------------------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
+/* hidden always wins: components give elements display:grid/flex, which would otherwise override it. */
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: var(--space-7); }
 body {
   margin: 0;
