@@ -21,6 +21,7 @@
   --c-on-accent: #0D0E0C;     /* label on an amber button: 10.73:1 */
   --c-accent-bg: #FFB224;
   --c-on-accent-bg: #0D0E0C;
+  --c-accent-bright: #FFB224;  /* same as --c-accent */
   --c-accent-ink: #FFB224;
   --c-link: #FFB224;
   --c-link-on-bg: #FFB224;
@@ -32,6 +33,20 @@
   --c-focus: #FFB224;
   --c-focus-on-bg: #FFB224;
   --c-wood: #2C2F2A;          /* machined edge: decorative material */
+
+  /* Agent colours: one per role, always shown with the role's name (never colour alone) */
+  --agent-pm: #FFB224;        /* amber */
+  --agent-pm-ink: #0D0E0C;    /* text on it: 10.73:1 */
+  --agent-research: #6BD38A;  /* green */
+  --agent-research-ink: #0D0E0C;/* text on it: 10.42:1 */
+  --agent-concept: #ECE8DC;   /* silk */
+  --agent-concept-ink: #0D0E0C;/* text on it: 15.80:1 */
+  --agent-frontend: #9A9C93;  /* grey */
+  --agent-frontend-ink: #0D0E0C;/* text on it: 6.96:1 */
+  --agent-backend: #3A3D37;   /* dark metal */
+  --agent-backend-ink: #ECE8DC;/* text on it: 9.01:1 */
+  --agent-review: #FF5A47;    /* guard red */
+  --agent-review-ink: #0D0E0C;/* text on it: 6.27:1 */
 
   /* Type */
   --font-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;

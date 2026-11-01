@@ -17,9 +17,9 @@
   | PM | navy | clipboard | the starting funnel, and the switches that route the marble |
   | Research | mint | magnifying glass | a lookout platform, piles of tiny cards |
   | Concept | sunflower | paintbrush | the paint station: the marble comes out with three colour tints |
-  | Front-end | tomato | tiny hammer | the workshop where three tracks get built side by side |
-  | Backend | white and navy | wrench | the pipework under the track, plumbing and supports |
-  | Review | red | small flag | the inspection ramp; it can wave the marble back |
+  | Front-end | orange | tiny hammer | the workshop where three tracks get built side by side |
+  | Backend | white, in navy overalls | wrench | the pipework under the track, plumbing and supports |
+  | Review | crimson | small red pennant | the inspection ramp; it can wave the marble back |
 
 - **The humans are not clay.** At every gate a **real human hand** (photographed, not plasticine) reaches into the diorama and lifts the barrier. That single visual idea says the core promise: the agents do the work, the human decides.
 - **The double diamond is the track.** One lane splits into many (diverge) and funnels back into one (converge), twice, with level crossings at the four gates. The hero diagram is the whole run in miniature; the progress rail is a tiny marble on a tiny track.
@@ -83,11 +83,24 @@ Revise is the bucket lift back up.
 | `sun` | `#FFC53D` | page background (the painted wall) |
 | `white` | `#FFFFFF` | cards and tickets: all long-form text sits on white |
 | `navy` | `#1C2147` | text, outlines, the PM figure, footer band |
-| `tomato` | `#E8492C` | barriers, big shapes, large display text only |
-| `tomato-ink` | `#B7321A` | tomato for small text and links, on white only |
+| `tomato` (`--c-accent-bright`) | `#E8492C` | barriers, big shapes, large display text only; never behind small text |
+| `tomato-ink` (`--c-accent`) | `#B7321A` | the text-safe accent: small text and links on white, button fills with white text (6.03:1) |
 | `mint` | `#4DBF95` | track, "go" states (always with text) |
 | `sky` | `#BFE3F2` | secondary surface (the bin, the studio table) |
 | `wood` | `#D8A46A` | track wood, supports (decorative) |
+
+**Agent colours** (`--agent-*` in `tokens.css`, always shown with the role's name):
+
+| Role | Colour | Text on it |
+|---|---|---|
+| PM | navy `#1C2147` | white, 15.47:1 |
+| Research | mint `#4DBF95` | navy, 6.78:1 |
+| Concept | sunflower `#FFC53D` | navy, 9.80:1 |
+| Front-end | orange `#F27A2E` | navy, 5.60:1 |
+| Backend | white `#FFFFFF` with navy overalls | navy, 15.47:1 |
+| Review | crimson `#B51E2B` | white, 6.59:1 |
+
+Front-end and Review were both red after Gate 2; Review asked for distinct colours (G2 review, minor).
 
 **Contrast (computed):**
 

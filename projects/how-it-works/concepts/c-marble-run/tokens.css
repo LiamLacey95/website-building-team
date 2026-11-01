@@ -16,22 +16,37 @@
   --c-text: #1C2147;          /* navy on white: 15.47:1 */
   --c-text-muted: #3A3F63;    /* on white: 10.14:1 */
   /* Colour: accents */
-  --c-accent: #E8492C;        /* tomato: shapes, barriers, large text only (3.99:1 with navy) */
+  --c-accent: #B7321A;        /* tomato-ink: the text-safe accent; 6.03:1 on white, white on it 6.03:1 */
   --c-accent-on-folder: #B7321A;
-  --c-on-accent: #FFFFFF;     /* on --c-accent-ink buttons: 6.03:1 */
+  --c-on-accent: #FFFFFF;     /* text on --c-accent: 6.03:1 */
+  --c-accent-bright: #E8492C;  /* tomato: barriers, shapes and 24 px+ display only; never behind small text (white on it 3.87:1) */
   --c-accent-ink: #B7321A;    /* tomato for small text and button fills: 6.03:1 on white */
   --c-accent-bg: #1C2147;     /* the strong button on the yellow wall */
   --c-on-accent-bg: #FFC53D;  /* sun on navy: 9.80:1 */
   --c-link: #1C2147;          /* navy, underlined */
   --c-link-on-bg: #1C2147;
   --c-highlight: #BFE3F2;
-  --c-gate: #E8492C;          /* barrier */
+  --c-gate: #E8492C;          /* barrier stripes (non-text) */
   --c-go: #4DBF95;            /* mint track, "go" (always with a word): navy on it 6.78:1 */
   --c-hold: #E8492C;
   --c-rule: #1C2147;
   --c-focus: #1C2147;         /* 3 px navy, with a white offset ring */
   --c-focus-on-bg: #1C2147;
   --c-wood: #D8A46A;          /* track (decorative) */
+
+  /* Agent colours: one per role, always shown with the role's name (never colour alone) */
+  --agent-pm: #1C2147;        /* navy figure */
+  --agent-pm-ink: #FFFFFF;    /* text on it: 15.47:1 */
+  --agent-research: #4DBF95;  /* mint figure */
+  --agent-research-ink: #1C2147;/* text on it: 6.78:1 */
+  --agent-concept: #FFC53D;   /* sunflower figure */
+  --agent-concept-ink: #1C2147;/* text on it: 9.80:1 */
+  --agent-frontend: #F27A2E;  /* orange figure */
+  --agent-frontend-ink: #1C2147;/* text on it: 5.60:1 */
+  --agent-backend: #FFFFFF;   /* white figure in navy overalls */
+  --agent-backend-ink: #1C2147;/* text on it: 15.47:1 */
+  --agent-review: #B51E2B;    /* crimson figure */
+  --agent-review-ink: #FFFFFF;/* text on it: 6.59:1 */
 
   /* Type */
   --font-display: 'Bricolage Grotesque', 'Arial Rounded MT Bold', sans-serif;

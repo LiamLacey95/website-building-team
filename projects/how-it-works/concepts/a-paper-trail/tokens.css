@@ -21,6 +21,7 @@
   --c-on-accent: #F7F2E7;     /* label on a vermilion button: 5.36:1 */
   --c-accent-bg: #E0B04A;     /* brass: the accent on the blotter (5.60:1) */
   --c-on-accent-bg: #24412F;  /* label on a brass button: 5.60:1 */
+  --c-accent-bright: #B8321B;  /* same as --c-accent */
   --c-accent-ink: #B8321B;    /* accent for small text: same as --c-accent (on paper) */
   --c-link: #2C4A75;          /* carbon, on paper: 8.03:1 */
   --c-link-on-bg: #E0B04A;    /* brass, on the blotter */
@@ -32,6 +33,20 @@
   --c-focus: #B8321B;         /* on paper; use --c-focus-on-bg on the blotter */
   --c-focus-on-bg: #E0B04A;
   --c-wood: #C9A877;          /* oak: decorative material */
+
+  /* Agent colours: one per role, always shown with the role's name (never colour alone) */
+  --agent-pm: #B8321B;        /* stamp vermilion */
+  --agent-pm-ink: #F7F2E7;    /* text on it: 5.36:1 */
+  --agent-research: #E0B04A;  /* brass loupe */
+  --agent-research-ink: #24412F;/* text on it: 5.60:1 */
+  --agent-concept: #2C4A75;   /* carbon blue */
+  --agent-concept-ink: #F7F2E7;/* text on it: 8.03:1 */
+  --agent-frontend: #5B564C;  /* graphite */
+  --agent-frontend-ink: #F7F2E7;/* text on it: 6.53:1 */
+  --agent-backend: #C9A877;   /* oak */
+  --agent-backend-ink: #1F1C17;/* text on it: 7.56:1 */
+  --agent-review: #8F2412;    /* deep vermilion pencil */
+  --agent-review-ink: #F7F2E7;/* text on it: 7.74:1 */
 
   /* Type */
   --font-display: 'Young Serif', Georgia, serif;
