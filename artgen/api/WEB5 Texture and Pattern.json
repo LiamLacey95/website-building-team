@@ -1,0 +1,465 @@
+{
+ "2": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "flux3_image_klein_sd_int8_convrot.safetensors",
+   "weight_dtype": "default"
+  },
+  "_meta": {
+   "title": "Load Diffusion Model"
+  }
+ },
+ "3": {
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
+   "type": "flux3",
+   "device": "default"
+  },
+  "_meta": {
+   "title": "Load CLIP"
+  }
+ },
+ "4": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "flux2-vae.safetensors"
+  },
+  "_meta": {
+   "title": "Load VAE"
+  }
+ },
+ "5": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "Seamless tileable texture, flat top-down scan of handmade cotton rag paper in warm off-white, subtle fibres and soft deckled grain, very low contrast, perfectly even diffuse lighting, no vignette, no shadows, no focal point, uniform detail across the whole surface. No text.",
+   "clip": [
+    "3",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Prompt"
+  }
+ },
+ "6": {
+  "class_type": "ConditioningZeroOut",
+  "inputs": {
+   "conditioning": [
+    "5",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Conditioning Zero Out"
+  }
+ },
+ "7": {
+  "class_type": "EmptyFlux2LatentImage",
+  "inputs": {
+   "width": 1024,
+   "height": 1024,
+   "batch_size": 1
+  },
+  "_meta": {
+   "title": "Empty Flux 2 Latent"
+  }
+ },
+ "8": {
+  "class_type": "KSampler",
+  "inputs": {
+   "seed": 0,
+   "steps": 12,
+   "cfg": 1.0,
+   "sampler_name": "euler",
+   "scheduler": "simple",
+   "denoise": 1.0,
+   "model": [
+    "2",
+    0
+   ],
+   "positive": [
+    "5",
+    0
+   ],
+   "negative": [
+    "6",
+    0
+   ],
+   "latent_image": [
+    "7",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Pass 1: texture"
+  }
+ },
+ "9": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "8",
+    0
+   ],
+   "vae": [
+    "4",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE Decode"
+  }
+ },
+ "10": {
+  "class_type": "ImageCrop",
+  "inputs": {
+   "width": 512,
+   "height": 1024,
+   "x": 0,
+   "y": 0,
+   "image": [
+    "9",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Left half"
+  }
+ },
+ "11": {
+  "class_type": "ImageCrop",
+  "inputs": {
+   "width": 512,
+   "height": 1024,
+   "x": 512,
+   "y": 0,
+   "image": [
+    "9",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Right half"
+  }
+ },
+ "12": {
+  "class_type": "ImageStitch",
+  "inputs": {
+   "direction": "right",
+   "match_image_size": false,
+   "spacing_width": 0,
+   "spacing_color": "white",
+   "image1": [
+    "11",
+    0
+   ],
+   "image2": [
+    "10",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Wrap horizontally"
+  }
+ },
+ "13": {
+  "class_type": "ImageCrop",
+  "inputs": {
+   "width": 1024,
+   "height": 512,
+   "x": 0,
+   "y": 0,
+   "image": [
+    "12",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Top half"
+  }
+ },
+ "14": {
+  "class_type": "ImageCrop",
+  "inputs": {
+   "width": 1024,
+   "height": 512,
+   "x": 0,
+   "y": 512,
+   "image": [
+    "12",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Bottom half"
+  }
+ },
+ "15": {
+  "class_type": "ImageStitch",
+  "inputs": {
+   "direction": "down",
+   "match_image_size": false,
+   "spacing_width": 0,
+   "spacing_color": "white",
+   "image1": [
+    "14",
+    0
+   ],
+   "image2": [
+    "13",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Wrap vertically (seams now cross the centre)"
+  }
+ },
+ "16": {
+  "class_type": "SolidMask",
+  "inputs": {
+   "value": 0.0,
+   "width": 1024,
+   "height": 1024
+  },
+  "_meta": {
+   "title": "Mask canvas"
+  }
+ },
+ "17": {
+  "class_type": "SolidMask",
+  "inputs": {
+   "value": 1.0,
+   "width": 192,
+   "height": 1024
+  },
+  "_meta": {
+   "title": "Vertical seam band"
+  }
+ },
+ "18": {
+  "class_type": "FeatherMask",
+  "inputs": {
+   "left": 72,
+   "top": 0,
+   "right": 72,
+   "bottom": 0,
+   "mask": [
+    "17",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Feather Mask"
+  }
+ },
+ "19": {
+  "class_type": "SolidMask",
+  "inputs": {
+   "value": 1.0,
+   "width": 1024,
+   "height": 192
+  },
+  "_meta": {
+   "title": "Horizontal seam band"
+  }
+ },
+ "20": {
+  "class_type": "FeatherMask",
+  "inputs": {
+   "left": 0,
+   "top": 72,
+   "right": 0,
+   "bottom": 72,
+   "mask": [
+    "19",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Feather Mask"
+  }
+ },
+ "21": {
+  "class_type": "MaskComposite",
+  "inputs": {
+   "x": 416,
+   "y": 0,
+   "operation": "add",
+   "destination": [
+    "16",
+    0
+   ],
+   "source": [
+    "18",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Combine Masks"
+  }
+ },
+ "22": {
+  "class_type": "MaskComposite",
+  "inputs": {
+   "x": 0,
+   "y": 416,
+   "operation": "add",
+   "destination": [
+    "21",
+    0
+   ],
+   "source": [
+    "20",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Seam mask"
+  }
+ },
+ "23": {
+  "class_type": "VAEEncode",
+  "inputs": {
+   "pixels": [
+    "15",
+    0
+   ],
+   "vae": [
+    "4",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE Encode"
+  }
+ },
+ "24": {
+  "class_type": "SetLatentNoiseMask",
+  "inputs": {
+   "samples": [
+    "23",
+    0
+   ],
+   "mask": [
+    "22",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Set Latent Noise Mask"
+  }
+ },
+ "25": {
+  "class_type": "DifferentialDiffusion",
+  "inputs": {
+   "strength": 1.0,
+   "model": [
+    "2",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Differential Diffusion"
+  }
+ },
+ "26": {
+  "class_type": "KSampler",
+  "inputs": {
+   "seed": 0,
+   "steps": 12,
+   "cfg": 1.0,
+   "sampler_name": "euler",
+   "scheduler": "simple",
+   "denoise": 0.75,
+   "model": [
+    "25",
+    0
+   ],
+   "positive": [
+    "5",
+    0
+   ],
+   "negative": [
+    "6",
+    0
+   ],
+   "latent_image": [
+    "24",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Pass 2: seam fix"
+  }
+ },
+ "27": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "26",
+    0
+   ],
+   "vae": [
+    "4",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE Decode"
+  }
+ },
+ "28": {
+  "class_type": "ImageStitch",
+  "inputs": {
+   "direction": "right",
+   "match_image_size": false,
+   "spacing_width": 0,
+   "spacing_color": "white",
+   "image1": [
+    "27",
+    0
+   ],
+   "image2": [
+    "27",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Stitch Images"
+  }
+ },
+ "29": {
+  "class_type": "ImageStitch",
+  "inputs": {
+   "direction": "down",
+   "match_image_size": false,
+   "spacing_width": 0,
+   "spacing_color": "white",
+   "image1": [
+    "28",
+    0
+   ],
+   "image2": [
+    "28",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Stitch Images"
+  }
+ },
+ "31": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "web/web5_texture",
+   "images": [
+    "27",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ }
+}

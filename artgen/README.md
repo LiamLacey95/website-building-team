@@ -1,0 +1,127 @@
+# Website art station
+
+Local image generation for the website team: hero and key art, moodboard drafts, style frames, textures and upscales.
+It runs on the same ComfyUI engine and models as Safeguard (`F:\ArtGen\ComfyUI`), with its own workflows, inputs and outputs in this folder.
+Tuned for an RTX 4070 SUPER (12 GB).
+
+## Start
+
+- **Headless (normal for the team):** just run `generate.py`. If ComfyUI is not up, it starts it in the background, generates, and stops it again (pass `--keep-server` to leave it running for a batch).
+- **UI:** double-click **`Launch ComfyUI (Website).bat`**. ComfyUI opens at http://127.0.0.1:8188. Press **W** for the Workflows panel; the website workflows start with `WEB`.
+- **Background server by hand:** `start "" /min "Launch ComfyUI (Website, headless).bat"`. Stop it with `generate.py --stop`.
+
+Safeguard's launcher uses the same port (8188), so only one of the two can run at a time. `generate.py` refuses to use a ComfyUI that Safeguard started, because inputs would land in Safeguard's folders.
+
+## Folders
+
+| Path | What |
+|---|---|
+| `F:\ArtGen\ComfyUI` | Engine, Python venv and all models (shared; do not modify) |
+| `artgen\user\default\workflows` | The WEB workflows (UI format). Anything you save in the UI lands here |
+| `artgen\api` | API-format exports plus `manifest.json` (which nodes `generate.py` patches) |
+| `artgen\input` | Reference images. `generate.py` copies its inputs into `input\_generate\` (ignored) |
+| `artgen\output` | Every generated image (git-ignored). Copy picks out with their `.json` sidecar |
+| `artgen\tools\build_workflows.py` | Single source for the WEB workflows; writes both formats |
+
+## Which workflow
+
+| Workflow | Use it for | Model | Time |
+|---|---|---|---|
+| **WEB1 Klein - Hero and Key Art** | Hero banners, section key art, feature images. Best quality and prompt-following | Klein full, 30 steps, CFG 3.5 | ~30 s at 2 MP (~43 s including model load) |
+| **WEB2 Klein - Style Match and Edit** | Edit a pick with words; make a new image that matches a direction's refs; clear space for copy | Klein distilled, 16 steps, CFG 1 | ~55 s with 2 refs at 1.5 MP |
+| **WEB3 Z-Image - Fast Exploration** | Moodboard drafts, trying many compositions quickly | Z-Image Turbo, 8 steps, CFG 1 | ~6 s at 1 MP (~8 s including load) |
+| **WEB4 Klein - Style Frame** | Full-page "feel" mockups for Gate 2 boards, portrait (scrolling page) or landscape (viewport). Mood image, not a layout | Klein full, 30 steps, CFG 3.5 | ~31 s at 1.5 MP |
+| **WEB5 Texture and Pattern** | Seamless tiles: paper, grain, fabric, terrazzo, subtle backgrounds | Klein distilled, 2 passes x 12 steps | ~14 s at 1024 px (~17 s including load) |
+| **WEB6 Upscale 2x** | Take a pick to production size (1936 px becomes 3872 px) | 4x-UltraSharp, then 0.5x | ~7-13 s |
+
+Times were measured on this machine during setup (Nov 2026) with the models already in system RAM. Server start is ~14 s. Switching between Klein full, Klein distilled and Z-Image reloads models (5-6 GB each), which adds 10-20 s, so **batch work per model family**: all WEB3 drafts, then all WEB1/WEB4 (Klein full), then WEB2/WEB5 (Klein distilled).
+
+## generate.py
+
+Stdlib only; run it with the ComfyUI venv Python (`F:\ArtGen\ComfyUI\venv\Scripts\python.exe`) from the repo root.
+
+```bat
+set PY=F:\ArtGen\ComfyUI\venv\Scripts\python.exe
+%PY% artgen\generate.py --list
+%PY% artgen\generate.py WEB3 -p "..." --count 8 --out design\concepts\a-calm\explore
+%PY% artgen\generate.py WEB1 -p "..." --size 21:9 --mp 2 --seed 42 --name hero
+%PY% artgen\generate.py WEB1 -p "..." --size 1920x816 --model fast        (exact size; distilled draft)
+%PY% artgen\generate.py WEB4 -p "..." --size 16:9                          (landscape style frame)
+%PY% artgen\generate.py WEB2 -i pick.png --ref hero.png -p "... <ref_image_1> ..."
+%PY% artgen\generate.py WEB5 -p "Seamless tileable ..." --size 768x768
+%PY% artgen\generate.py WEB6 -i artgen\output\web1\hero_00001_.png --out web\public\assets\generated
+%PY% artgen\generate.py --jobs artgen\smoke_jobs.json --out artgen\output\_smoke
+%PY% artgen\generate.py --replay artgen\output\web1\hero_00001_.json
+%PY% artgen\generate.py --stop
+```
+
+| Flag | Meaning |
+|---|---|
+| `--prompt/-p`, `--negative/-n` | Prompt text. Negative only exists in WEB1/WEB4 and only works at CFG > 1 |
+| `--size/-s` | `WxH` (rounded to multiples of 16) or an aspect: `1:1 2:3 3:2 3:4 4:3 9:16 16:9 21:9`. For other ratios (4:5, 2:1, 3:1) use `WxH` |
+| `--mp` | Megapixels when `--size` is an aspect (WEB1 2.0, WEB3 1.0, WEB4 1.5) |
+| `--seed`, `--count/-c` | First seed (random if omitted); each extra image uses seed + 1 |
+| `--out/-o`, `--name` | Output folder (default `artgen/output/<web#>`) and filename prefix |
+| `--model` | `full` or `fast` (Klein), or a filename. Switching applies the tuned steps/CFG unless you pass `--steps`/`--cfg` |
+| `--image/-i`, `--ref` | WEB2 `<ref_image_0>` and extra refs (repeat `--ref`); WEB6 image to upscale |
+| `--ref-mp`, `--seam-denoise`, `--scale`, `--upscale-model` | WEB2 working size; WEB5 seam repaint strength (0.75); WEB6 scale after 4x (0.5) and model |
+| `--jobs` | JSON list of jobs with the same keys (`workflow`, `prompt`, `size`, `seed`, `count`, `image`, `refs`, ...). Command-line flags act as defaults. One server start for the whole batch |
+| `--replay` | Re-run the exact API graph stored in a sidecar (bit-identical result on the same engine) |
+| `--keep-server`, `--stop`, `--dry-run` | Leave the server up; stop it; print the patched graph without running |
+
+**Provenance.** Every image gets `<image>.json` beside it with the workflow, prompt, negative, seed, model, steps, CFG, sampler, size, input images and refs (with their own sidecars embedded), licence, timing, ComfyUI version and the full API graph. Copy the `.json` with the image whenever a pick leaves `artgen/output/`.
+
+## Prompting for websites
+
+- **Write full captions, not tags.** Subject, setting, light, palette, lens and camera, mood. Klein gives generic results from short prompts.
+- **Don't say "website", "moodboard", "banner" or "hero" in image prompts** (except WEB4). The models draw collages, UI chrome and fake buttons. Describe the photograph or illustration itself: *Wide editorial photograph. ...*
+- **Plan negative space for copy.** Say where it goes and what it is: *The left half of the frame is a clean, softly lit plaster wall with plenty of negative space for a headline.* Keep the subject on the opposite third. For centred hero copy: *subject low in the frame, the upper half open sky*.
+- **No text.** End every prompt with *No text, no letters, no logos.* Real copy is set in HTML. WEB4 style frames will still invent lettering; say they are mood images and never use one where readable text matters.
+- **Keep a set consistent.** For each direction fix one lighting sentence, one palette sentence and one lens/rendering sentence, and paste them unchanged into every prompt in the set. For new images that must match a pick, use WEB2 with the pick as a reference.
+- **Text contrast comes later.** Images behind text need a calm, low-detail area; Front-end adds overlays. Avoid busy detail where the headline sits.
+- **Presets** (paste and edit):
+  - *Photographic:* Editorial photograph, shot on a 35 mm lens at f/2.8, soft natural window light, shallow depth of field, true-to-life colour, subtle film grain.
+  - *Illustrative:* Flat vector-style editorial illustration, clean geometric shapes, limited palette of [3-4 colours], soft paper grain, no outlines, generous empty background.
+  - *3D:* Soft 3D render, matte clay materials, rounded forms, gentle studio lighting with soft shadows, pastel palette of [...], plain seamless background.
+  - *Texture (WEB5):* Seamless tileable texture, flat top-down view of [...], perfectly even diffuse lighting, no vignette, no shadows, no focal point.
+- **Randomise vs lock:** drafts use random seeds; to iterate on one image, reuse its seed from the sidecar and change one thing at a time.
+
+### Aspect ratios per section
+
+| Section | Aspect | Generate at | Ship at |
+|---|---|---|---|
+| Full-bleed hero (desktop) | 16:9 | WEB1 2 MP (1936x1088) | WEB6 2x, crop to 2560-3840 wide |
+| Ultrawide banner | 21:9 | WEB1 2 MP (2208x944) | WEB6 2x |
+| Mobile hero (art-directed crop) | 4:5 or 9:16 | WEB1 `--size 1088x1360` / `9:16` | 1080-1440 wide |
+| Section / feature image | 3:2 or 4:3 | WEB1 1.5 MP | 1200-1600 wide |
+| Card thumbnail | 1:1, 4:3 or 3:2 | WEB1 `--model fast`, 1 MP | 600-800 wide |
+| Background tile | 1:1 | WEB5 1024 | 512-1024, `background-repeat` |
+| Open Graph image | 1.91:1 | WEB1 `--size 1200x624` then crop to 1200x630 | 1200x630 |
+
+Export shipped images as AVIF or WebP at the sizes Front-end asks for. Keep the PNG master and sidecar in the concept folder.
+
+## Models and licences
+
+| Model | File | Licence |
+|---|---|---|
+| FLUX 3 Image Klein, full | `flux3_image_klein_int8_convrot` | FLUX Kommunity: free commercial use under US$5M annual revenue |
+| FLUX 3 Image Klein, distilled | `flux3_image_klein_sd_int8_convrot` | as above |
+| Klein text encoder / VAE | `qwen3vl_4b_int8_convrot`, `flux2-vae` | Apache 2.0 / as above |
+| Z-Image Turbo (+ encoder, VAE) | `z_image_turbo_int8_convrot`, `qwen_3_4b_fp8_mixed`, `ae` | Apache 2.0 |
+| 4x-UltraSharp | `4x-UltraSharp` | **CC BY-NC-SA 4.0: non-commercial** |
+
+Record the model licence in every `direction.md`. Klein outputs are fine for a client whose revenue is under US$5M; above that, check the licence or use Z-Image (Apache 2.0).
+
+**Upscaling for shipped assets:** 4x-UltraSharp is non-commercial, so it is fine for boards and gate packets but not for images that ship on a commercial site. Before the Build phase, add a permissive upscaler (e.g. `RealESRGAN_x4plus`, BSD-3) and run WEB6 with `--upscale-model RealESRGAN_x4plus.pth`.
+
+## Changing a workflow
+
+Edit the definition in `tools\build_workflows.py`, then rebuild both formats (needs a running server):
+
+```bat
+start "" /min "artgen\Launch ComfyUI (Website, headless).bat"
+%PY% artgen\tools\build_workflows.py
+%PY% artgen\generate.py --stop
+```
+
+If you tweak a workflow in the UI and want to keep it, port the change into the builder so the API export and `manifest.json` stay in step.

@@ -1,0 +1,254 @@
+{
+ "WEB1": {
+  "kind": "txt2img",
+  "family": "klein",
+  "prompt": [
+   6,
+   "text"
+  ],
+  "negative": [
+   7,
+   "text"
+  ],
+  "model": [
+   2,
+   "unet_name"
+  ],
+  "sampler": 9,
+  "resolution": 5,
+  "latent": 8,
+  "save": 11,
+  "name": "WEB1 Klein - Hero and Key Art",
+  "file": "WEB1 Klein - Hero and Key Art.json"
+ },
+ "WEB2": {
+  "kind": "edit",
+  "family": "klein",
+  "prompt": [
+   8,
+   "text"
+  ],
+  "negative": null,
+  "model": [
+   2,
+   "unet_name"
+  ],
+  "sampler": 11,
+  "image": 5,
+  "refs": 10,
+  "vae": 4,
+  "save": 14,
+  "ref_megapixels": [
+   10,
+   "resolution.megapixels"
+  ],
+  "name": "WEB2 Klein - Style Match and Edit",
+  "file": "WEB2 Klein - Style Match and Edit.json"
+ },
+ "WEB3": {
+  "kind": "txt2img",
+  "family": "zimage",
+  "prompt": [
+   7,
+   "text"
+  ],
+  "negative": null,
+  "model": [
+   2,
+   "unet_name"
+  ],
+  "sampler": 10,
+  "resolution": 6,
+  "latent": 9,
+  "save": 12,
+  "name": "WEB3 Z-Image - Fast Exploration",
+  "file": "WEB3 Z-Image - Fast Exploration.json"
+ },
+ "WEB4": {
+  "kind": "txt2img",
+  "family": "klein",
+  "prompt": [
+   6,
+   "text"
+  ],
+  "negative": [
+   7,
+   "text"
+  ],
+  "model": [
+   2,
+   "unet_name"
+  ],
+  "sampler": 9,
+  "resolution": 5,
+  "latent": 8,
+  "save": 11,
+  "name": "WEB4 Klein - Style Frame",
+  "file": "WEB4 Klein - Style Frame.json"
+ },
+ "WEB5": {
+  "kind": "texture",
+  "family": "klein",
+  "prompt": [
+   5,
+   "text"
+  ],
+  "negative": null,
+  "model": [
+   2,
+   "unet_name"
+  ],
+  "sampler": 8,
+  "samplers": [
+   8,
+   26
+  ],
+  "seam_denoise": [
+   26,
+   "denoise"
+  ],
+  "save": 31,
+  "size_bindings": [
+   [
+    7,
+    "width",
+    "w"
+   ],
+   [
+    7,
+    "height",
+    "h"
+   ],
+   [
+    10,
+    "width",
+    "w//2"
+   ],
+   [
+    10,
+    "height",
+    "h"
+   ],
+   [
+    11,
+    "width",
+    "w - w//2"
+   ],
+   [
+    11,
+    "height",
+    "h"
+   ],
+   [
+    11,
+    "x",
+    "w//2"
+   ],
+   [
+    13,
+    "width",
+    "w"
+   ],
+   [
+    13,
+    "height",
+    "h//2"
+   ],
+   [
+    14,
+    "width",
+    "w"
+   ],
+   [
+    14,
+    "height",
+    "h - h//2"
+   ],
+   [
+    14,
+    "y",
+    "h//2"
+   ],
+   [
+    16,
+    "width",
+    "w"
+   ],
+   [
+    16,
+    "height",
+    "h"
+   ],
+   [
+    17,
+    "width",
+    "bw"
+   ],
+   [
+    17,
+    "height",
+    "h"
+   ],
+   [
+    19,
+    "width",
+    "w"
+   ],
+   [
+    19,
+    "height",
+    "bh"
+   ],
+   [
+    18,
+    "left",
+    "bw*3//8"
+   ],
+   [
+    18,
+    "right",
+    "bw*3//8"
+   ],
+   [
+    20,
+    "top",
+    "bh*3//8"
+   ],
+   [
+    20,
+    "bottom",
+    "bh*3//8"
+   ],
+   [
+    21,
+    "x",
+    "(w - bw)//2"
+   ],
+   [
+    22,
+    "y",
+    "(h - bh)//2"
+   ]
+  ],
+  "name": "WEB5 Texture and Pattern",
+  "file": "WEB5 Texture and Pattern.json"
+ },
+ "WEB6": {
+  "kind": "upscale",
+  "family": "upscale",
+  "prompt": null,
+  "negative": null,
+  "image": 2,
+  "upscale_model": [
+   3,
+   "model_name"
+  ],
+  "scale": [
+   5,
+   "scale_by"
+  ],
+  "save": 6,
+  "name": "WEB6 Upscale 2x",
+  "file": "WEB6 Upscale 2x.json"
+ }
+}

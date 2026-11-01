@@ -1,0 +1,7 @@
+[
+ {"workflow": "WEB3", "seed": 101, "size": "16:9", "name": "smoke_web3",
+  "prompt": "Wide landscape photograph. Rolling green hills at golden hour with a single winding gravel path, low warm sun, long soft shadows, light haze over distant hills. The upper half of the frame is open pale sky with lots of empty space. Natural muted palette, fine photographic grain. No text, no people."},
+ {"workflow": "WEB1", "seed": 102, "size": "16:9", "name": "smoke_web1",
+  "prompt": "Wide editorial photograph. A ceramicist's bright studio: hands shaping a pale clay bowl on a wheel on the right third of the frame, shelves of unglazed pots softly out of focus behind, diffuse north-window light. The left half of the frame is a clean, softly lit plaster wall with plenty of negative space for a headline. Palette of warm clay, bone white and dusty blue. Shot on a 50 mm lens at f/2.8, shallow depth of field, true-to-life colour, subtle film grain. No text, no letters, no logos."},
+ {"workflow": "WEB6", "image": "artgen/output/_smoke/smoke_web1_00001_.png", "name": "smoke_web6"}
+]

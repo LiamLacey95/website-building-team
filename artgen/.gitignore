@@ -1,0 +1,6 @@
+# Local-only files under artgen/ (outputs, logs and temp are ignored at the repo root)
+input/_generate/
+user/comfyui_headless.pid
+user/default/comfy.settings.json
+user/default/comfy.templates.json
+models/

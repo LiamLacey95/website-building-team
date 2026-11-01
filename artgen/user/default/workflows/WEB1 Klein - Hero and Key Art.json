@@ -1,0 +1,527 @@
+{
+ "id": "bd6a9bda-7849-519d-a898-4300534069f2",
+ "revision": 0,
+ "last_node_id": 11,
+ "last_link_id": 11,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "MarkdownNote",
+   "pos": [
+    40,
+    40
+   ],
+   "size": [
+    380,
+    430
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "properties": {},
+   "widgets_values": [
+    "## WEB1 Klein: hero and key art (text to image)\nFull-quality FLUX 3 Klein for the images a page is built around: hero banners, section key art, feature illustrations. Write a **full scene caption**: subject, setting, light, palette, lens/camera, and where the **empty space for the headline** goes.\n\n- **Aspect (Resolution node):** 16:9 hero (default), 21:9 ultrawide banner, 3:2 section/feature image. 2.0 MP default (~1920 px wide). Run WEB6 for 2x.\n- **Model:** full model, 30 steps, CFG 3.5 (~40 s). 50 steps for finals. Drafts: switch to `flux3_image_klein_sd_int8_convrot`, steps 12, **CFG 1** (~12 s).\n- **Negative** only works when CFG > 1 (full model). It already bans text and logos.\n- **Photographic preset:** *Editorial photograph, shot on a 35 mm lens at f/2.8, soft natural window light, shallow depth of field, true-to-life colour, subtle film grain.*\n- **Illustrative preset:** *Flat vector-style editorial illustration, clean geometric shapes, limited palette of [3-4 colours], soft paper grain, no outlines, generous empty background.*\n- Always end with *no text, no letters, no logos*. Real copy is set in HTML."
+   ]
+  },
+  {
+   "id": 2,
+   "type": "UNETLoader",
+   "pos": [
+    40,
+    520
+   ],
+   "size": [
+    380,
+    128
+   ],
+   "flags": {},
+   "order": 1,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      5
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "UNETLoader"
+   },
+   "widgets_values": [
+    "flux3_image_klein_int8_convrot.safetensors",
+    "default"
+   ]
+  },
+  {
+   "id": 3,
+   "type": "CLIPLoader",
+   "pos": [
+    40,
+    698
+   ],
+   "size": [
+    380,
+    156
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      1,
+      2
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPLoader"
+   },
+   "widgets_values": [
+    "qwen3vl_4b_int8_convrot.safetensors",
+    "flux3",
+    "default"
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "pos": [
+    40,
+    904
+   ],
+   "size": [
+    380,
+    100
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      10
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAELoader"
+   },
+   "widgets_values": [
+    "flux2-vae.safetensors"
+   ]
+  },
+  {
+   "id": 5,
+   "type": "ResolutionSelector",
+   "pos": [
+    470,
+    40
+   ],
+   "size": [
+    380,
+    182
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "width",
+     "type": "INT",
+     "links": [
+      3
+     ]
+    },
+    {
+     "name": "height",
+     "type": "INT",
+     "links": [
+      4
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "ResolutionSelector"
+   },
+   "widgets_values": [
+    "16:9 (Widescreen)",
+    2.0,
+    16
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CLIPTextEncode",
+   "pos": [
+    470,
+    272
+   ],
+   "size": [
+    380,
+    300
+   ],
+   "flags": {},
+   "order": 5,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 1
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      6
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPTextEncode"
+   },
+   "widgets_values": [
+    "Wide editorial photograph. A calm, sunlit studio workspace: a pale oak desk on the right third of the frame with a ceramic mug, a small potted olive tree and an open notebook, morning light streaming through a tall window, long soft shadows across a warm off-white plaster wall. The left half of the frame is clean, softly lit empty wall with plenty of negative space for a headline. Muted palette of cream, sand, sage green and soft charcoal. Shot on a 35 mm lens at f/2.8, shallow depth of field, true-to-life colour, subtle film grain. No text, no letters, no logos."
+   ],
+   "title": "Prompt"
+  },
+  {
+   "id": 7,
+   "type": "CLIPTextEncode",
+   "pos": [
+    470,
+    622
+   ],
+   "size": [
+    380,
+    140
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 2
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      7
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPTextEncode"
+   },
+   "widgets_values": [
+    "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands"
+   ],
+   "title": "Negative (used when CFG > 1)"
+  },
+  {
+   "id": 8,
+   "type": "EmptyFlux2LatentImage",
+   "pos": [
+    900,
+    40
+   ],
+   "size": [
+    380,
+    156
+   ],
+   "flags": {},
+   "order": 7,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "width",
+     "type": "INT",
+     "widget": {
+      "name": "width"
+     },
+     "link": 3
+    },
+    {
+     "name": "height",
+     "type": "INT",
+     "widget": {
+      "name": "height"
+     },
+     "link": 4
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      8
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "EmptyFlux2LatentImage"
+   },
+   "widgets_values": [
+    1024,
+    1024,
+    1
+   ]
+  },
+  {
+   "id": 9,
+   "type": "KSampler",
+   "pos": [
+    900,
+    246
+   ],
+   "size": [
+    380,
+    346
+   ],
+   "flags": {},
+   "order": 8,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 5
+    },
+    {
+     "name": "positive",
+     "type": "CONDITIONING",
+     "link": 6
+    },
+    {
+     "name": "negative",
+     "type": "CONDITIONING",
+     "link": 7
+    },
+    {
+     "name": "latent_image",
+     "type": "LATENT",
+     "link": 8
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      9
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "KSampler"
+   },
+   "widgets_values": [
+    0,
+    "randomize",
+    30,
+    3.5,
+    "euler",
+    "simple",
+    1.0
+   ]
+  },
+  {
+   "id": 10,
+   "type": "VAEDecode",
+   "pos": [
+    1330,
+    40
+   ],
+   "size": [
+    380,
+    98
+   ],
+   "flags": {},
+   "order": 9,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "samples",
+     "type": "LATENT",
+     "link": 9
+    },
+    {
+     "name": "vae",
+     "type": "VAE",
+     "link": 10
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      11
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAEDecode"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 11,
+   "type": "SaveImage",
+   "pos": [
+    1330,
+    188
+   ],
+   "size": [
+    560,
+    520
+   ],
+   "flags": {},
+   "order": 10,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "link": 11
+    }
+   ],
+   "outputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SaveImage"
+   },
+   "widgets_values": [
+    "web/web1_hero"
+   ]
+  }
+ ],
+ "links": [
+  [
+   1,
+   3,
+   0,
+   6,
+   0,
+   "CLIP"
+  ],
+  [
+   2,
+   3,
+   0,
+   7,
+   0,
+   "CLIP"
+  ],
+  [
+   3,
+   5,
+   0,
+   8,
+   0,
+   "INT"
+  ],
+  [
+   4,
+   5,
+   1,
+   8,
+   1,
+   "INT"
+  ],
+  [
+   5,
+   2,
+   0,
+   9,
+   0,
+   "MODEL"
+  ],
+  [
+   6,
+   6,
+   0,
+   9,
+   1,
+   "CONDITIONING"
+  ],
+  [
+   7,
+   7,
+   0,
+   9,
+   2,
+   "CONDITIONING"
+  ],
+  [
+   8,
+   8,
+   0,
+   9,
+   3,
+   "LATENT"
+  ],
+  [
+   9,
+   9,
+   0,
+   10,
+   0,
+   "LATENT"
+  ],
+  [
+   10,
+   4,
+   0,
+   10,
+   1,
+   "VAE"
+  ],
+  [
+   11,
+   10,
+   0,
+   11,
+   0,
+   "IMAGE"
+  ]
+ ],
+ "groups": [],
+ "config": {},
+ "extra": {
+  "ds": {
+   "scale": 0.75,
+   "offset": [
+    0,
+    0
+   ]
+  }
+ },
+ "version": 0.4
+}
