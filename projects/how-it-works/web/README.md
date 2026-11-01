@@ -17,7 +17,7 @@ npm run spikes     # dev server with the set-piece spikes enabled: /spikes/<name
 |---|---|
 | `src/styles/tokens.css` | **The one file a direction replaces.** Colour, type, space, radius and motion tokens. Neutral placeholders until Gate 2/3 |
 | `src/styles/global.css` | Reset, base elements, focus, skip link, the motion-off safety net, and the motion authoring rules |
-| `src/layouts/Base.astro` | Head, CSP-safe pre-paint motion snippet, header (wordmark, nav, Reduce motion), footer |
+| `src/layouts/Base.astro` | Head, the pre-paint motion script (`public/motion.js`), header (wordmark, nav, Reduce motion), footer |
 | `src/components/SetupSentence.astro` | The setup sentence with an accessible copy button (works without JS) |
 | `src/components/MotionToggle.astro` | The "Reduce motion" toggle |
 | `src/scripts/site.ts` | The one site-wide module: copy button and motion toggle |
@@ -28,6 +28,6 @@ npm run spikes     # dev server with the set-piece spikes enabled: /spikes/<name
 ## Rules
 
 - Tokens only: components never hard-code colour, type, space, radius or motion.
-- CSP (Astro `security.csp`, emitted as a meta tag): no inline event handlers, no `style=""` attributes, no `define:vars`. Set runtime values through the CSSOM (`el.style.setProperty`), which the CSP allows.
+- **CSP is a real HTTP header** (`vercel.json`, owned by Backend): `script-src 'self'; style-src 'self'`, no hashes. So **nothing inline**: no inline `<script>` (the pre-paint motion snippet is `public/motion.js`), no `<style>` in the HTML (`build.inlineStylesheets: 'never'`, `assetsInlineLimit: 0`), no `style=""` attributes, no `define:vars`, no inline event handlers. Runtime values go through the CSSOM (`el.style.setProperty`), which the CSP allows. `astro preview` doesn't send the header; test with it injected (see the brief 05 report).
 - Motion is always optional: `prefers-reduced-motion` and the on-page toggle (`data-motion="off"` on `<html>`) both turn it off, and no content depends on it.
 - Read the motion authoring rules in `src/styles/global.css` before writing any scroll-driven CSS. The CSS minifier rewrites some of it.

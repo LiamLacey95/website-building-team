@@ -24,10 +24,8 @@ const path = Astro.url.pathname.replace(/\/?$/, '/');
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="alternate" type="text/markdown" href="/story.md" title="The story as Markdown" />
-    <!-- Apply the visitor's saved "Reduce motion" choice before first paint (no flash). CSP-hashed by Astro. -->
-    <script is:inline>
-      try { if (localStorage.getItem('wbt-motion') === 'off') document.documentElement.dataset.motion = 'off'; } catch (e) {}
-    </script>
+    <!-- Applies the saved "Reduce motion" choice before first paint. External file: the CSP allows no inline script. -->
+    <script is:inline src="/motion.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

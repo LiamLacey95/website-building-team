@@ -9,9 +9,8 @@ export default defineConfig({
   // Shiki emits inline styles, which the CSP blocks. Re-enable with a CSP-safe highlighter if code blocks arrive.
   markdown: { syntaxHighlight: false },
   trailingSlash: 'ignore',
-  security: {
-    // Astro hashes its own scripts and styles into a CSP <meta>. Component rules that keep it strict:
-    // no inline event handlers, no style="" attributes, no define:vars.
-    csp: true,
-  },
+  // CSP is a real header (vercel.json, Backend): script-src 'self'; style-src 'self'. So nothing may be inline:
+  // stylesheets and scripts are always external files, and components follow the inline bans in README.md.
+  build: { inlineStylesheets: 'never' },
+  vite: { build: { assetsInlineLimit: 0 } },
 });
