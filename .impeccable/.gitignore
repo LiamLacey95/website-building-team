@@ -1,0 +1,4 @@
+# Impeccable per-developer and runtime state (the CLI also writes these to .git/info/exclude, which is not shared)
+hook.cache.json
+hook.pending.json
+config.local.json

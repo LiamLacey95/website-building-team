@@ -1,42 +1,52 @@
 #!/usr/bin/env node
 /**
- * variants.mjs: create, list, remove and serve design-variant worktrees.
+ * variants.mjs: create, list, serve and remove design-variant worktrees.
  *
- * Worktrees live in "F:\ArtGen\Website Test.worktrees\variant-<gate>-<letter>-<slug>" on branch
- * "variant/<gate>-<letter>-<slug>" (playbook naming). Ports: A 4321, B 4322, C 4323, D 4324...
+ * Naming (playbook): branch "variant/<project>-<gate>-<letter>-<name>", worktree folder
+ * "<worktreesDir>/variant-<project>-<gate>-<letter>-<name>". worktreesDir comes from team.config.json
+ * (default: sibling folder "<repo-folder>.worktrees"). Ports: A 4321, B 4322, C 4323... (base port from
+ * "variantBasePort" in team.config.json, default 4321).
  *
  * Usage:
- *   node tools/variants.mjs create a bold-grid [--gate g3] [--from master] [--no-doc]
- *   node tools/variants.mjs list
+ *   node tools/variants.mjs create a bold-grid [--project <slug>] [--gate g3] [--from <ref>] [--no-doc]
+ *   node tools/variants.mjs list [--project <slug>]
  *   node tools/variants.mjs dev a              # one variant on its port (foreground; Ctrl+C stops)
- *   node tools/variants.mjs dev all            # every variant of the gate, each on its own port
- *   node tools/variants.mjs dev b --static web/dist   # serve a folder instead of `npm run dev`
+ *   node tools/variants.mjs dev all            # every variant of the project and gate, each on its own port
+ *   node tools/variants.mjs dev b --static dist   # serve a folder (relative to the variant's web/) instead
  *   node tools/variants.mjs port c             # print the port for a letter
+ *   node tools/variants.mjs path a             # print the worktree path
  *   node tools/variants.mjs remove a [--keep-branch] [--force]
  *
- * A variant is addressed by its letter (with --gate, default g3) or its full name/branch.
+ * --project defaults to "activeProject" in team.config.json; --gate defaults to g3. A variant is addressed
+ * by its letter (within project and gate) or by its full folder name or branch.
  *
- * dev: if <worktree>/web/package.json has a "dev" script, runs `npm run dev -- --port <port> --host 127.0.0.1`
- * in <worktree>/web (works for Astro, Vite and Next). Otherwise, or with --static <dir>, serves a static
- * folder (default <worktree>/web, falling back to the worktree root) with a built-in server.
- * Override the command with --cmd "<command>"; it receives PORT in the environment.
+ * create: branches from --from (default HEAD of the main checkout, i.e. the shared base on master) and
+ * writes a hypothesis stub at <worktree>/projects/<project>/variants/<letter>-<name>.md unless --no-doc.
  *
- * create also writes a hypothesis stub at <worktree>/design/variants/<letter>-<slug>.md unless --no-doc.
+ * dev: serves <worktree>/projects/<project>/web. If its package.json has a "dev" script, runs
+ * `npm run dev -- --port <port> --host 127.0.0.1` there (Astro, Vite and Next accept these flags).
+ * Otherwise, or with --static [dir], serves the folder with a built-in static server.
+ * --cmd "<command>" overrides the command; it runs in web/ with PORT set.
  */
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
-import { parseArgs, git, repoRoot } from './lib.mjs';
+import { parseArgs, git, repoRoot, loadConfig, projectSlug } from './lib.mjs';
 
-const BASE_PORT = 4321;
 const args = parseArgs(process.argv.slice(2));
-const [cmd, target, slugArg] = args._;
+const [cmd, target, nameArg] = args._;
 const gate = String(args.gate ?? 'g3').toLowerCase();
 const root = repoRoot();
-const wtRoot = `${root}.worktrees`;
+const cfg = loadConfig(root);
+const BASE_PORT = Number(cfg.variantBasePort ?? 4321);
+const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 const portFor = (letter) => BASE_PORT + (letter.toLowerCase().charCodeAt(0) - 97);
+const project = (required = true) => projectSlug(args, cfg, { required });
+const isLetter = (t) => /^[a-z]$/i.test(t ?? '');
+
+function die(msg) { console.error(`variants: ${msg}`); process.exit(1); }
 
 function listVariants() {
   const out = git(['worktree', 'list', '--porcelain'], root);
@@ -47,8 +57,11 @@ function listVariants() {
     else if (line.startsWith('branch ')) cur.branch = line.slice(7).replace('refs/heads/', '');
     else if (line.startsWith('HEAD ')) cur.head = line.slice(5, 12);
     else if (line === '') {
-      const m = cur.branch?.match(/^variant\/(g\d+)-([a-z])-(.+)$/);
-      if (m) items.push({ ...cur, gate: m[1], letter: m[2], slug: m[3], name: `variant-${m[1]}-${m[2]}-${m[3]}`, port: portFor(m[2]) });
+      const m = cur.branch?.match(/^variant\/(.+?)-(g\d+)-([a-z])-(.+)$/);
+      if (m) {
+        items.push({ ...cur, project: m[1], gate: m[2], letter: m[3], name: m[4],
+          folder: `variant-${m[1]}-${m[2]}-${m[3]}-${m[4]}`, port: portFor(m[3]) });
+      }
       cur = {};
     }
   }
@@ -56,42 +69,59 @@ function listVariants() {
 }
 
 function resolveVariant(t) {
-  if (!t) die('missing variant (letter, name or branch)');
+  if (!t) die('missing variant (letter, folder name or branch)');
   const all = listVariants();
-  const v = /^[a-z]$/i.test(t)
-    ? all.find((x) => x.gate === gate && x.letter === t.toLowerCase())
-    : all.find((x) => x.name === t || x.branch === t);
-  if (!v) die(`no variant "${t}" (gate ${gate}). Run: node tools/variants.mjs list`);
+  const v = isLetter(t)
+    ? all.find((x) => x.project === project() && x.gate === gate && x.letter === t.toLowerCase())
+    : all.find((x) => x.folder === t || x.branch === t);
+  if (!v) die(`no variant "${t}"${isLetter(t) ? ` for ${project()} ${gate}` : ''}. Run: node tools/variants.mjs list`);
   return v;
 }
 
-function die(msg) { console.error(`variants: ${msg}`); process.exit(1); }
+const webDirOf = (v) => path.join(v.path, 'projects', v.project, 'web');
 
 function create() {
-  if (!/^[a-z]$/i.test(target ?? '')) die('usage: create <letter> <slug>');
-  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slugArg ?? '')) die('slug must be lowercase kebab-case, e.g. bold-grid');
+  if (!isLetter(target)) die('usage: create <letter> <name>');
+  if (!KEBAB.test(nameArg ?? '')) die('name must be lowercase kebab-case, e.g. bold-grid');
+  const slug = project();
+  if (!KEBAB.test(slug)) die(`project slug "${slug}" must be lowercase kebab-case`);
   const letter = target.toLowerCase();
-  const existing = listVariants().find((x) => x.gate === gate && x.letter === letter);
+  const existing = listVariants().find((x) => x.project === slug && x.gate === gate && x.letter === letter);
   if (existing) die(`letter ${letter} already used by ${existing.branch}`);
-  const name = `variant-${gate}-${letter}-${slugArg}`;
-  const branch = `variant/${gate}-${letter}-${slugArg}`;
-  const dir = path.join(wtRoot, name);
-  fs.mkdirSync(wtRoot, { recursive: true });
-  git(['worktree', 'add', dir, '-b', branch, String(args.from ?? 'master')], root);
+  const folder = `variant-${slug}-${gate}-${letter}-${nameArg}`;
+  const branch = `variant/${slug}-${gate}-${letter}-${nameArg}`;
+  const dir = path.join(cfg.worktreesDir, folder);
+  fs.mkdirSync(cfg.worktreesDir, { recursive: true });
+  git(['worktree', 'add', dir, '-b', branch, String(args.from ?? 'HEAD')], root);
   if (!args['no-doc']) {
-    const doc = path.join(dir, 'design', 'variants', `${letter}-${slugArg}.md`);
+    const doc = path.join(dir, 'projects', slug, 'variants', `${letter}-${nameArg}.md`);
     if (!fs.existsSync(doc)) {
       fs.mkdirSync(path.dirname(doc), { recursive: true });
-      fs.writeFileSync(doc, `# Variant ${letter.toUpperCase()}: ${slugArg}\n\nBranch: \`${branch}\` · Port: ${portFor(letter)}\n\n## Hypothesis\n\nWhat this variation tries (layout structure, navigation model, hero treatment, density, motion).\n\n## Persona served\n\n## Trade-off\n`);
+      fs.writeFileSync(doc, [
+        `# Variant ${letter.toUpperCase()}: ${nameArg}`, '',
+        `Branch: \`${branch}\` · Port: ${portFor(letter)}`, '',
+        '## Hypothesis', '',
+        'What this variation tries (layout structure, navigation model, hero treatment, density, motion).', '',
+        '## Persona served', '',
+        '## Trade-off', '',
+        '## Impeccable', '',
+        '- shape brief:',
+        '- commands run:',
+        '- critique (top issues and what changed):',
+        '- detect: clean, or each remaining finding with its justification', '',
+      ].join('\n'));
     }
   }
-  console.log(`created ${branch}\n  path: ${dir}\n  port: ${portFor(letter)}`);
+  console.log(`created ${branch}\n  path: ${dir}\n  web:  ${path.join(dir, 'projects', slug, 'web')}\n  port: ${portFor(letter)}`);
 }
 
 function list() {
-  const all = listVariants();
-  if (!all.length) return console.log(`no variant worktrees (root ${wtRoot})`);
-  for (const v of all) console.log(`${v.gate} ${v.letter.toUpperCase()}  :${v.port}  ${v.branch.padEnd(36)} ${v.head ?? ''}  ${v.path}`);
+  const only = typeof args.project === 'string' ? args.project : '';
+  const all = listVariants().filter((v) => !only || v.project === only);
+  if (!all.length) return console.log(`no variant worktrees (folder ${cfg.worktreesDir})`);
+  for (const v of all) {
+    console.log(`${v.project} ${v.gate} ${v.letter.toUpperCase()}  :${v.port}  ${v.branch.padEnd(44)} ${v.head ?? ''}  ${v.path}`);
+  }
 }
 
 function remove() {
@@ -126,16 +156,16 @@ function serveStatic(dir, port, tag) {
 
 function startDev(v) {
   const tag = `${v.gate}-${v.letter}`;
-  const webDir = path.join(v.path, 'web');
+  const webDir = webDirOf(v);
+  if (!fs.existsSync(webDir)) die(`${webDir} does not exist; build the variant's web/ first`);
   const pkgPath = path.join(webDir, 'package.json');
   const hasDev = fs.existsSync(pkgPath) && JSON.parse(fs.readFileSync(pkgPath, 'utf8')).scripts?.dev;
   if (args.static || (!hasDev && !args.cmd)) {
-    const dir = typeof args.static === 'string' ? path.resolve(v.path, args.static) : fs.existsSync(webDir) ? webDir : v.path;
-    return serveStatic(dir, v.port, tag);
+    return serveStatic(typeof args.static === 'string' ? path.resolve(webDir, args.static) : webDir, v.port, tag);
   }
   const command = args.cmd ?? `npm run dev -- --port ${v.port} --host 127.0.0.1`;
-  console.log(`[${tag}] ${command} (in ${args.cmd ? v.path : webDir}) -> http://127.0.0.1:${v.port}`);
-  const child = spawn(command, { cwd: args.cmd ? v.path : webDir, shell: true, env: { ...process.env, PORT: String(v.port) } });
+  console.log(`[${tag}] ${command} (in ${webDir}) -> http://127.0.0.1:${v.port}`);
+  const child = spawn(command, { cwd: webDir, shell: true, env: { ...process.env, PORT: String(v.port) } });
   const pipe = (stream, out) => stream.on('data', (d) => String(d).split(/\r?\n/).filter(Boolean).forEach((l) => out.write(`[${tag}] ${l}\n`)));
   pipe(child.stdout, process.stdout);
   pipe(child.stderr, process.stderr);
@@ -144,8 +174,10 @@ function startDev(v) {
 }
 
 function dev() {
-  const targets = target === 'all' ? listVariants().filter((x) => x.gate === gate) : [resolveVariant(target)];
-  if (!targets.length) die(`no variants for gate ${gate}`);
+  const targets = target === 'all'
+    ? listVariants().filter((x) => x.project === project() && x.gate === gate)
+    : [resolveVariant(target)];
+  if (!targets.length) die(`no variants for ${project()} ${gate}`);
   const running = targets.map(startDev);
   const stop = () => {
     for (const r of running) {
@@ -166,9 +198,10 @@ try {
     case 'list': list(); break;
     case 'remove': remove(); break;
     case 'dev': dev(); break;
-    case 'port': console.log(portFor(/^[a-z]$/i.test(target ?? '') ? target : resolveVariant(target).letter)); break;
+    case 'port': console.log(portFor(isLetter(target) ? target : resolveVariant(target).letter)); break;
+    case 'path': console.log(resolveVariant(target).path); break;
     default:
-      console.log('Usage: node tools/variants.mjs <create <letter> <slug> | list | dev <letter|all> | port <letter> | remove <letter>> [--gate g3]');
+      console.log('Usage: node tools/variants.mjs <create <letter> <name> | list | dev <letter|all> | port <letter> | path <letter> | remove <letter>> [--project <slug>] [--gate g3]');
       process.exit(cmd ? 1 : 0);
   }
 } catch (err) {

@@ -1,5 +1,6 @@
 // Shared helpers for the tools/ scripts. No dependencies beyond Node built-ins.
 import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
 import path from 'node:path';
 
 /** Minimal flag parser: --key value, --key=value, --flag (boolean). Positionals in `_`. */
@@ -26,6 +27,32 @@ export function git(args, cwd = process.cwd()) {
 export function repoRoot(cwd = process.cwd()) {
   const common = git(['rev-parse', '--path-format=absolute', '--git-common-dir'], cwd);
   return path.dirname(path.resolve(common));
+}
+
+/**
+ * Machine-specific settings from team.config.json at the main repo root (git-ignored; written by
+ * scripts/bootstrap.mjs from team.config.example.json). Every key has a default, so a missing or
+ * partial file still works:
+ *   worktreesDir   sibling folder "<repo-folder>.worktrees"
+ *   activeProject  "" (pass --project <slug> instead)
+ */
+export function loadConfig(root = repoRoot()) {
+  let cfg = {};
+  try { cfg = JSON.parse(fs.readFileSync(path.join(root, 'team.config.json'), 'utf8')); } catch {}
+  const worktreesDir = cfg.worktreesDir
+    ? path.resolve(root, cfg.worktreesDir)
+    : path.join(path.dirname(root), `${path.basename(root)}.worktrees`);
+  return { ...cfg, root, worktreesDir, activeProject: cfg.activeProject || '' };
+}
+
+/** Project slug from --project, else team.config.json activeProject; dies with a hint when neither is set. */
+export function projectSlug(args, cfg, { required = true } = {}) {
+  const slugValue = typeof args.project === 'string' ? args.project : cfg.activeProject;
+  if (!slugValue && required) {
+    console.error('no project: pass --project <slug> or set "activeProject" in team.config.json');
+    process.exit(1);
+  }
+  return slugValue;
 }
 
 export function currentBranch(cwd = process.cwd()) {

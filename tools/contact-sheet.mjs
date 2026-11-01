@@ -3,8 +3,8 @@
  * contact-sheet.mjs: build one self-contained HTML grid from a folder of screenshots.
  *
  * Usage:
- *   node tools/contact-sheet.mjs --in design/screenshots/g3
- *   node tools/contact-sheet.mjs --in design/screenshots/2026-11-01 --out .team/gates/G3-design/contact-sheet.html \
+ *   node tools/contact-sheet.mjs --in projects/how-it-works/screenshots/g3
+ *   node tools/contact-sheet.mjs --in projects/how-it-works/screenshots/g3 --out projects/how-it-works/gates/G3-design/contact-sheet.html \
  *        --title "Gate 3: design variations" --widths 1440,390 --latest
  *
  * Flags:

@@ -3,15 +3,17 @@
  * screenshot.mjs: full-page screenshots of a running site at 390, 768, 1440 and 1920 px.
  *
  * Usage (run from anywhere; paths are resolved against the main repo root):
- *   node tools/screenshot.mjs --base http://localhost:4321 --routes /,/about
- *   node tools/screenshot.mjs --base http://localhost:4322 --routes / --label variant/g3-b-editorial
- *   node tools/screenshot.mjs --base http://localhost:4321 --routes / --out design/screenshots/g3 --widths 1440,390
+ *   node tools/screenshot.mjs --base http://127.0.0.1:4321 --routes home,about
+ *   node tools/screenshot.mjs --base http://127.0.0.1:4322 --routes home --label variant/how-it-works-g3-b-editorial --out projects/how-it-works/screenshots/g3
+ *   node tools/screenshot.mjs --base http://127.0.0.1:4321 --routes home --project how-it-works --widths 1440,390
  *
  * Flags:
  *   --base <url>       Base URL of the running site (required).
  *   --routes <list>    Comma-separated routes, leading slash optional; "home" means "/". Default "/".
  *                      From Git Bash prefer "home,about" (Bash rewrites a bare "/" into a Windows path).
- *   --out <dir>        Output folder. Default design/screenshots/<YYYY-MM-DD>/ under the repo root.
+ *   --out <dir>        Output folder (relative paths resolve against the main repo root).
+ *                      Default projects/<slug>/screenshots/<YYYY-MM-DD>/.
+ *   --project <slug>   Project for the default --out. Default: activeProject in team.config.json.
  *   --label <name>     Branch/variant label used in file names. Default: current git branch of cwd.
  *   --widths <list>    Comma-separated widths. Default 390,768,1440,1920.
  *   --motion           Do NOT force prefers-reduced-motion (default is reduce).
@@ -29,7 +31,7 @@
 import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { parseArgs, repoRoot, currentBranch, slug, localStamp } from './lib.mjs';
+import { parseArgs, repoRoot, loadConfig, projectSlug, currentBranch, slug, localStamp } from './lib.mjs';
 
 const VIEWPORT_HEIGHTS = { 390: 844, 768: 1024, 1440: 900, 1920: 1080 };
 
@@ -52,7 +54,7 @@ const routes = String(args.routes ?? '/').split(',').map((r) => r.trim()).filter
 });
 const widths = String(args.widths ?? '390,768,1440,1920').split(',').map(Number).filter(Boolean);
 const label = slug(args.label ?? currentBranch());
-const outDir = path.resolve(root, args.out ?? path.join('design', 'screenshots', date));
+const outDir = path.resolve(root, args.out ?? path.join('projects', projectSlug(args, loadConfig(root)), 'screenshots', date));
 const timeout = Number(args.timeout ?? 45000);
 await fs.mkdir(outDir, { recursive: true });
 
