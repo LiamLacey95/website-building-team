@@ -9,6 +9,11 @@ Every MAJOR change is announced to Front-end before it merges, and the entry rec
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-01
+
+### Changed (copy only)
+- PM decision (0772bc3) on Q5: the opening prompt is a polished version written for the story, not the human's words, and nothing claims to be verbatim. This updates chapter 1 (title, dek, file view, narrative), the `intake-the-sentence` scene and the contract's wording.
+
 ## [0.2.0] - 2026-11-01
 
 ### Changed

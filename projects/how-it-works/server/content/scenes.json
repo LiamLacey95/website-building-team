@@ -3,8 +3,8 @@
     "chapter": 1,
     "title": "One line in",
     "lines": [
-      { "speaker": "human", "to": "pm", "kind": "message", "text": "your first website that i want you to build is a creative website that runs through how this works." },
-      { "speaker": "pm", "to": "human", "kind": "message", "text": "Got it. I'll write that down word for word, add what I think success looks like, and list what I'll need you to decide. You'll see it again at Gate 1." },
+      { "speaker": "human", "to": "pm", "kind": "message", "text": "Build a creative website that walks people through how this team works." },
+      { "speaker": "pm", "to": "human", "kind": "message", "text": "Got it. I'll write that down, add what I think success looks like, and list what I'll need you to decide. You'll see it again at Gate 1." },
       { "speaker": "pm", "kind": "aside", "text": "Opening projects/how-it-works/. Brief first. Then Research." }
     ]
   },

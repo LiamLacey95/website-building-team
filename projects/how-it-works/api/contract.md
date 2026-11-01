@@ -6,7 +6,7 @@ Lives at `projects/how-it-works/api/contract.md`.
 - **Changes:** `api/CHANGELOG.md`. Breaking changes are announced to Front-end before they merge.
 
 There is no runtime API. Everything below is **build-time content**: Astro content collections that `web/` reads with `getCollection` and `getEntry`. Gate 1 (`gates/G1-strategy/DECISION.md`) shapes it:
-- **Q5:** dialogue, agent messages and gate decisions are **written for the story**, not quoted from the repo.
+- **Q5:** dialogue, agent messages, gate decisions and the opening prompt are **written for the story**, not quoted from the repo or the human. Nothing on the site claims to be verbatim (PM decision, 0772bc3).
 - **Q6:** there are no time, duration, cost or token fields anywhere.
 - **Q7 D:** the site says plainly that the kit needs an NVIDIA GPU.
 
@@ -61,7 +61,7 @@ Required in `astro.config`: `vite.resolve.dedupe: ['zod']` (the schemas import `
 | `name` | string | "Website Building Team" (G1 Q1 A) |
 | `heroLine` | string | Working hero line (G1 Q8); Concept may replace it at G2 |
 | `shareLine` | string | OG card and meta title line |
-| `setupSentence` | string | The call to action, copied verbatim by visitors. Show it with a copy button and a selectable `<code>` fallback |
+| `setupSentence` | string | The call to action, which visitors copy exactly as shown. Show it with a copy button and a selectable `<code>` fallback |
 | `setupIntro` | string | Line before the setup block |
 | `whatHappensNext` | string | One sentence under the setup block |
 | `gpuNotice` | string | G1 Q7 D. Show it beside every setup block |
