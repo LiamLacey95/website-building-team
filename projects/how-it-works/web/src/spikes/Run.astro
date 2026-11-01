@@ -1,0 +1,95 @@
+---
+/**
+ * Spike (brief 07, Review G2 note 1): the marble WAITS at a lowered barrier while the page keeps scrolling,
+ * and "Run it without humans" sends it off the table into the bin. Engine: src/scripts/run.ts.
+ */
+import LevelCrossing from '../components/LevelCrossing.astro';
+---
+<div class="spike-run">
+  <div class="spike-run__copy">
+    <p>Scroll. The marble follows the track and stops at each barrier until you lift it in the crossing beside it.</p>
+    <div class="spike-run__nohumans">
+      <button type="button" class="btn btn--warn" data-nohumans aria-pressed="false">Run it without humans</button>
+      <div class="card spike-run__skipped" data-skipped hidden>
+        <p><strong>That run skipped:</strong> your strategy call, your pick of direction, your pick of design, and your release sign-off.</p>
+      </div>
+    </div>
+    <div class="spike-run__gate spike-run__gate--1"><LevelCrossing gate="G1" /></div>
+    <div class="spike-run__gate spike-run__gate--2"><LevelCrossing gate="G2" /></div>
+  </div>
+  <div class="spike-run__rail" data-run-box aria-hidden="true">
+    <svg viewBox="0 0 300 1200" preserveAspectRatio="none">
+      <path class="spike-run__edge" data-run-track d="M150 10 C 280 120, 280 220, 150 320 S 20 520, 150 620 S 280 820, 150 920 S 20 1120, 150 1190" />
+      <path class="spike-run__wood" d="M150 10 C 280 120, 280 220, 150 320 S 20 520, 150 620 S 280 820, 150 920 S 20 1120, 150 1190" />
+    </svg>
+    <span class="spike-run__barrier" data-barrier="G1"></span>
+    <span class="spike-run__barrier" data-barrier="G2"></span>
+    <span class="spike-run__bin" data-bin></span>
+    <span class="marble spike-run__marble" data-run-marble></span>
+  </div>
+</div>
+
+<script>
+  import { createRun } from '../scripts/run';
+  const box = document.querySelector<HTMLElement>('[data-run-box]')!;
+  const stops = [{ at: 0.36, gate: 'G1' }, { at: 0.72, gate: 'G2' }];
+  const run = createRun({
+    track: box.querySelector<SVGPathElement>('[data-run-track]')!,
+    marble: box.querySelector<HTMLElement>('[data-run-marble]')!,
+    bin: box.querySelector<HTMLElement>('[data-bin]'),
+    stops,
+    radius: 14,
+    progress: () => {
+      const r = box.getBoundingClientRect();
+      return (innerHeight * 0.5 - r.top) / r.height;
+    },
+    onState: (s) => { box.dataset.waiting = s.waitingAt ?? ''; box.dataset.mode = s.mode; },
+  });
+  const placeBarriers = () => stops.forEach((s) => {
+    const p = run.pointAt(s.at);
+    const el = box.querySelector<HTMLElement>(`[data-barrier="${s.gate}"]`)!;
+    el.style.setProperty('--x', `${p.x}px`);
+    el.style.setProperty('--y', `${p.y}px`);
+  });
+  placeBarriers();
+  // Re-place on any layout change of the box (fonts, crossings opening), like the engine does.
+  new ResizeObserver(placeBarriers).observe(box);
+  document.addEventListener('crossing:change', (e) => {
+    const { gate, state } = (e as CustomEvent).detail;
+    box.querySelector(`[data-barrier="${gate}"]`)?.classList.toggle('is-lifted', state === 'lifted');
+  });
+  const btn = document.querySelector<HTMLButtonElement>('[data-nohumans]')!;
+  const skipped = document.querySelector<HTMLElement>('[data-skipped]')!;
+  btn.addEventListener('click', async () => {
+    if (btn.getAttribute('aria-pressed') === 'true') {
+      btn.setAttribute('aria-pressed', 'false'); btn.textContent = 'Run it without humans'; skipped.hidden = true;
+      box.querySelectorAll('[data-barrier]').forEach((b) => b.classList.remove('is-gone'));
+      run.reset();
+      return;
+    }
+    btn.setAttribute('aria-pressed', 'true'); btn.textContent = 'Put the barriers back';
+    box.querySelectorAll('[data-barrier]').forEach((b) => b.classList.add('is-gone'));
+    await run.freeRun();
+    skipped.hidden = false;
+  });
+</script>
+
+<style>
+  .spike-run { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-6); margin-block: var(--space-6); }
+  .spike-run__copy { display: grid; gap: var(--space-6); align-content: start; }
+  .spike-run__gate--1 { margin-top: 70vh; }
+  .spike-run__gate--2 { margin-top: 60vh; margin-bottom: 60vh; }
+  .spike-run__rail { position: relative; min-height: 100%; }
+  .spike-run__rail svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .spike-run__edge { fill: none; stroke: var(--c-rule); stroke-width: 16; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+  .spike-run__wood { fill: none; stroke: var(--c-wood); stroke-width: 10; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+  .spike-run__marble, .spike-run__barrier { position: absolute; left: 0; top: 0; translate: calc(var(--x, 0px) - 50%) calc(var(--y, 0px) - 50%); }
+  .spike-run__marble { font-size: 28px; rotate: var(--spin, 0rad); z-index: 2; }
+  .spike-run__barrier {
+    width: 70px; height: 12px; border: var(--border); border-radius: var(--radius-pill); background: var(--c-gate);
+    transition: rotate var(--dur-med) var(--ease-out), opacity var(--dur-med); transform-origin: 100% 50%;
+  }
+  .spike-run__barrier.is-lifted { rotate: 80deg; }
+  .spike-run__barrier.is-gone { opacity: 0; }
+  .spike-run__bin { position: absolute; right: -10px; bottom: -60px; width: 70px; height: 56px; background: var(--c-bg-2); border: var(--border); border-radius: 6px 6px 16px 16px; }
+</style>
