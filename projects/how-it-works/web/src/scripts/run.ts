@@ -47,12 +47,15 @@ export interface Run {
   reset(): void;
   destroy(): void;
   state(): RunState;
+  /** Replace the stops after a layout change, keeping the run (and a flown marble) as it is. */
+  setStops(stops: Stop[]): void;
 }
 
 export function createRun(o: RunOptions): Run {
   const svg = o.track.ownerSVGElement!;
   const radius = o.radius ?? 14;
-  const lifted = new Map<string, boolean>(o.stops.map((s) => [s.gate, false]));
+  let stops = [...o.stops];
+  const lifted = new Map<string, boolean>(stops.map((s) => [s.gate, false]));
   document.querySelectorAll<HTMLElement>('[data-crossing]').forEach((el) => {
     if (lifted.has(el.dataset.crossing!)) lifted.set(el.dataset.crossing!, el.dataset.state === 'lifted');
   });
@@ -97,7 +100,7 @@ export function createRun(o: RunOptions): Run {
   const target = () => {
     let t = Math.max(0, Math.min(1, o.progress())) * len;
     waitingAt = null;
-    for (const s of [...o.stops].sort((a, b) => a.at - b.at)) {
+    for (const s of [...stops].sort((a, b) => a.at - b.at)) {
       const stopAt = s.at * len - backOff(s.at * len, radius * 1.8);
       if (t > stopAt && !lifted.get(s.gate)) { t = stopAt; waitingAt = s.gate; break; }
     }
@@ -193,5 +196,11 @@ export function createRun(o: RunOptions): Run {
     reset() { mode = 'normal'; landed = null; d = 0; placeAt(0); emit(); },
     destroy() { alive = false; cancelAnimationFrame(raf); ro.disconnect(); document.removeEventListener('crossing:change', onCrossing); removeEventListener('resize', onResize); },
     state: () => ({ distance: d, fraction: len ? d / len : 0, waitingAt, mode }),
+    setStops(next) {
+      stops = [...next];
+      for (const s of stops) {
+        if (!lifted.has(s.gate)) lifted.set(s.gate, document.querySelector<HTMLElement>(`[data-crossing="${s.gate}"]`)?.dataset.state === 'lifted');
+      }
+    },
   };
 }
