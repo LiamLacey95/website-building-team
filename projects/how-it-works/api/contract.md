@@ -1,6 +1,6 @@
 # Content contract: how-it-works
 
-Owner: Backend. Consumer: Front-end. Status: **draft, published for Gate 3 work**. Version: **0.1.0**.
+Owner: Backend. Consumer: Front-end. Status: **draft, published for Gate 3 work**. Version: **0.2.0**.
 Lives at `projects/how-it-works/api/contract.md`.
 - **Source of truth:** `projects/how-it-works/server/contracts/schema.ts` (Zod 4 schemas and inferred types). If this doc and the code disagree, the code wins and this doc is a bug.
 - **Changes:** `api/CHANGELOG.md`. Breaking changes are announced to Front-end before they merge.
@@ -49,7 +49,7 @@ Required in `astro.config`: `vite.resolve.dedupe: ['zod']` (the schemas import `
   - Chapters: the file name without `.md` (`00-hero`, …). Sort by `data.order`, not by id.
 - **Text** is plain text unless marked *markdown*. Chapter bodies are Markdown; render them with `render(entry)`. Requirements' `minimum` and `notes` are **inline** Markdown (`code`, **bold**); render them with `inlineMd()` from `server/content/inline-md.ts` and `set:html`. It escapes HTML first and allows only code, bold, italic and `https` links.
 - **Paths** shown on screen are repo-relative with forward slashes, and may contain `<slug>`. Never machine paths.
-- **Images:** `src` is an Astro image (from `image()`), so pass it straight to `<Picture>`/`<Image>`. `alt` is always present and non-empty. Choose widths and `sizes` per component, and set `fallbackFormat`, because the default PNG fallback can be larger than a WebP source.
+- **Images:** `src` is an Astro image (from `image()`): `ImageMetadata` with the master's intrinsic `width`, `height` and `format`. Pass it straight to `<Picture>`/`<Image>`; the dimensions reserve space, so CLS stays at 0. `alt` is always present and non-empty. Choose widths and `sizes` per component, and set `fallbackFormat`, because the default PNG fallback can be larger than a WebP source.
 - **`draft: true`** on chapters, and `site.status: "draft"`: the copy is a first draft. Concept's direction refines the tone after Gate 2. Don't ship until these flip.
 
 ## Collections
@@ -75,10 +75,11 @@ Required in `astro.config`: `vite.resolve.dedupe: ['zod']` (the schemas import `
 |---|---|---|
 | `order` | 0 to 9 | Prologue (0) to "Your turn" (9) |
 | `slug` | `a-z0-9-` | Anchor id for the chapter nav |
-| `label`, `kicker`, `title` | string | "Chapter 3" / "Discover" / headline |
+| `label`, `title` | string | "Chapter 3" / headline. Whether numbering is shown is a Gate 3 design call |
+| `kicker` | string, **optional** (0.2.0) | Kept in the draft copy as a writing aid. Front-end doesn't render eyebrows (Impeccable); the phase and gate come from `phase`, `gate` and `diamond` |
 | `dek` | string, max 220 | One-sentence summary under the title |
 | `phase` | `intake` \| `discover` \| `define` \| `develop` \| `deliver` \| `setup` | |
-| `diamond` | `d1-diverge` \| `d1-converge` \| `d2-diverge` \| `d2-converge` \| `null` | Where the chapter lights up the double-diamond spine; `null` = off the diagram |
+| `diamond` | `d1-diverge` \| `d1-converge` \| `d2-diverge` \| `d2-converge` \| `null` | Where the chapter lights up the double-diamond spine; `null` = off the diagram. **Stable:** the Gate 3 directions animate from `diamond` and `gate`, so renaming either is a MAJOR change |
 | `gate` | `G1` to `G4`, optional | Chapters 4 to 7 each end at one gate. Render the **gate card** from the `gates` collection |
 | `cast` | RoleId[] | Roles in order of appearance |
 | `scenes` | string[] | Ids in `scenes`; each scene's `chapter` matches (tested) |

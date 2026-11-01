@@ -9,6 +9,18 @@ Every MAJOR change is announced to Front-end before it merges, and the entry rec
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-01
+
+### Changed
+- `chapters.kicker` is now **optional** (MINOR: nothing that read it breaks). Front-end doesn't render eyebrows above headings (Impeccable's craft rules), and the draft copy keeps kickers only as a writing aid.
+
+### Clarified (no schema change)
+- Filled slot items' `src` is Astro `ImageMetadata`, so the master's intrinsic `width` and `height` are always available to `<Picture>` (CLS 0).
+- `diamond` and `gate` are stable: the Gate 3 directions animate from them. Renaming or removing either is a MAJOR change.
+- CSP: the strict header in `vercel.json` stays (`script-src 'self'; style-src 'self'`), matching Front-end's commit 2c74ad3 (no inline scripts or styles). `check-dist.ts` now evaluates the header and any per-page meta CSP together, as browsers do.
+
+Discussed with Front-end: their notes of 2026-11-01. Point 2 (a meta CSP with hashes plus a slimmer header) was overtaken by their own 2c74ad3, which follows the header approach.
+
 ## [0.1.0] - 2026-11-01
 
 ### Added

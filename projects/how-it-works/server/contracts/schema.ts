@@ -87,7 +87,7 @@ export const chapterSchema = z.object({
   order: z.number().int().min(0).max(9),
   slug: z.string().regex(/^[a-z0-9-]+$/),
   label: nonEmpty,                      // "Chapter 3" / "Prologue"
-  kicker: nonEmpty,                     // small line above the title
+  kicker: nonEmpty.optional(),          // optional since 0.2.0: Front-end doesn't render eyebrows (Impeccable)
   title: nonEmpty,
   dek: z.string().trim().min(1).max(220), // one-sentence summary under the title
   phase: z.enum(PHASES),

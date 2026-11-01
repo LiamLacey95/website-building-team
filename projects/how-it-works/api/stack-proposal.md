@@ -64,6 +64,8 @@ export default defineConfig({
 - no `define:vars` and no inline event handlers;
 - no CDN or third-party origin.
 
+**Why a header and not Astro's `security.csp` meta tag.** Browsers enforce every CSP that applies, so a header and a meta tag both apply. A static header can't carry Astro's per-page hashes, so any `script-src` or `style-src` in the header would block inline code that the meta tag allows by hash. We use the strict header and no inline code. That is stronger (no hash bookkeeping), and Front-end's `web/` follows it (2c74ad3). `check-dist.ts` evaluates the header and any per-page meta together, exactly as a browser would, so a later switch to meta hashes would be caught at build time rather than in production.
+
 ## 2. Content and data
 
 The full contract is in `api/contract.md`. In short:
@@ -230,5 +232,5 @@ Running cost is US$0 on Hobby if the site stays non-commercial. Nothing here nee
 
 | Item | Version 1 | Version 2 (after Gate 1) |
 |---|---|---|
-| §1 Framework and build | OK with notes (2026-11-01) | Contract shape sent to Front-end on 2026-11-01. Front-end's version 1 notes (image widths per component, the component rules, self-hosted fonts, filled and pending fixtures before Gate 3) are all kept. Awaiting a reply on the version 2 specifics (Root Directory, the two inline settings, `fallbackFormat`). |
-| §4 Interactivity | OK with notes (2026-11-01) | The 10 KB cap is lifted by Gate 1. Version 1 notes 5 to 7 still apply. |
+| §1 Framework and build | OK with notes (2026-11-01) | **OK with notes (2026-11-01).** Front-end's notes on the contract are taken into contract 0.2.0 (`kicker` optional; image dimensions; `diamond` and `gate` stable). Its CSP note (a meta tag plus a slimmer header) was overtaken by its own commit 2c74ad3, which follows the strict header. `check-dist` passes on its scaffold's build. |
+| §4 Interactivity | OK with notes (2026-11-01) | The 10 KB cap is lifted by Gate 1. Version 1 notes 5 to 7 still apply. No objection raised. |
