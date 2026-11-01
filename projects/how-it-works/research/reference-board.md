@@ -2,7 +2,7 @@
 
 There are 19 references in four candidate directions. These are options for Concept to choose from; Research is not picking one.
 
-Each live site has a 1440x900 screenshot in `research/refs/board/`, captured 2026-11-01. Book and illustration references (D1, D2) are links only, because their art is copyrighted print work.
+Each live site has a 1440x900 screenshot, captured 2026-11-01. Board screenshots are in `research/refs/board/`, and each file name starts with its board ID (for example `d3-monument-valley-desktop.webp` is D3). A4, A5 and B5 reuse competitor screenshots from `research/refs/`. Three references have no screenshot: D1 and D2 are links only because their art is copyrighted print work, and C5 is WebGL. `extra-*` files are candidates that didn't make the board.
 
 Typefaces are taken from each site's own CSS (font-family declarations, checked 2026-11-01) unless marked otherwise. Several of the faces are commercial (Söhne, Ivar, GT, Plain). These are cues for the type pairing; our own choice should come from open-licence (OFL) families that we self-host (see `constraints.md`).
 
@@ -33,9 +33,9 @@ The team is presented as a precision machine. It uses spec-sheet layouts, grids 
 | # | Reference | Type | Link / file | Why it is here |
 |---|---|---|---|---|
 | B1 | teenage engineering | site | https://teenage.engineering/, `refs/board/b1-teenage-engineering-desktop.webp` | Product-as-hero photography on black, tiny all-caps labels and dry, cheeky copy. Each agent could be a "module" with a spec sheet. Type: custom TechnoType / te-20. |
-| B2 | Standards Manual (NASA Graphics Standards Manual reissue) | site / print | https://standardsmanual.com/, `refs/board/b4-standards-manual-desktop.webp` | Archival standards-manual pages with hard grids and bold flat colour. Our PLAYBOOK is a standards manual. Type: NYCTA Standard, Pitch. |
-| B3 | Vercel Geist | site / design system | https://vercel.com/geist, `refs/board/b2-vercel-geist-desktop.webp` | High contrast, with visible grid lines treated as "a core part of the Vercel aesthetic", and mono labels. Geist is OFL, so we could use it. Type: Geist Sans/Mono/Pixel. |
-| B4 | Devouring Details | site | https://devouringdetails.com/, `refs/board/b3-devouring-details-desktop.webp` | An interactive manual: fine rules, an orange accent dot, live prototypes beside the prose, and handwritten notes. A good model for annotated artefacts. |
+| B2 | Standards Manual (NASA Graphics Standards Manual reissue) | site / print | https://standardsmanual.com/, `refs/board/b2-standards-manual-desktop.webp` | Archival standards-manual pages with hard grids and bold flat colour. Our PLAYBOOK is a standards manual. Type: NYCTA Standard, Pitch. |
+| B3 | Vercel Geist | site / design system | https://vercel.com/geist, `refs/board/b3-vercel-geist-desktop.webp` | High contrast, with visible grid lines treated as "a core part of the Vercel aesthetic", and mono labels. Geist is OFL, so we could use it. Type: Geist Sans/Mono/Pixel. |
+| B4 | Devouring Details | site | https://devouringdetails.com/, `refs/board/b4-devouring-details-desktop.webp` | An interactive manual: fine rules, an orange accent dot, live prototypes beside the prose, and handwritten notes. A good model for annotated artefacts. |
 | B5 | Factory | site | https://factory.ai/, `refs/factory-desktop.webp` | "Industrial, geometric, and precise" (https://basement.studio/ai/showcase/factory-precision-in-the-age-of-autonomy). All-caps grotesk, mono labels, and the install command shown as a spec line. |
 
 **Palette cues:** paper white or near-black, one signal colour (NASA red, TE orange), and hairline greys.
@@ -66,9 +66,9 @@ A cross-section of an imaginary studio building. You follow one prompt, as a par
 |---|---|---|---|---|
 | D1 | David Macaulay, *The Way Things Work* | illustration (book) | https://www.harpercollins.com/products/the-way-things-work-newly-revised-edition-david-macaulay | Pen-and-wash cutaways that follow a process step by step, with a recurring guide character (the mammoth). The canonical reference for this direction. |
 | D2 | Richard Scarry, Busytown | illustration (book) | https://www.richardscarry.com/ | Crowded, busy scenes where everyone has a job, plus a "find Lowly Worm" hunt. Six agents at work in one scene, with a recurring prompt to spot. |
-| D3 | Monument Valley | game / site | https://www.monumentvalleygame.com/, `refs/board/d2-monument-valley-desktop.webp` | Pastel isometric architecture with a small character walking through it. Shows how to give a cutaway calm and elegance rather than clutter. Type: Humanist 521. |
-| D4 | Kurzgesagt | illustration / site | https://kurzgesagt.org/, `refs/board/d1-kurzgesagt-desktop.webp` | Flat vector, saturated colours on deep backgrounds, and complex systems made friendly. Their scroll-free video style translates to still scenes. Type: Montserrat. |
-| D5 | Bartosz Ciechanowski, "Internal Combustion Engine" | interactive explainer | https://ciechanow.ski/internal-combustion-engine/, `refs/board/d3-ciechanowski-engine-desktop.webp` | Cutaway 3D diagrams you scrub, placed right next to the text explaining them. The interactive version of a Macaulay page. |
+| D3 | Monument Valley | game / site | https://www.monumentvalleygame.com/, `refs/board/d3-monument-valley-desktop.webp` | Pastel isometric architecture with a small character walking through it. Shows how to give a cutaway calm and elegance rather than clutter. Type: Humanist 521. |
+| D4 | Kurzgesagt | illustration / site | https://kurzgesagt.org/, `refs/board/d4-kurzgesagt-desktop.webp` | Flat vector, saturated colours on deep backgrounds, and complex systems made friendly. Their scroll-free video style translates to still scenes. Type: Montserrat. |
+| D5 | Bartosz Ciechanowski, "Internal Combustion Engine" | interactive explainer | https://ciechanow.ski/internal-combustion-engine/, `refs/board/d5-ciechanowski-engine-desktop.webp` | Cutaway 3D diagrams you scrub, placed right next to the text explaining them. The interactive version of a Macaulay page. |
 
 **Palette cues:** pastel isometric (Monument Valley) or saturated flat (Kurzgesagt) on warm paper.
 **Type cues:** a humanist sans for labels, with an editorial serif for the narration.

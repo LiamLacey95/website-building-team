@@ -1,6 +1,6 @@
-# Research summary: <project>
+# Research summary: <slug>
 
-Date: <YYYY-MM-DD>. One page. Full detail in the sibling files.
+Date: <YYYY-MM-DD>. File: `projects/<slug>/research/SUMMARY.md`. One page. Full detail in the sibling files.
 
 ## The brief in one line
 

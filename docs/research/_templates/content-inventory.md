@@ -1,4 +1,4 @@
-# Content inventory: <project>
+# Content inventory: <slug>
 
 ## Pages
 

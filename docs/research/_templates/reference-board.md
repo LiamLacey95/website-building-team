@@ -1,6 +1,6 @@
-# Reference board: <project>
+# Reference board: <slug>
 
-<!-- 10 to 20 references, grouped into 2 to 4 possible directions. Images in refs/board/. Options only; Research does not pick the direction. -->
+<!-- 10 to 20 references, grouped into 2 to 4 possible directions. Screenshots in projects/<slug>/research/refs/board/, file names starting with the board ID (a1-, b2-...). Options only; Research does not pick the direction. -->
 
 ## Direction: <working name>
 
@@ -8,7 +8,7 @@
 
 | # | Reference | Type | Link / file | Why it is here |
 |---|---|---|---|---|
-| 1 | <name> | site / photo / illustration / type | <URL>, `refs/board/<file>` | <one line> |
+| A1 | <name> | site / photo / illustration / type | <URL>, `refs/board/<id>-<name>.webp` | <one line> |
 
 **Palette cues:** <colours seen>. **Type cues:** <typefaces or classes>.
 

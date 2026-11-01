@@ -1,4 +1,4 @@
-# Personas: <project>
+# Personas: <slug>
 
 <!-- 2 or 3 personas. Ground each in evidence (reviews, forums, competitor messaging) and cite URLs. Mark guesses (inferred). -->
 

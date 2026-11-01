@@ -40,4 +40,4 @@ Time: one session, as budgeted.
 
 The playbook says `git add <your paths>` then `git commit`. But all agents share one index, so a bare `git commit` also commits whatever another agent has staged. My first commit swept in 141 staged files belonging to Backend and Front-end (Impeccable skills, bootstrap and tools). I undid it at once with `git reset --soft HEAD~1`, which left their staged state exactly as it was, and recommitted only my paths as 7ae9124. Suggested playbook fix: **commit with a pathspec**, `git commit -m "..." -- <your paths>`, which commits only those paths whatever else is staged.
 
-Note: `refs/board/` also holds `a4-pentagram` and `b5-rauno` screenshots that didn't make the final 19 on the board. Kept for context.
+Note: `refs/board/` also holds `extra-pentagram` and `extra-rauno` screenshots (originally `a4-`/`b5-`; board files renamed to match board IDs in kit brief 06) that didn't make the final 19 on the board. Kept for context.

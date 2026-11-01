@@ -1,6 +1,6 @@
-# Competitor teardown: <project>
+# Competitor teardown: <slug>
 
-Date: <YYYY-MM-DD>. Screenshots in `docs/research/<project>/refs/` as `<site-slug>-<desktop|mobile>.png`.
+Date: <YYYY-MM-DD>. File: `projects/<slug>/research/competitors.md`. Screenshots in `projects/<slug>/research/refs/` (see `docs/research/METHOD.md`, Screenshots). Third-party content: internal research only.
 
 ## <Site name>
 
@@ -12,7 +12,7 @@ Date: <YYYY-MM-DD>. Screenshots in `docs/research/<project>/refs/` as `<site-slu
 - **Weaknesses:** <2 to 4 bullets: UX, content, a11y, speed>
 - **Conversion path:** <primary CTA and where it leads>
 - **Tech / integrations seen:** <booking, CMS, maps, chat, etc.>
-- **Screenshots:** `refs/<slug>-desktop.png`, `refs/<slug>-mobile.png`
+- **Screenshots:** `refs/<file>` (desktop 1440), `refs/<file>` (mobile 390)
 
 <!-- Repeat the block above for 5 to 8 sites. -->
 

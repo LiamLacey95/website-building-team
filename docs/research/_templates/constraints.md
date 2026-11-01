@@ -1,4 +1,4 @@
-# Constraints: <project>
+# Constraints: <slug>
 
 ## Accessibility
 
