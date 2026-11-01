@@ -14,7 +14,7 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 
 ## Active project
 
-`how-it-works`: a creative website that explains how this team works (`projects/how-it-works/BRIEF.md`). Phase 3 Concept (Gate 1 decided).
+`how-it-works`: a creative website that explains how this team works (`projects/how-it-works/BRIEF.md`). Phase 4 Design variations (Gate 2 decided: C · Marble Run).
 
 ## Briefs in flight
 
@@ -25,7 +25,10 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | how-it-works/02-backend-stack-proposal | Backend + Front-end | done (6990cf9) |
 | how-it-works/03-review-gate1 | Review | done: REVISE, then PASS WITH NOTES after the packet revision (71e1b37) |
 | how-it-works/04-define-alignment | Research, Backend | done (9c48e5c, d5f0dbc) |
-| how-it-works/05-concept-directions | Concept | in progress (critical path to G2) |
+| how-it-works/05-concept-directions | Concept | done (4a01d18) |
+| how-it-works/06-review-gate2 | Review | in progress; becomes build input (gate already decided) |
+| how-it-works/07-frontend-g3-variations | Front-end | in progress (critical path to G3) |
+| how-it-works/07-concept-marble-run-assets | Concept | in progress |
 | how-it-works/05-frontend-product-and-scaffold | Front-end | done (624e028) |
 | how-it-works/05-backend-contract-vercel | Backend | done (118bc48, b806124) |
 | how-it-works/05-review-creativity-rubric | Review | done (6b2d024) |
@@ -55,6 +58,6 @@ Setup history: `.team/history/2026-11-01-initial-setup/`.
 | Gate | State | Decision |
 |---|---|---|
 | G1 Strategy and scope | **decided** | `gates/G1-strategy/DECISION.md` |
-| G2 Creative direction | Phase 3 in progress | |
-| G3 Design selection | not started | |
+| G2 Creative direction | **decided: C · Marble Run** | `gates/G2-direction/DECISION.md` |
+| G3 Design selection | Phase 4 in progress | |
 | G4 Release sign-off | not started | |
