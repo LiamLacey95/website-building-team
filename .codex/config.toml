@@ -1,0 +1,4 @@
+# Project-scoped Codex settings (read when Codex trusts this project).
+# Kit default: Impeccable telemetry off for every command Codex runs, hooks included.
+[shell_environment_policy]
+set = { IMPECCABLE_NO_TELEMETRY = "1" }

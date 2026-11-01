@@ -24,6 +24,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs, repoRoot, loadConfig, git } from './lib.mjs';
 
+process.env.IMPECCABLE_NO_TELEMETRY = '1'; // kit default: Impeccable telemetry off
 const args = parseArgs(process.argv.slice(2));
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = repoRoot();

@@ -46,7 +46,8 @@ function editedFiles(input, cwd) {
 /** Prefer the POSIX launcher (sh exists on Unix and wherever Git Bash is installed), else the .cmd one. */
 function runLauncher(root, payload, timeout) {
   const dir = path.join(kitRoot, '.claude', 'skills', 'impeccable', 'scripts');
-  const opts = { cwd: root, input: payload, encoding: 'utf8', timeout, windowsHide: true };
+  const opts = { cwd: root, input: payload, encoding: 'utf8', timeout, windowsHide: true,
+    env: { ...process.env, IMPECCABLE_NO_TELEMETRY: '1' } }; // kit default: telemetry off
   let r = spawnSync('sh', [path.join(dir, 'impeccable'), 'hook'], opts);
   if (r.error && process.platform === 'win32') {
     r = spawnSync(process.env.ComSpec ?? 'cmd.exe', ['/d', '/s', '/c', `""${path.join(dir, 'impeccable.cmd')}" hook"`],

@@ -165,7 +165,16 @@ sh .claude/skills/impeccable/scripts/impeccable detect projects/<slug>/web   # s
 
 **Project context:** in this kit, `PRODUCT.md` and `DESIGN.md` live in `projects/<slug>/`, not the repo root. When running a skill command or `impeccable context`, either pass `--target projects/<slug>/web/<file>` or run from `projects/<slug>/`. Impeccable then treats `projects/<slug>` as the project root and finds that project's files. Without a target it looks at the repo root and reports `NO_PRODUCT_MD`.
 
-**Telemetry:** the CLI sends anonymous usage pings for its live and generate features (no project names or code). Turn them off with `impeccable telemetry off` or `IMPECCABLE_NO_TELEMETRY=1`.
+**Telemetry: off by default in this kit** (PM decision). The CLI would otherwise send anonymous usage pings for its live and generate features (no project names or code). It is set in four places, so it stays off however Impeccable is run:
+
+| Where | How |
+|---|---|
+| Claude Code sessions, hooks included | `"env": {"IMPECCABLE_NO_TELEMETRY": "1"}` in `.claude/settings.json` |
+| Codex | `[shell_environment_policy] set` in `.codex/config.toml`, applied once Codex trusts the project |
+| Hook gate and selftest | `impeccable-hook.mjs` and `selftest.mjs` set the variable for every engine call |
+| Each machine | `scripts/bootstrap.mjs` runs `impeccable telemetry off`, which writes `"telemetry": false` to `~/.impeccable/config.json`. This also covers commands run in a plain terminal |
+
+Check with `sh .claude/skills/impeccable/scripts/impeccable telemetry status`.
 
 ### The hook gate: `impeccable-hook.mjs`
 
