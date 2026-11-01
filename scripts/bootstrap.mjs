@@ -73,6 +73,7 @@ const FLAGS = [
   ['skip-impeccable', 'bool', 'Skip the Impeccable install.'],
   ['reinstall', 'bool', 'Re-run npm and Impeccable installs even when they look current.'],
   ['selftest', 'bool', "After setup, run the Front-end and Review self-tests and ComfyUI's smoke test."],
+  ['smoke', 'bool', 'After setup, run only the ComfyUI smoke test (artgen/generate.py --smoke, ~2 min, uses the GPU).'],
 ];
 
 function parseFlags(argv) {
@@ -718,9 +719,9 @@ async function healthCheck(opts) {
 // Self-tests
 // ---------------------------------------------------------------------------------------------
 
-function runSelftests(cfg) {
+function runSelftests(cfg, { smokeOnly = false } = {}) {
   let ok = true;
-  for (const t of SELFTESTS) {
+  for (const t of smokeOnly ? [] : SELFTESTS) {
     if (!exists(rel(t))) { note(`${t} not found; skipped.`); continue; }
     ok = stream('node', [rel(t)]) && ok;
   }
@@ -777,9 +778,9 @@ async function main() {
   else if (DRY) note(paint(36, `[dry-run] would create ${wt}`));
   else { fs.mkdirSync(wt, { recursive: true }); note(`Created ${wt}`); }
 
-  if (opts.selftest) {
-    heading('+', 'Self-tests');
-    if (!runSelftests(cfg)) failed.push('Self-tests');
+  if (opts.selftest || opts.smoke) {
+    heading('+', opts.selftest ? 'Self-tests' : 'ComfyUI smoke test');
+    if (!runSelftests(cfg, { smokeOnly: !opts.selftest })) failed.push('Self-tests');
   }
 
   heading(7, 'Health check');

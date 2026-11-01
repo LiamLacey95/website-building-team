@@ -28,7 +28,7 @@ Every step is idempotent: it checks first and only acts if something is missing 
 | 6 | Worktrees | Creates `worktreesDir`. | `--worktrees-dir` |
 | 7 | Health check | Green / amber / red per item; same as `--check`. | |
 
-Other flags: `--yes` (non-interactive; implied when stdin is not a terminal), `--dry-run` (print every command and the config that would be written, change nothing), `--selftest` (after setup, run `tools/selftest.mjs`, `docs/review/tools/selftest.mjs` and `artgen/generate.py --smoke`).
+Other flags: `--yes` (non-interactive; implied when stdin is not a terminal), `--dry-run` (print every command and the config that would be written, change nothing), `--selftest` (after setup, run `tools/selftest.mjs`, `docs/review/tools/selftest.mjs` and `artgen/generate.py --smoke`), `--smoke` (only the ComfyUI smoke test).
 
 **Hugging Face token (fresh installs only).** The FLUX 3 Klein models are in a gated repo. The human needs a free Hugging Face account, must click "Agree" once at https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy, and must provide a read token, either as the `HF_TOKEN` environment variable or saved with `hf auth login`. Without it, the installer's dry run reports a blocker with these steps and bootstrap skips the download. The default download is about 29 GB (37 GB with optional extras). Details: `artgen/setup/README.md`.
 
