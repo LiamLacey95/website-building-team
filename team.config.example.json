@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "activeProject": "",
+  "worktreesDir": "",
+  "harnessProviders": ["claude", "codex"],
+  "comfyui": {
+    "path": "",
+    "python": "",
+    "port": 8188
+  }
+}
