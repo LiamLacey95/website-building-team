@@ -1,0 +1,8 @@
+{
+  "name": "how-it-works",
+  "private": true,
+  "description": "Deploy config only: pins Node for Vercel (Root Directory = projects/how-it-works). The site is in web/, build-time content in server/. Install and build go through vercel.json.",
+  "engines": {
+    "node": "24.x"
+  }
+}
