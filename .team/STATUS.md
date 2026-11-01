@@ -22,7 +22,7 @@ Setup (Phase -1): each agent completes its `01-*-setup` brief.
 
 | Brief | Owner | State |
 |---|---|---|
-| 01-research-setup | Research | in progress |
+| 01-research-setup | Research | done (cc6600a) |
 | 01-concept-setup | Concept | in progress |
 | 01-frontend-setup | Front-end | in progress |
 | 01-backend-setup | Backend | in progress |
