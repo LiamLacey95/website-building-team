@@ -1,6 +1,6 @@
 # Content contract: how-it-works
 
-Owner: Backend. Consumer: Front-end. Status: **draft, published for Gate 3 work**. Version: **0.3.0**.
+Owner: Backend. Consumer: Front-end. Status: **draft, published for Gate 3 work**. Version: **0.3.2**.
 Lives at `projects/how-it-works/api/contract.md`.
 - **Source of truth:** `projects/how-it-works/server/contracts/schema.ts` (Zod 4 schemas and inferred types). If this doc and the code disagree, the code wins and this doc is a bug.
 - **Changes:** `api/CHANGELOG.md`. Breaking changes are announced to Front-end before they merge.
@@ -126,7 +126,7 @@ All written for the story (Q5).
 | `number`, `name`, `where` | `where` = where it sits on the diamond |
 | `question` | What the human is asked |
 | `packet[]` | What the human sees |
-| `options[]` | `{ letter, label, detail }`, 2 or more |
+| `options[]` | `{ letter, label, detail }`, 2 or more. `label` is a short phrase (40 characters or fewer, no trailing period); Front-end renders "A. {label}." |
 | `decision` | `{ choice, quote, consequence }`: the fictional decision |
 | `revise` | `{ quote, outcome }`: the loop-back, for the "revise" arc on the diagram |
 

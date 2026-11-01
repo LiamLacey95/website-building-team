@@ -69,7 +69,7 @@
     "threadTitle": "Team · Backend",
     "oneLiner": "Everything behind the page: the stack, the content model, forms, deploys, and the setup script itself.",
     "does": [
-      "Proposes the stack and hosting, with costs and what you'll maintain",
+      "Proposes the stack and hosting, and what you'll look after",
       "Publishes the content contract that Front-end builds against",
       "Builds APIs, forms and the content pipeline",
       "Writes the deploy notes, and the script that sets this whole kit up"

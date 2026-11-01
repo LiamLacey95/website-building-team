@@ -32,7 +32,7 @@ artefacts:
 draft: true
 ---
 
-Narrowing is harder than widening. Research turns forty pages of findings into one positioning sentence, a sitemap, and a story told in chapters. Backend proposes the stack: what it's built with, where it lives, what it costs, and what you'll have to look after. Review reads all of it before you do and sends it back if a single option is unclear.
+Narrowing is harder than widening. Research turns forty pages of findings into one positioning sentence, a sitemap, and a story told in chapters. Backend proposes the stack: what it's built with, where it lives, and what you'll have to look after. Review reads all of it before you do and sends it back if a single option is unclear.
 
 Then everything goes into a **gate packet**: one page, every open question, lettered options, a recommendation, and Review's verdict. The team doesn't move until you answer.
 

@@ -9,6 +9,16 @@ Every MAJOR change is announced to Front-end before it merges, and the entry rec
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-11-01
+
+### Changed
+- `slotSchema` is generic: `slotSchema(image)` now types `items[].src` as `ImageMetadata`, so `<Picture src>` needs no cast. Checked with `astro check` on Front-end's code: 0 errors, including a probe that assigns `src` to `ImageMetadata`.
+- Copy (Gate 1 Q6, from Front-end's review): removed every time or cost phrase. That covers "what it costs" (chapter 4, the G1 packet, the Backend role), "Running cost" (a scene), "the same afternoon" (the G1 revise), "in a few minutes" (chapter 1), "within budget" (chapter 7) and "quickly" (chapter 3).
+
+### Added (tests)
+- A word-level check for time and cost words (costs, prices, budgets, afternoon, hours, minutes, days, quickly, …) across all authored copy, including chapter frontmatter.
+- Gate option labels: 40 characters or fewer, no trailing period (Front-end renders "A. {label}.").
+
 ## [0.3.1] - 2026-11-01
 
 ### Changed

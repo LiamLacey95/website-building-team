@@ -191,8 +191,9 @@ export const creditsSchema = z.object({
 // optimise the files: schema: ({ image }) => slotSchema(image)
 // ---------------------------------------------------------------------------------------------
 
-export function slotSchema(image?: () => z.ZodType) {
-  const src = image ? image() : z.string();
+export function slotSchema<S extends z.ZodType = z.ZodString>(image?: () => S) {
+  // Typed through, so CollectionEntry<'slots'> gives items[].src as ImageMetadata when Astro's image() is passed.
+  const src = (image ? image() : z.string()) as S;
   return z.object({
     gate: gateId,
     chapter: z.number().int().min(0).max(9),

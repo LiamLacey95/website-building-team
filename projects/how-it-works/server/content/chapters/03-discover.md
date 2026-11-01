@@ -33,4 +33,4 @@ The first diamond starts wide on purpose. Research reads the sites that sell AI 
 
 It invents three readers to argue on your behalf. **Maya** builds with agents already and wants to see the machinery. **Tomás** runs a studio and wants to know who stays in charge. **Sam** has just been handed this repo and wants to know if their machine can run it.
 
-Every fact gets a source. Every guess is labelled a guess. That habit is the reason the next chapter could make decisions quickly.
+Every fact gets a source. Every guess is labelled a guess. That habit is what let the next chapter decide with confidence.

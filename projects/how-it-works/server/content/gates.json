@@ -7,7 +7,7 @@
     "packet": [
       "One screen of strategy: who it's for and what it must prove",
       "The sitemap and the story, chapter by chapter",
-      "The stack, with what it costs and what you'll maintain",
+      "The stack, where it's hosted, and what you'll look after",
       "Every open question, each with lettered options and a recommendation",
       "Review's verdict on all of it"
     ],
@@ -23,7 +23,7 @@
     },
     "revise": {
       "quote": "Revise: the hosting question doesn't say what we lose if the repo stays private.",
-      "outcome": "Backend added the trade-off to the packet, Review re-checked it, and the question came back the same afternoon."
+      "outcome": "Backend added the trade-off to the packet, Review re-checked it, and the question went back to the human with nothing hidden."
     }
   },
   "G2": {

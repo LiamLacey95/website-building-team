@@ -33,7 +33,7 @@
     "chapter": 4,
     "title": "Turning findings into a plan",
     "lines": [
-      { "speaker": "backend", "to": "pm", "kind": "report", "text": "Stack proposal's in: static Astro, no client framework, every image licence-checked at build. Running cost is nothing until you pick a host." },
+      { "speaker": "backend", "to": "pm", "kind": "report", "text": "Stack proposal's in: static Astro, no client framework, every image licence-checked at build. Nothing runs on a server: the whole site is built ahead of time." },
       { "speaker": "review", "to": "pm", "kind": "report", "text": "Revise before it goes to the human. Two questions have options the packet doesn't letter, and one recommendation hides a trade-off." },
       { "speaker": "pm", "to": "review", "kind": "message", "text": "Fixed both. Re-check?" },
       { "speaker": "review", "to": "pm", "kind": "report", "text": "Pass. Send it." }

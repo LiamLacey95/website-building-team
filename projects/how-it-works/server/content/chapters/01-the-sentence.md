@@ -22,7 +22,7 @@ artefacts:
       - "> how this team works."
       - ""
       - "## What success looks like"
-      - "- A visitor understands, in a few minutes and with some delight,"
+      - "- A visitor understands, at a glance and with some delight,"
       - "  how one prompt becomes a finished website."
       - "- Someone wants to try it, and knows exactly how."
       - ""

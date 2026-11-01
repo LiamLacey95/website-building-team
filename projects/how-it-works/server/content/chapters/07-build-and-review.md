@@ -23,7 +23,7 @@ artefacts:
       - "| Check                  | Result |"
       - "|------------------------|--------|"
       - "| WCAG 2.2 AA (axe)      | 0 violations |"
-      - "| Lighthouse, mobile     | within budget |"
+      - "| Lighthouse, mobile     | passes        |"
       - "| Contrast, both themes  | all pairs pass |"
       - "| Slop detector          | 0 findings |"
       - "| Image licences         | every chain clean |"

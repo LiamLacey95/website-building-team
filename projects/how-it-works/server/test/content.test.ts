@@ -34,7 +34,12 @@ test('site, roles, gates, scenes, setup and credits validate', () => {
   for (const [, v] of roles) roleSchema.parse(v);
   const gates = entries('gates.json');
   assert.deepEqual(gates.map(([k]) => k), [...GATE_IDS]);
-  for (const [k, v] of gates) assert.equal(gateSchema.parse(v).number, Number(k.slice(1)));
+  for (const [k, v] of gates) {
+    const g = gateSchema.parse(v);
+    assert.equal(g.number, Number(k.slice(1)));
+    // Front-end renders options as "A. {label}.": short labels, no trailing period.
+    for (const o of g.options) assert.ok(o.label.length <= 40 && !/[.!?]$/.test(o.label), `${k} option ${o.letter}: "${o.label}"`);
+  }
   for (const [, v] of entries('scenes.json')) sceneSchema.parse(v);
 });
 
@@ -64,9 +69,12 @@ test('cross-references: scenes, slots and gates exist and agree', () => {
 
 test('no time, duration or cost figures in authored content (Gate 1 Q6)', () => {
   const text = [...['site.json', 'roles.json', 'gates.json', 'scenes.json', 'setup.json', 'credits.json'].map((f) => readFileSync(join(CONTENT, f), 'utf8')),
-    ...chapters().map((c) => c.body)].join('\n')
+    ...chapters().map((c) => `${JSON.stringify(c.data)}\n${c.body}`)].join('\n')
     .replace(/US\$5M/g, ''); // FLUX Klein's licence threshold, not a cost
   assert.doesNotMatch(text, /\b\d+\s*(?:minutes?|mins?|hours?|hrs?|seconds?|days?|weeks?)\b|\$\s?\d|\btokens?\b/i);
+  // Words, not just figures (Front-end's review): no costs, prices, budgets or durations in the story.
+  const words = text.match(/\b(?:costs?|costing|prices?|priced|cheap|expensive|budgets?|afternoon|morning|evening|overnight|hours?|minutes?|seconds|days?|weeks?|months?|quickly|instantly)\b/gi);
+  assert.equal(words, null, `time or cost words in copy: ${words?.join(', ')}`);
 });
 
 test('computed collections validate', () => {
