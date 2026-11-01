@@ -5,11 +5,11 @@ These follow the three audiences in `BRIEF.md`. Each claim cites its source. Any
 ## Market context
 
 - **AI use is near-universal, trust is low.**
-  - 84% of developers use AI tools or plan to, but only 3.1% "highly trust" their accuracy. The top frustration (66%) is answers that are "almost right, but not quite" (https://survey.stackoverflow.co/2025/ai).
-  - By 2026, 66% of AI-assistant users use coding agents, and Claude Code is the most-used agent at about 66%. 93% say trust requires source attribution (https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/).
+  - In Stack Overflow's 2025 survey, 84% of developers use or plan to use AI tools, but only 3.1% "highly trust" their accuracy. The top frustration (66%) is answers that are "almost right, but not quite" (https://survey.stackoverflow.co/2025/ai).
+  - In the 2026 survey, 66% of AI-assistant users use coding agents, and Claude Code leads their "agents of choice" (66%). 93% say trust requires source attribution (https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/).
   - JetBrains reports 90% of professional developers using coding agents at least weekly (https://adtmag.com/articles/jetbrains-survey-finds-ai-coding-agents-becoming-routine-developer-tools.aspx).
 - **"AI slop" in web design is a named, measured problem.**
-  - A study of 500 Show HN sites found gradients on 28%, default shadcn/ui on 23.5%, identical icon-card grids on 20.1% and purple or indigo CTAs on 10.7% (https://www.gigazine.net/gsc_news/en/20260423-design-slop).
+  - One blogger's analysis (Adrian Krebs) of 500 Show HN sites found gradients on 28%, default shadcn/ui on 23.5%, identical icon-card grids on 20.1% and purple or indigo CTAs on 10.7% (https://www.gigazine.net/gsc_news/en/20260423-design-slop).
   - HN commenters describe the shared look as "italic serif headings, blue, purple and green palettes, and heavy glow effects" (https://northeasttimes.com/2026/07/31/ai-design-tools-are-making-every-website-look-the-same/).
   - Impeccable sells itself on exactly this: "Turn AI slop into interfaces you're proud to ship" (https://impeccable.style).
 - **Multi-agent setups cost real tokens.**
@@ -50,7 +50,7 @@ These follow the three audiences in `BRIEF.md`. Each claim cites its source. Any
   - Image licensing he can explain to a client.
 - **Objections:**
   - "Is this billable quality?" *(inferred)*
-  - "Who owns AI images?" US law still requires a human author, after the Supreme Court declined Thaler v. Perlmutter on 2 March 2026 (https://www.mayerbrown.com/en/insights/publications/2026/03/supreme-court-denies-review-in-ai-authorship-case).
+  - "Who owns AI images?" US copyright still requires a human author: the D.C. Circuit held so in Thaler v. Perlmutter (2025), and the Supreme Court declined to review it on 2 March 2026 (https://www.mayerbrown.com/en/insights/publications/2026/03/supreme-court-denies-review-in-ai-authorship-case).
   - "Are the image models licensed for commercial use?" FLUX 3 Image Klein is free for commercial output only under US$5M revenue (https://huggingface.co/black-forest-labs/flux-3-image-klein).
   - "Will this commoditise my work?" *(inferred)*
 - **What convinces him:**

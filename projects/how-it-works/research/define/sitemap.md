@@ -11,7 +11,7 @@ Legend:
 /                        Home: the story (chapters 0 to 9, see story-outline.md)
 /made/                   How this site was made: the full case study, gate by gate
 /setup/                  Set up: requirements, the sentence, what happens, FAQ, troubleshooting
-/credits/                Credits and licences (+ privacy note)
+/credits/                Credits and licences, privacy note, accessibility statement, AI-imagery disclosure
 /404                     Not found
 /llms.txt                Agent-readable summary and links
 /story.md                Markdown twin of the home story (optional; linked from llms.txt)
@@ -62,7 +62,7 @@ Purpose: everything Sam needs before and during setup. It is the canonical home 
 | # | Section | Artefact | Status |
 |---|---|---|---|
 | 1 | The sentence (copy block) and "what happens next" in 5 steps | `BOOTSTRAP.md` §0 to §5 | Now |
-| 2 | Requirements card: OS, GPU (12 GB, 8 GB reduced), disk ~40 GB, Node 20+, Python 3.11/3.12, git, optional `gh`; Hugging Face account and token for the Klein download | `README.md`, `BOOTSTRAP.md` §1 and §2 | Now |
+| 2 | Requirements card: OS, GPU, disk, Node, Python, git, optional `gh`, Hugging Face account and token. **Read from `README.md` and `BOOTSTRAP.md` at build time, never copied**, so the card can't go stale | `README.md` Requirements, `BOOTSTRAP.md` §1 and §2 | Now |
 | 3 | Without an NVIDIA GPU / on a Mac | `bootstrap --skip-comfyui`; what still works | Now (wording depends on Q7) |
 | 4 | Claude Code alone vs T3 Code | `BOOTSTRAP.md` §4 | Now |
 | 5 | What it costs you | Your own model subscription and usage; time per project | Figures **Slot (Phase 5)** if Q6 is approved |
@@ -79,7 +79,9 @@ Purpose: everything Sam needs before and during setup. It is the canonical home 
 | Image models and licences, including the FLUX Klein US$5M limit | `artgen/README.md` Models and licences | Now |
 | Double Diamond credit (CC BY 4.0, adapted) | n/a | Now |
 | Fonts (OFL texts) | from Concept/Front-end | **Slot (Phase 5)** |
-| Privacy note: no cookies; GitHub Pages logs IPs; analytics if approved | `../constraints.md` | Now |
+| Privacy note: no cookies; GitHub Pages logs IPs; analytics if approved (Q9) | `../constraints.md` | Now |
+| **Accessibility statement**: target WCAG 2.2 AA; how it was tested (axe, Lighthouse, contrast, keyboard, screen readers, reduced motion); results with dates; known issues; how to report a problem (GitHub issue) | Review's G4 audit (`review/`), `docs/review/checklists/` | **Slot (Phase 5)** (results); structure Now |
+| **AI-generated imagery disclosure**: which images are generated, with which model and workflow (from the `.json` sidecars), that a human chose them at Gate 2 and Review checked them, and the FLUX Klein licence condition (Q11) | concept image sidecars; `artgen/README.md` | **Slot (Phase 5)** |
 
 ## `/llms.txt` and `/story.md`
 

@@ -42,7 +42,7 @@ Risk: if the gate slots are still empty (pre-Phase 5), he finds no proof. That's
 | 2 | `/setup/` requirements card | Checks the GPU, OS and disk needs up front | "Will my machine run it? I'm on a Mac." Honest table, plus the no-GPU path (Q7) |
 | 3 | `/setup/` "Claude Code alone vs T3 Code" | Learns that T3 Code is optional | "What's T3 Code, and do I need it?" |
 | 4 | `/setup/` glossary + FAQ | Looks up "worktree" and "gate" | Jargon |
-| 5 | `/setup/` what happens next + health check | Sees that bootstrap asks before downloading ~20 GB and reports green/amber/red | "ComfyUI setup is painful." Pinned install and a health check |
+| 5 | `/setup/` what happens next + health check | Sees that bootstrap asks before the large model download (size read from `BOOTSTRAP.md` at build time) and reports green/amber/red | "ComfyUI setup is painful." Pinned install and a health check |
 | 6 | `/setup/` copy block | Copies the sentence on desktop | **Success: copy** |
 
 Risk: a long requirements list could scare Sam off. Lead with "Most of it installs itself; you need a GPU, Node, Python and git".

@@ -9,8 +9,8 @@ A creative, fast, accessible site that shows people who use AI agents, and studi
 ## Three insights that should shape the design
 
 1. **Trust is the bottleneck, and our real artefacts are the answer.**
-   - 84% of developers use AI tools but only 3.1% highly trust them (https://survey.stackoverflow.co/2025/ai). 93% say trust requires source attribution (https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/).
-   - "AI slop" is now measured: of 500 Show HN sites, 28% use gradients and 21% show five or more tells (https://www.gigazine.net/gsc_news/en/20260423-design-slop).
+   - In Stack Overflow's 2025 survey, 84% of developers use or plan to use AI tools, but only 3.1% highly trust their output (https://survey.stackoverflow.co/2025/ai). 93% say trust requires source attribution (https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/).
+   - "AI slop" is being measured: one blogger's analysis (Adrian Krebs) of 500 Show HN sites found gradients on 28% and five or more tells on 21% (https://www.gigazine.net/gsc_news/en/20260423-design-slop).
    - None of the agent product sites in our set shows its own process end to end. Claude Code's real transcript is the closest.
    - **Design implication:** follow **this site's own prompt** through the team. Pair every claim with the real file that proves it: brief, research, three directions, three variations, gate packets, Review verdict, git log. The artefacts are the spectacle. This is what Transformer Explainer does with your own input (https://poloclub.github.io/transformer-explainer/), applied to a real run.
 
@@ -21,11 +21,11 @@ A creative, fast, accessible site that shows people who use AI agents, and studi
    - **Design implication:**
      - The hero holds the setup sentence with a copy button and a "what happens next" line. Repeat it at the end.
      - The double diamond, with the four gates marked as named checkpoints, is the hero visual, the progress indicator and the chapter navigation.
-     - Show a loop back at each gate ("revise: …") so the process doesn't read as linear. The Design Council admits its diagram reads that way.
+     - Show a loop back at each gate ("revise: …") so the process doesn't read as linear. The Double Diamond is often read as a one-way sequence *(inferred)*.
 
 3. **"Creative" must not mean heavy or inaccessible, and in Nov 2026 it no longer has to.**
    - None of the three acclaimed explainers respects `prefers-reduced-motion`. Transformer Explainer downloads a 600 MB model on load.
-   - CSS scroll-driven animations now work in Chrome, Safari 26+ and Firefox 159+ (Firefox shipped them on 27 Oct 2026; https://caniuse.com/mdn-css_properties_animation-timeline).
+   - CSS scroll-driven animations now work in Chrome, Safari 26+ and Firefox 159+ (https://caniuse.com/mdn-css_properties_animation-timeline).
    - Scroll-jacking measurably hurts users (https://www.nngroup.com/articles/scrolljacking-101/).
    - **Design implication:**
      - Native scroll, with CSS-native scroll effects under `@supports`, and a static story by default.

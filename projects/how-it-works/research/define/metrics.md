@@ -6,7 +6,7 @@ We measure without cookies and without anything stored on the visitor's device (
 
 | Goal (from BRIEF) | Success signal | Target *(inferred; first-launch guesses to revisit)* |
 |---|---|---|
-| Visitors understand the system | A first-time reader can name the four gates and say what happens at each | 4 of 5 people in an informal hallway test before G4 (Review or the human runs it) |
+| Visitors understand the system | A first-time reader can name the four gates and say what happens at each | 4 of 5 people in an informal hallway test before G4. **Owner: the human** (agents can't recruit people); skip the target if there's no time |
 | People try it | Setup-sentence copies; repo clones | Copy rate ≥ 5% of home visits (if measured); clones rising in the 14 days after launch |
 | People trust it | Stars; inbound links from discussions; time on `/made/` | Stars growing week on week; at least one unsolicited share |
 | The site is proof of the quality bar | Published Lighthouse, accessibility and detector results | Lighthouse mobile ≥ 90 on all four categories; LCP < 2.5 s; CLS < 0.1; 0 axe violations; Impeccable detector clean or justified |
@@ -18,11 +18,11 @@ We measure without cookies and without anything stored on the visitor's device (
 |---|---|---|---|---|
 | Stars, forks, watchers | GitHub repo page / REST API | n/a | free | Public counts. Can be read at build time for the footer |
 | Clones, views, top referrers, top paths | GitHub traffic API: `/repos/{owner}/{repo}/traffic/clones`, `/views`, `/popular/referrers`, `/popular/paths` | n/a | free | **Only the last 14 days** are kept, and reading them needs write access to the repo (https://docs.github.com/en/rest/metrics/traffic). Archive weekly if we want history: a scheduled Action writing JSON, which is Backend's call |
-| Site page views and referrers | Cookieless analytics (Q9), or nothing | No | GoatCounter hosted is free for non-commercial use. Plausible is paid only, from about US$9/month. Both figures come from aggregators (https://toolradar.com/compare/goatcounter-vs-plausible) and need checking on vendor pages | GitHub Pages itself gives site owners no analytics |
+| Site page views and referrers | Cookieless analytics (Q9), or nothing | No | GoatCounter hosted is free for reasonable public usage (https://www.goatcounter.com/). Plausible is paid only, from US$9/month with a 30-day trial (https://plausible.io/) | GitHub Pages itself gives site owners no analytics |
 | Setup-sentence copy events | A custom event on the copy button, sent to cookieless analytics | No | as above | The single most useful number. Without analytics, use clones as the proxy |
 | Lighthouse and axe scores | Review's tools (`docs/review/tools/`) at G4, published on `/made/` | n/a | free | The scores are the proof (P1). Re-run after any content update |
 | Impeccable detector | `npx impeccable detect`, published on `/made/` | n/a | free | |
-| Understanding test | 5-person informal test with the question "name the gates" | n/a | free | Qualitative. Results go in `review/` |
+| Understanding test | 5-person informal test with the question "name the gates" | n/a | free | Run by the human. Qualitative; the human's notes go to the PM, who files them in `review/` |
 
 ## What we will *not* measure
 

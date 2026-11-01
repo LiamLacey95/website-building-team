@@ -173,7 +173,7 @@ The set has eight sites. Three are explainers known for interaction or scroll st
   - The canonical source for our method: four phases, Discover, Define, Develop, Deliver.
   - The diagram is licensed **CC BY 4.0**, so we may redraw it with attribution.
   - The Council says work on it began in 2003 and it was shown from 2004 (https://www.designcouncil.org.uk/our-resources/the-double-diamond/history-of-the-double-diamond/), and elsewhere that it was "launched in 2004" (https://www.designcouncil.org.uk/our-resources/framework-for-innovation/). Say "2003–04", not the often-quoted 2005.
-  - The page itself admits the model reads as too linear, which is why the Council added the Framework for Innovation.
+  - The Double Diamond is often read as a one-way sequence *(inferred)*. The Council's later Framework for Innovation is its expanded model (https://www.designcouncil.org.uk/our-resources/framework-for-innovation/).
   - Screenshots: `refs/design-council-double-diamond-*.webp`.
 - **CrewAI** (https://www.crewai.com/): "The Enterprise Agent Build & Runtime for the work your business runs on". The open-source install is hidden behind "Book a Demo", and no crew is ever shown working. This is a pattern to avoid.
 
@@ -211,6 +211,6 @@ The set has eight sites. Three are explainers known for interaction or scroll st
 - **A burying CTA.** CrewAI hides the open-source path behind "Book a Demo", and Claude Code's CLI command is below the fold.
 - **Dark-gradient, glowing, fake-UI AI tropes and superlative headlines.** Cursor's sections are interchangeable, and Factory's agency moved away from the "AI tool" look on purpose.
 - **Process described in text only, or a static diagram with generic alt text.** Work & Co, Linear Method and the Design Council all fall into this.
-- **Implying the process is strictly linear.** The Design Council had to add a framework because of it. Show the loop back from a gate ("revise: …").
+- **Implying the process is strictly linear.** A plain double diamond invites that reading *(inferred)*. Show the loop back from a gate ("revise: …").
 - **Cookie walls on first visit.** Claude Code and Cursor both show one. A static site with no tracking needs none, which is a small, visible quality win.
 - **Sixteen sections.** Aim for 6 to 8 chapters on the main page.

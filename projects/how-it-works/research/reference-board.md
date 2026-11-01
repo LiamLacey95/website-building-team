@@ -1,6 +1,6 @@
 # Reference board: how-it-works
 
-There are 19 references in four candidate directions. These are options for Concept to choose from; Research is not picking one.
+There are 20 references (A1 to D5) in four candidate directions. These are options for Concept to choose from; Research is not picking one.
 
 Each live site has a 1440x900 screenshot, captured 2026-11-01. Board screenshots are in `research/refs/board/`, and each file name starts with its board ID (for example `d3-monument-valley-desktop.webp` is D3). A4, A5 and B5 reuse competitor screenshots from `research/refs/`. Three references have no screenshot: D1 and D2 are links only because their art is copyrighted print work, and C5 is WebGL. `extra-*` files are candidates that didn't make the board.
 

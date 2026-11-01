@@ -38,7 +38,6 @@ Checked 2026-11-01. Facts carry a URL; guesses are marked *(inferred)*.
 ### Browser support for scroll-driven effects
 
 - CSS scroll-driven animations (`animation-timeline: scroll()/view()`) work in Chrome/Edge 115+, Safari 26+ and Firefox 159+, about 88% of global usage (https://caniuse.com/mdn-css_properties_animation-timeline).
-  - Firefox 159 turned them on by default on 27 Oct 2026 (https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/159).
   - MDN does not yet list them as Baseline.
 - Same-document View Transitions work in Chrome 111+, Safari 18+ and Firefox 144+, about 92.9% (https://caniuse.com/view-transitions).
 - So we can use CSS-native scroll effects with no animation library. The `@supports` fallback is the static page *(inferred)*. This also helps the 150 KB JS budget.
@@ -74,7 +73,7 @@ Checked 2026-11-01. Facts carry a URL; guesses are marked *(inferred)*.
 | Web fonts | Prefer SIL OFL families | Self-host them and ship the OFL text. Loading Google Fonts from Google's servers without consent was ruled a GDPR breach (LG München, 20 Jan 2022) | https://openfontlicense.org/ofl-faq/, https://www.uni-regensburg.de/universitaet/aktuelles/nachrichten/nachricht/04-04-2022_dynamische-einbindung-von-google-fonts-ohne-einwilligung-verstoesst-gegen-dsgvo |
 | Reference screenshots in `research/refs/` | Third-party copyright | Internal research only. Don't publish them on the site | *(inferred)* |
 | Showing third-party UI in our own case study | | If the case study shows research screenshots, use small, cropped, cited thumbnails or links, or leave them out. A licence decision for the human *(inferred)* | |
-| AI image authorship | | US copyright still requires a human author (Thaler v. Perlmutter; cert. denied 2 Mar 2026). Say "generated with…" and don't claim copyright over the raw outputs *(inferred)* | https://www.mayerbrown.com/en/insights/publications/2026/03/supreme-court-denies-review-in-ai-authorship-case |
+| AI image authorship | | US copyright still requires a human author (D.C. Circuit, Thaler v. Perlmutter, 2025; the Supreme Court declined review on 2 Mar 2026). Say "generated with…" and don't claim copyright over the raw outputs *(inferred)* | https://www.mayerbrown.com/en/insights/publications/2026/03/supreme-court-denies-review-in-ai-authorship-case |
 
 ## Cookies and privacy
 
@@ -82,7 +81,7 @@ Checked 2026-11-01. Facts carry a URL; guesses are marked *(inferred)*.
 - A remembered "reduce motion" preference in localStorage is arguably strictly necessary, because the user asked for it. Alternatively, don't persist it *(inferred)*.
 - If analytics are wanted, use a cookieless option:
   - Plausible: no cookies, daily-rotated hash (https://plausible.io/data-policy).
-  - GoatCounter: aggregate only (https://www.goatcounter.com/help/gdpr).
+  - GoatCounter: aggregate only (https://www.goatcounter.com/help/gdpr); hosted service free for reasonable public usage (https://www.goatcounter.com/).
 - Either way, add a one-paragraph privacy note that also covers GitHub's IP logging.
 - Claude Code's and Cursor's pages both open with a cookie dialog. Having none is a small, visible quality difference.
 
