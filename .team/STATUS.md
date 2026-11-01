@@ -23,7 +23,8 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | how-it-works/01-research-discover | Research | done (7ae9124, 32f3abc) |
 | how-it-works/02-research-define | Research | done (8c81a8d) |
 | how-it-works/02-backend-stack-proposal | Backend + Front-end | done (6990cf9) |
-| how-it-works/03-review-gate1 | Review | in progress (paused 13:54 to 16:10 by a usage limit) |
+| how-it-works/03-review-gate1 | Review | done: REVISE, then PASS WITH NOTES after the packet revision (71e1b37) |
+| how-it-works/04-define-alignment | Research, Backend | in progress (not blocking) |
 | 05-frontend-telemetry-off | Front-end | done (945a8b7) |
 | 03-concept-comfyui-installer | Concept | done (1980bdb) |
 | concept no-GPU fallback note | Concept | done (fc7fc3f); option B (remote GPU support) is a Gate 1 question |
@@ -41,7 +42,7 @@ Setup history: `.team/history/2026-11-01-initial-setup/`.
 
 | Gate | State | Decision |
 |---|---|---|
-| G1 Strategy and scope | packet drafted (`gates/G1-strategy/`), waiting for Review | |
+| G1 Strategy and scope | **with the human** (`gates/G1-strategy/`) | |
 | G2 Creative direction | not started | |
 | G3 Design selection | not started | |
 | G4 Release sign-off | not started | |
