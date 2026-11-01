@@ -1,7 +1,7 @@
 ---
 /**
  * A content slot (contract: `slots`). Filled: responsive AVIF/WebP via <Picture> with the master's intrinsic
- * size (CLS 0). Pending: a designed placeholder naming the gate, never an empty box.
+ * size (CLS 0). Pending: a designed placeholder, a sky "not yet built" bay on the track that names its gate.
  */
 import { Picture } from 'astro:assets';
 import { getEntry } from 'astro:content';
@@ -15,7 +15,7 @@ const entry = await getEntry('slots', slot);
 const data = entry?.data;
 ---
 {data?.status === 'filled' ? (
-  <figure class="slot slot--filled">
+  <figure class="slot photo">
     {data.items.map((item) => (
       <Picture
         src={item.src}
@@ -23,26 +23,28 @@ const data = entry?.data;
         formats={['avif', 'webp']}
         fallbackFormat="webp"
         widths={[400, 800, 1200, 1600]}
-        sizes="(min-width: 80rem) 72rem, 100vw"
+        sizes="(min-width: 80rem) 60rem, 100vw"
         loading="lazy"
       />
     ))}
-    <figcaption>{caption}{data.items[0]?.caption && ` · ${data.items[0].caption}`}</figcaption>
+    <figcaption class="slot__cap">{caption}{data.items[0]?.caption && `. ${data.items[0].caption}`}</figcaption>
   </figure>
 ) : (
   <figure class="slot slot--pending">
+    <span class="marble slot__marble" aria-hidden="true"></span>
     <p class="slot__label">{data?.pendingLabel ?? 'This happens at a later gate.'}</p>
-    <figcaption>{caption}</figcaption>
+    <figcaption class="slot__cap">{caption}</figcaption>
   </figure>
 )}
 
 <style>
-  .slot { margin: 0; display: grid; gap: var(--space-2xs); }
-  .slot--filled :global(img) { width: 100%; height: auto; border-radius: var(--radius-m); }
+  .slot { margin: 0; display: grid; gap: var(--space-3); }
+  .slot__cap { font-size: var(--fs-sm); font-weight: 700; }
   .slot--pending {
-    place-items: center; text-align: center; min-height: 10rem; padding: var(--space-l);
-    border: 2px dashed var(--color-line); border-radius: var(--radius-m);
+    justify-items: center; text-align: center; padding: var(--space-6) var(--space-5);
+    background: var(--c-bg-2); color: var(--c-text);
+    border: var(--border); border-style: dashed; border-radius: var(--radius-lg);
   }
-  .slot__label { font-weight: 600; }
-  figcaption { color: var(--color-ink-muted); font-size: var(--step--1); }
+  .slot__marble { font-size: 2rem; }
+  .slot__label { font: 800 var(--fs-1) / 1.2 var(--font-display); font-variation-settings: 'opsz' 36, 'wdth' 90; }
 </style>

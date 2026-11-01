@@ -1,0 +1,53 @@
+---
+/**
+ * Gate 2, "wear the other two" (Research set piece 3, adopted by Direction C). Three swatches, each its own
+ * theme scope, so the three directions are visible side by side at once. Pressing one re-skins the whole page
+ * (data-theme on <html>) through a View Transition; "Back to the marble run" restores it. Motion off: instant.
+ * Without JS the three swatches simply stay side by side.
+ */
+const DIRECTIONS = [
+  { theme: 'paper-trail', name: 'Paper Trail', line: 'One sheet of paper crossing a studio desk: typed, clipped, stamped, bound.' },
+  { theme: 'signal-path', name: 'Signal Path', line: 'A modular instrument at night: your sentence is a signal, patched through six modules.' },
+  { theme: 'marble-run', name: 'Marble Run', line: 'A clay marble run: your sentence is a glass marble, and a real hand lifts each barrier.', chosen: true },
+] as const;
+---
+<div class="wear" data-wear>
+  <ul class="wear__row">
+    {DIRECTIONS.map((d) => (
+      <li class="wear__swatch" data-theme={d.theme}>
+        <p class="wear__name">{d.name}{'chosen' in d && <span class="tag">Chosen</span>}</p>
+        <p class="wear__line">{d.line}</p>
+        {'chosen' in d ? (
+          <button type="button" class="btn btn--strong" data-wear-theme={d.theme} data-js-only>Back to the marble run</button>
+        ) : (
+          <button type="button" class="btn btn--strong" data-wear-theme={d.theme} data-js-only>Wear {d.name}</button>
+        )}
+      </li>
+    ))}
+  </ul>
+  <p class="wear__note" data-js-only>
+    Try one on. The whole page changes into that direction for as long as you like. The human picked Marble Run.
+  </p>
+  <p class="visually-hidden" role="status" aria-live="polite" data-wear-status></p>
+</div>
+
+<style>
+  .wear { display: grid; gap: var(--space-4); }
+  .wear__row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: var(--space-4);
+    margin: 0; padding: 0; list-style: none;
+  }
+  .wear__swatch {
+    display: grid; gap: var(--space-3); align-content: start; max-width: none;
+    padding: var(--space-5); border: var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-rest);
+    background-image: var(--texture); background-size: var(--texture-size);
+  }
+  .wear__name {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);
+    font: var(--display-weight) var(--fs-2) / 1 var(--font-display); font-variation-settings: var(--display-variation);
+    letter-spacing: var(--display-tracking); text-transform: var(--display-case);
+  }
+  .wear__line { font-size: var(--fs-sm); }
+  .wear__swatch .btn { justify-self: start; }
+  .wear__note { font-weight: 700; }
+</style>

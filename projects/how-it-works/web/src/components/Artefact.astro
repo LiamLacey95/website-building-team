@@ -1,7 +1,10 @@
 ---
-/** One chapter artefact (contract: chapters.artefacts, a union on `kind`). Neutral rendering until Gate 3. */
+/**
+ * One chapter artefact (contract: chapters.artefacts, a union on `kind`): a file shown on a white card, a
+ * terminal moment on a navy card, a real-imagery slot, or the double-diamond run sketch.
+ */
 import type { CollectionEntry } from 'astro:content';
-import DoubleDiamond from './DoubleDiamond.astro';
+import RunSketch from './RunSketch.astro';
 import Slot from './Slot.astro';
 
 type Artefact = CollectionEntry<'chapters'>['data']['artefacts'][number];
@@ -12,25 +15,33 @@ interface Props {
 const { artefact: a, diamond = null } = Astro.props;
 ---
 {a.kind === 'file' && (
-  <figure class="artefact">
-    <figcaption><strong>{a.title}</strong> <code>{a.path}</code></figcaption>
-    <pre><code>{a.lines.join('\n')}</code></pre>
+  <figure class="artefact card">
+    <figcaption class="artefact__cap"><strong>{a.title}</strong><code>{a.path}</code></figcaption>
+    <pre class="artefact__body"><code>{a.lines.join('\n')}</code></pre>
   </figure>
 )}
 {a.kind === 'terminal' && (
-  <figure class="artefact">
-    <pre><code><span class="prompt">$ </span>{a.command}{a.output.length ? `\n${a.output.join('\n')}` : ''}</code></pre>
+  <figure class="artefact artefact--terminal">
+    <figcaption class="visually-hidden">Terminal</figcaption>
+    <pre class="artefact__body"><code><span class="artefact__prompt" aria-hidden="true">$ </span>{a.command}{a.output.length ? `\n${a.output.join('\n')}` : ''}</code></pre>
   </figure>
 )}
 {a.kind === 'slot' && <Slot slot={a.slot} caption={a.caption} />}
-{a.kind === 'diagram' && <DoubleDiamond current={diamond} />}
+{a.kind === 'diagram' && <RunSketch current={diamond} />}
 
 <style>
-  .artefact { margin: 0; display: grid; gap: var(--space-2xs); }
-  figcaption { display: flex; flex-wrap: wrap; gap: var(--space-2xs); font-size: var(--step--1); color: var(--color-ink-muted); }
-  pre {
-    margin: 0; padding: var(--space-s); overflow-x: auto; background: var(--color-surface);
-    border: 1px solid var(--color-line); border-radius: var(--radius-m); font-size: var(--step--1); line-height: 1.5;
+  .artefact { margin: 0; overflow: hidden; }
+  .artefact__cap {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-3);
+    padding: var(--space-3) var(--space-4); border-bottom: var(--rule); font-size: var(--fs-sm);
   }
-  .prompt { color: var(--color-ink-muted); user-select: none; }
+  .artefact__cap code { overflow-wrap: anywhere; }
+  .artefact__body {
+    margin: 0; padding: var(--space-4); overflow-x: auto; font-size: var(--fs-sm); line-height: 1.55;
+  }
+  .artefact--terminal {
+    background: var(--c-accent-bg); color: var(--c-on-accent-bg);
+    border: var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-rest);
+  }
+  .artefact__prompt { opacity: 0.7; user-select: none; }
 </style>

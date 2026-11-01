@@ -1,69 +1,101 @@
 /*
- * Design tokens: the ONE file a direction's style tile replaces (Gate 2 -> DESIGN.md -> here).
- * Every value below is a neutral placeholder. Components read only these custom properties;
- * they never hard-code colour, type, space, radius or motion.
- *
- * Several themes at once (for a "re-skin at the gate" set piece): additional themes live in
- * styles/themes/<name>.css as [data-theme='<name>'] { ... } blocks overriding these BASE tokens.
- * Any element with data-theme becomes a full theme scope (see the DERIVED block and global.css).
+ * Design tokens: Direction C · Marble Run, chosen at Gate 2. Source: concepts/c-marble-run/tokens.css
+ * (Concept owns the values; DESIGN.md documents them). Changes from the source, nothing else:
+ *   - type sizes in rem (16 px = 1 rem), so the visitor's browser font size is respected;
+ *   - the texture URL points at public/textures/.
+ * Shared schema with paper-trail and signal-path (styles/themes/): a re-skin is one data-theme attribute.
+ * Every token is declared on each theme scope, so derived values (--border, --rule) recompute per scope.
  */
-:root {
-  /* Colour: placeholder neutrals, contrast-checked (ink on paper 16.4:1, muted on paper 7.5:1, white on accent 6.7:1). */
-  --color-paper: #f4f5f7;
-  --color-surface: #ffffff;
-  --color-ink: #15171c;
-  --color-ink-muted: #4a4f5a;
-  --color-line: #d5d8de;
-  --color-accent: #1d4ed8;        /* links, focus; 6.1:1 on paper */
-  --color-accent-ink: #ffffff;    /* text on accent */
+:root, [data-theme="marble-run"] {
+  color-scheme: light;
 
-  /* Type: placeholder stacks until the direction's self-hosted faces land. */
-  --font-display: system-ui, sans-serif;
-  --font-body: system-ui, sans-serif;
-  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
+  /* Colour: surfaces */
+  --c-bg: #FFC53D;            /* sunflower wall: page */
+  --c-bg-2: #BFE3F2;          /* sky: secondary surfaces (bin, table) */
+  --c-surface: #FFFFFF;       /* tickets and cards: all long reading sits on white */
+  --c-surface-2: #FFFFFF;     /* gate card */
+  --c-surface-3: #FFFFFF;
+  /* Colour: text */
+  --c-on-bg: #1C2147;         /* navy on sun: 9.80:1 */
+  --c-on-bg-muted: #1C2147;   /* no muted grey on yellow; use size and weight instead */
+  --c-text: #1C2147;          /* navy on white: 15.47:1 */
+  --c-text-muted: #3A3F63;    /* on white: 10.14:1 */
+  /* Colour: accents */
+  --c-accent: #E8492C;        /* tomato: shapes, barriers, large text only (3.99:1 with navy) */
+  --c-accent-on-folder: #B7321A;
+  --c-on-accent: #FFFFFF;     /* on --c-accent-ink buttons: 6.03:1 */
+  --c-accent-ink: #B7321A;    /* tomato for small text and button fills: 6.03:1 on white */
+  --c-accent-bg: #1C2147;     /* the strong button on the yellow wall */
+  --c-on-accent-bg: #FFC53D;  /* sun on navy: 9.80:1 */
+  --c-link: #1C2147;          /* navy, underlined */
+  --c-link-on-bg: #1C2147;
+  --c-highlight: #BFE3F2;
+  --c-gate: #E8492C;          /* barrier */
+  --c-go: #4DBF95;            /* mint track, "go" (always with a word): navy on it 6.78:1 */
+  --c-hold: #E8492C;
+  --c-rule: #1C2147;
+  --c-focus: #1C2147;         /* 3 px navy, with a white offset ring */
+  --c-focus-on-bg: #1C2147;
+  --c-wood: #D8A46A;          /* track (decorative) */
 
-  /* Type scale: fluid, ~1.25 ratio. */
-  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
-  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
-  --step-1: clamp(1.25rem, 1.17rem + 0.4vw, 1.5rem);
-  --step-2: clamp(1.56rem, 1.42rem + 0.7vw, 2rem);
-  --step-3: clamp(1.95rem, 1.7rem + 1.25vw, 2.75rem);
-  --step-4: clamp(2.44rem, 2rem + 2.2vw, 4rem);
-  --leading-tight: 1.1;
-  --leading-body: 1.6;
-  --measure: 60ch; /* ~72-78 characters of proportional text (ch = width of "0") */
+  /* Type */
+  --font-display: 'Bricolage Grotesque', 'Arial Rounded MT Bold', sans-serif;
+  --font-text: 'Atkinson Hyperlegible Next', Verdana, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  --display-weight: 800;
+  --display-case: none;
+  --display-tracking: -0.01em;
+  --display-variation: 'opsz' 96, 'wdth' 85;
+  --display-stretch: 100%;    /* width comes from the wdth axis above */
+  --text-weight: 400;
+  --label-case: none;
+  --label-tracking: 0;
+  /* scale: 1.25 ratio, 18 px base */
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-0: 1.125rem;
+  --fs-1: 1.4063rem;
+  --fs-2: 1.75rem;
+  --fs-3: 2.1875rem;
+  --fs-4: 2.75rem;
+  --fs-5: 3.4375rem;
+  --fs-6: 4rem;   /* hero (short, two lines) */
+  --lh-text: 1.6;
+  --lh-display: 0.98;
+  --measure: 60ch;
 
-  /* Space: 4px-based steps. */
-  --space-3xs: 0.25rem;
-  --space-2xs: 0.5rem;
-  --space-xs: 0.75rem;
-  --space-s: 1rem;
-  --space-m: 1.5rem;
-  --space-l: 2.5rem;
-  --space-xl: 4rem;
-  --space-2xl: 6rem;
-  --gutter: clamp(1rem, 4vw, 3rem);
-  --page-max: 80rem;
+  /* Shape: soft and toy-like */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+  --border-w: 2.5px;
+  --border: 2.5px solid #1C2147;
+  --rule: 2px dashed rgb(28 33 71 / .2);
+  --shadow-rest: 4px 5px 0 #1C2147;   /* hard offset: deliberate toy depth */
+  --shadow-lift: 6px 8px 0 #1C2147;
+  --shadow-press: 0 0 0 #1C2147;      /* pressed: the offset disappears */
+  --tilt-max: 0deg;
 
-  /* Radius */
-  --radius-s: 4px;
-  --radius-m: 8px;
-  --radius-l: 16px;
+  /* Space: 4 px base, airy */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 14px;
+  --space-4: 18px;
+  --space-5: 28px;
+  --space-6: 40px;
+  --space-7: 64px;
+  --space-8: 96px;
+  --gutter: clamp(18px, 4vw, 56px);
 
-  /* Motion: durations collapse to 0 when motion is off (see global.css). */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-fast: 160ms;
-  --duration-base: 320ms;
-  --duration-slow: 640ms;
-}
+  /* Motion: gravity, not springs */
+  --ease-out: cubic-bezier(.25, 1, .5, 1);    /* rolling, decelerating */
+  --ease-in: cubic-bezier(.55, 0, 1, .45);    /* dropping, accelerating */
+  --dur-short: 100ms;
+  --dur-med: 450ms;
+  --dur-long: 1100ms;
 
-/*
- * DERIVED tokens: anything defined in terms of another token goes here, declared on every theme scope.
- * Custom properties inherit their computed value, so a derived token declared on :root alone would keep
- * :root's colours inside a [data-theme] subtree. Themes override base tokens only, never these.
- */
-:root,
-[data-theme] {
-  --color-focus: var(--color-accent);
-  --color-selection: color-mix(in oklab, var(--color-accent) 25%, var(--color-surface));
+  /* Texture */
+  --texture: url("/textures/c-texture.webp");
+  --texture-size: 768px;
 }

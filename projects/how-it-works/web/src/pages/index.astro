@@ -1,62 +1,62 @@
 ---
-import { render } from 'astro:content';
+/**
+ * Master home: the baseline composition of the shared Marble Run components (a plain linear read).
+ * Each Gate 3 variation replaces this file with its own structure and set piece.
+ */
 import Base from '../layouts/Base.astro';
 import SetupSentence from '../components/SetupSentence.astro';
-import Artefact from '../components/Artefact.astro';
-import GateCard from '../components/GateCard.astro';
-import Scene from '../components/Scene.astro';
+import ChapterText from '../components/ChapterText.astro';
+import LevelCrossing from '../components/LevelCrossing.astro';
+import WearTheOthers from '../components/WearTheOthers.astro';
+import Art from '../components/Art.astro';
 import { getChapters, getSite } from '../lib/content';
+import { CHAPTER_ART } from '../lib/images';
 
 const site = await getSite();
-const chapters = await Promise.all(
-  (await getChapters()).map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
-);
-const story = chapters.filter(({ entry }) => entry.data.order > 0);
-const hero = chapters.find(({ entry }) => entry.data.order === 0);
+const chapters = await getChapters();
+const story = chapters.filter((c) => c.data.order > 0);
 ---
 <Base>
   <section class="hero" aria-labelledby="hero-title">
-    <h1 id="hero-title">{site.heroLine}</h1>
-    {hero && <div class="body"><hero.Content /></div>}
-    <SetupSentence sentence={site.setupSentence} label={site.setupIntro} notice={site.gpuNotice} id="hero-setup" />
-    <p class="next">{site.whatHappensNext}</p>
-    {hero?.entry.data.artefacts.map((a) => <Artefact artefact={a} diamond={hero.entry.data.diamond} />)}
+    <div class="hero__copy">
+      <h1 id="hero-title">{site.heroLine}</h1>
+      <SetupSentence sentence={site.setupSentence} label={site.setupIntro} notice={site.gpuNotice} id="hero-setup" />
+      <p class="hero__next">{site.whatHappensNext}</p>
+    </div>
+    <Art name="hero" eager sizes="(min-width: 60rem) 58vw, 100vw" class="hero__art" />
   </section>
 
-  <nav class="chapters" aria-label="Chapters">
-    <ol>
-      {story.map(({ entry }) => <li><a href={`#${entry.data.slug}`}>{entry.data.title}</a></li>)}
-    </ol>
-  </nav>
-
-  {story.map(({ entry, Content }) => (
-    <section class="chapter" id={entry.data.slug} aria-labelledby={`${entry.data.slug}-title`}>
-      <h2 id={`${entry.data.slug}-title`}>{entry.data.title}</h2>
-      <p class="dek">{entry.data.dek}</p>
-      <div class="body"><Content /></div>
-      {entry.data.scenes.map((id) => <Scene id={id} />)}
-      {entry.data.artefacts.map((a) => <Artefact artefact={a} diamond={entry.data.diamond} />)}
-      {entry.data.gate && <GateCard gate={entry.data.gate} />}
-      {entry.data.order === 9 && (
-        <SetupSentence sentence={site.setupSentence} label={site.setupIntro} notice={site.gpuNotice} id="end-setup" />
-      )}
-    </section>
-  ))}
-
-  <p class="scaffold-note">Scaffold: draft copy from the content contract, neutral styling. The visual design is chosen at Gate 3.</p>
+  {story.map((c) => {
+    const art = CHAPTER_ART[c.data.slug];
+    return (
+      <section class="station" id={c.data.slug} aria-label={c.data.title}>
+        <div class="station__grid">
+          <ChapterText entry={c} />
+          {art && <Art name={art} class="station__art" />}
+        </div>
+        {c.data.gate === 'G2' && <WearTheOthers />}
+        {c.data.gate && <LevelCrossing gate={c.data.gate} />}
+        {c.data.order === 9 && (
+          <SetupSentence sentence={site.setupSentence} label={site.setupIntro} notice={site.gpuNotice} id="end-setup" />
+        )}
+      </section>
+    );
+  })}
 </Base>
 
 <style>
-  .hero { display: grid; gap: var(--space-m); padding-block: var(--space-xl) var(--space-2xl); }
-  .hero h1 { max-width: 20ch; }
-  .next, .dek { color: var(--color-ink-muted); }
-  .dek { font-size: var(--step-1); }
-  .body { display: grid; gap: var(--space-s); }
-  .body :global(p) { max-width: var(--measure); }
-  .chapters ol {
-    display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-m);
-    padding-inline-start: var(--space-m); margin: 0 0 var(--space-xl);
+  .hero, .station { max-width: 1240px; margin-inline: auto; padding-inline: var(--gutter); }
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-6);
+    align-items: center; padding-block: var(--space-6) var(--space-8);
   }
-  .chapter { display: grid; gap: var(--space-m); padding-block: var(--space-xl); border-top: 1px solid var(--color-line); }
-  .scaffold-note { color: var(--color-ink-muted); font-size: var(--step--1); }
+  .hero__copy { display: grid; gap: var(--space-5); }
+  .hero__next { font-weight: 700; }
+  .station { display: grid; gap: var(--space-6); padding-block: var(--space-7); }
+  .station__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-6); align-items: start; }
+  .station__art { position: sticky; top: var(--space-5); }
+  @media (max-width: 60rem) {
+    .hero, .station__grid { grid-template-columns: 1fr; }
+    .station__art { position: static; }
+  }
 </style>

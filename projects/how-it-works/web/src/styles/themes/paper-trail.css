@@ -1,0 +1,98 @@
+/* Alternate theme for the Gate 2 "wear the other two" re-skin. Source: concepts/a-paper-trail/tokens.css (rem sizes, texture URL).
+ */
+/* Direction A · Paper Trail: base design tokens.
+   Shared schema: B and C define the same names, so a theme switch is one attribute (data-theme).
+   Fonts: ../_fonts/fonts.css (self-hosted OFL). Contrast pairs: direction.md. */
+:root[data-theme="paper-trail"], [data-theme="paper-trail"] {
+  color-scheme: dark;
+
+  /* Colour: surfaces */
+  --c-bg: #24412F;            /* blotter: page */
+  --c-bg-2: #2F5240;          /* blotter seam, progress strip */
+  --c-surface: #F7F2E7;       /* sheet of paper: reading surfaces */
+  --c-surface-2: #E2C98F;     /* manila folder: gate cards */
+  --c-surface-3: #FFFDF8;     /* index card */
+  /* Colour: text */
+  --c-on-bg: #F7F2E7;         /* text directly on the blotter: 10.05:1 */
+  --c-on-bg-muted: #CFDCCB;   /* 7.88:1 on bg */
+  --c-text: #1F1C17;          /* ink on paper: 15.21:1 */
+  --c-text-muted: #5B564C;    /* graphite on paper: 6.53:1 */
+  /* Colour: accents */
+  --c-accent: #B8321B;        /* vermilion: on paper only (5.36:1); never on bg (1.87:1) */
+  --c-accent-on-folder: #8F2412; /* vermilion on manila: 5.35:1 */
+  --c-on-accent: #F7F2E7;     /* label on a vermilion button: 5.36:1 */
+  --c-accent-bg: #E0B04A;     /* brass: the accent on the blotter (5.60:1) */
+  --c-on-accent-bg: #24412F;  /* label on a brass button: 5.60:1 */
+  --c-accent-ink: #B8321B;    /* accent for small text: same as --c-accent (on paper) */
+  --c-link: #2C4A75;          /* carbon, on paper: 8.03:1 */
+  --c-link-on-bg: #E0B04A;    /* brass, on the blotter */
+  --c-highlight: #F3D77A;     /* tracing yellow behind ink: 11.98:1 */
+  --c-gate: #B8321B;          /* gate marks (on paper) */
+  --c-go: #2C4A75;            /* "approved" ink (always with a word) */
+  --c-hold: #B8321B;          /* "waiting" mark (always with a word) */
+  --c-rule: rgb(91 86 76 / .35);
+  --c-focus: #B8321B;         /* on paper; use --c-focus-on-bg on the blotter */
+  --c-focus-on-bg: #E0B04A;
+  --c-wood: #C9A877;          /* oak: decorative material */
+
+  /* Type */
+  --font-display: 'Young Serif', Georgia, serif;
+  --font-text: 'Newsreader', Georgia, serif;
+  --font-mono: 'Courier Prime', ui-monospace, monospace;
+  --display-weight: 400;
+  --display-case: none;
+  --display-tracking: -0.005em;
+  --display-variation: normal;
+  --display-stretch: 100%;
+  --text-weight: 400;
+  --label-case: uppercase;
+  --label-tracking: 0.06em;
+  /* scale: 1.25 ratio, 18 px base */
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-0: 1.125rem;
+  --fs-1: 1.4063rem;
+  --fs-2: 1.75rem;
+  --fs-3: 2.1875rem;
+  --fs-4: 2.75rem;
+  --fs-5: 3.4375rem;   /* full-sentence hero */
+  --fs-6: 4.3125rem;   /* short display only */
+  --lh-text: 1.55;
+  --lh-display: 1.06;
+  --measure: 66ch;
+
+  /* Shape */
+  --radius-sm: 0;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-pill: 999px;     /* stamp handle and copy tab only */
+  --border-w: 0;            /* paper has no outline: elevation only */
+  --border: 0 solid transparent;
+  --rule: 1px solid var(--c-rule);
+  --shadow-rest: 0 1px 0 rgb(0 0 0 / .18), 0 10px 22px -12px rgb(0 0 0 / .55);
+  --shadow-lift: 0 2px 0 rgb(0 0 0 / .18), 0 18px 30px -14px rgb(0 0 0 / .6);
+  --shadow-press: 0 0 0 transparent;
+  --tilt-max: 1.5deg;
+
+  /* Space: 4 px base */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 36px;
+  --space-7: 56px;
+  --space-8: 88px;
+  --gutter: clamp(18px, 4vw, 56px);
+
+  /* Motion: paper slides, pencil draws, stamp thumps; no bounce */
+  --ease-out: cubic-bezier(.25, 1, .5, 1);    /* ease-out-quart */
+  --ease-in: cubic-bezier(.5, 0, .75, 0);     /* the stamp's drop */
+  --dur-short: 120ms;
+  --dur-med: 320ms;
+  --dur-long: 600ms;
+
+  /* Texture (relative to this folder's images/) */
+  --texture: url("/textures/a-texture.webp");
+  --texture-size: 640px;
+}

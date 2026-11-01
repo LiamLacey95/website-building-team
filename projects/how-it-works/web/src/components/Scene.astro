@@ -1,5 +1,8 @@
 ---
-/** A scene (contract: scenes): a short exchange written for the story (G1 Q5). Rendered as a plain log until Gate 3. */
+/**
+ * A scene (contract: scenes): a short exchange written for the story (G1 Q5), rendered as the tiny paper notes
+ * the clay figures pass around the studio table. Each note names who sent it, and to whom.
+ */
 import { getEntry } from 'astro:content';
 import { roleName } from '../lib/content';
 
@@ -9,26 +12,39 @@ interface Props {
 const entry = await getEntry('scenes', Astro.props.id);
 if (!entry) throw new Error(`scenes: no entry ${Astro.props.id}`);
 const names = await roleName();
-const who = (s: string) => (s === 'human' ? 'You' : s === 'system' ? 'System' : names[s] ?? s);
+const who = (s: string) => (s === 'human' ? 'You' : s === 'system' ? 'The terminal' : names[s] ?? s);
+const KIND: Record<string, string> = { message: 'message', brief: 'brief', report: 'report', aside: 'aside', command: 'command' };
 ---
 <figure class="scene">
-  <figcaption>{entry.data.title}</figcaption>
-  <ol>
+  <figcaption class="scene__title">{entry.data.title}</figcaption>
+  <ol class="scene__notes">
     {entry.data.lines.map((l) => (
-      <li class={`line line--${l.kind}`}>
-        <span class="who">{who(l.speaker)}{l.to && ` → ${l.to === 'all' ? 'everyone' : who(l.to)}`}</span>
-        <span class="text">{l.text}</span>
+      <li class:list={['scene__note', `scene__note--${KIND[l.kind] ?? 'message'}`, { 'scene__note--human': l.speaker === 'human' }]}>
+        <span class="scene__who">
+          {who(l.speaker)}{l.to && <> to {l.to === 'all' ? 'everyone' : who(l.to)}</>}
+          {l.kind !== 'message' && <span class="scene__kind">{l.kind}</span>}
+        </span>
+        <span class="scene__text">{l.text}</span>
       </li>
     ))}
   </ol>
 </figure>
 
 <style>
-  .scene { margin: 0; display: grid; gap: var(--space-2xs); }
-  figcaption { font-weight: 600; }
-  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2xs); }
-  .line { display: grid; grid-template-columns: minmax(8rem, 12rem) 1fr; gap: var(--space-s); }
-  .who { color: var(--color-ink-muted); font-size: var(--step--1); }
-  .line--command .text { font-family: var(--font-mono); }
-  @media (max-width: 40rem) { .line { grid-template-columns: 1fr; gap: 0; } }
+  .scene { margin: 0; display: grid; gap: var(--space-3); }
+  .scene__title { font: 800 var(--fs-1) / 1.2 var(--font-display); font-variation-settings: 'opsz' 36, 'wdth' 90; }
+  .scene__notes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+  .scene__note {
+    display: grid; gap: var(--space-1); max-width: 34rem; padding: var(--space-3) var(--space-4);
+    background: var(--c-surface); color: var(--c-text);
+    border: var(--border); border-radius: var(--radius-md) var(--radius-md) var(--radius-md) 4px;
+  }
+  .scene__note--human { justify-self: end; background: var(--c-go); border-radius: var(--radius-md) var(--radius-md) 4px var(--radius-md); }
+  .scene__note--command .scene__text { font-family: var(--font-mono); font-size: var(--fs-sm); }
+  .scene__note--aside { background: var(--c-bg-2); }
+  .scene__who { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: baseline; font-size: var(--fs-sm); font-weight: 700; }
+  .scene__kind {
+    font-size: var(--fs-xs); font-weight: 800; padding: 0 var(--space-2);
+    border: 1.5px solid currentColor; border-radius: var(--radius-pill);
+  }
 </style>

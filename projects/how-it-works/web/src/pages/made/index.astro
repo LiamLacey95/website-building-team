@@ -1,7 +1,7 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import GateCard from '../../components/GateCard.astro';
+import LevelCrossing from '../../components/LevelCrossing.astro';
 import Slot from '../../components/Slot.astro';
 import { roleName } from '../../lib/content';
 
@@ -12,10 +12,11 @@ const names = await roleName();
 const roles = await getCollection('roles');
 ---
 <Base title="How this site was made">
+  <div class="page">
   <h1>How this site was made</h1>
   <p class="lede">The same team, the same four gates. Each gate’s packet appears here as the project reaches it.</p>
 
-  <section id="team" aria-labelledby="team-title">
+  <section class="card" id="team" aria-labelledby="team-title">
     <h2 id="team-title">The team</h2>
     <ul class="roles">
       {roles.map((r) => (
@@ -29,15 +30,15 @@ const roles = await getCollection('roles');
   </section>
 
   {gates.map((g) => (
-    <section id={g.id.toLowerCase()} aria-labelledby={`${g.id}-made`}>
+    <section class="gate-section" id={g.id.toLowerCase()} aria-labelledby={`${g.id}-made`}>
       <h2 id={`${g.id}-made`}>Gate {g.data.number}: {g.data.name}</h2>
       {slots.filter((s) => s.data.gate === g.id).map((s) => <Slot slot={s.id} caption={s.data.label} />)}
-      <GateCard gate={g.id as 'G1' | 'G2' | 'G3' | 'G4'} />
+      <LevelCrossing gate={g.id as 'G1' | 'G2' | 'G3' | 'G4'} />
     </section>
   ))}
 
   {numbers && (
-    <section id="numbers" aria-labelledby="numbers-title">
+    <section class="card" id="numbers" aria-labelledby="numbers-title">
       <h2 id="numbers-title">Counted so far</h2>
       <dl class="numbers">
         <div><dt>Commits</dt><dd>{numbers.commits}</dd></div>
@@ -50,17 +51,19 @@ const roles = await getCollection('roles');
       </ul>
     </section>
   )}
+  </div>
 </Base>
 
 <style>
-  h1 { margin-block-end: var(--space-s); }
-  .lede { color: var(--color-ink-muted); margin-block-end: var(--space-xl); }
-  section { display: grid; gap: var(--space-m); padding-block: var(--space-l); border-top: 1px solid var(--color-line); }
-  .roles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-m); }
-  .roles h3 { font-size: var(--step-1); }
-  .owns { color: var(--color-ink-muted); font-size: var(--step--1); overflow-wrap: anywhere; }
-  .numbers { display: flex; flex-wrap: wrap; gap: var(--space-l); margin: 0; }
-  .numbers dd { margin: 0; font-size: var(--step-3); font-weight: 700; font-variant-numeric: tabular-nums; }
-  .numbers dt { color: var(--color-ink-muted); font-size: var(--step--1); }
-  .by-role { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-m); padding: 0; list-style: none; color: var(--color-ink-muted); }
+  h1 { margin-block-end: var(--space-4); }
+  .lede { font-weight: 700; margin-block-end: var(--space-7); }
+  .gate-section { display: grid; gap: var(--space-5); margin-block-start: var(--space-7); }
+  section.card { display: grid; gap: var(--space-4); padding: var(--space-6); margin-block-start: var(--space-6); }
+  .roles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-5); }
+  .roles h3 { font-size: var(--fs-1); }
+  .owns { color: var(--c-text-muted); font-size: var(--fs-sm); overflow-wrap: anywhere; }
+  .numbers { display: flex; flex-wrap: wrap; gap: var(--space-6); margin: 0; }
+  .numbers dd { margin: 0; font-size: var(--fs-3); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .numbers dt { color: var(--c-text-muted); font-size: var(--fs-sm); }
+  .by-role { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); padding: 0; list-style: none; color: var(--c-text-muted); }
 </style>

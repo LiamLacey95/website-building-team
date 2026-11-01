@@ -14,24 +14,30 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const path = Astro.url.pathname.replace(/\/?$/, '/');
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="marble-run">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#FFC53D" />
     <link rel="canonical" href={canonical} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="alternate" type="text/markdown" href="/story.md" title="The story as Markdown" />
+    <!-- Display and text faces of the chosen direction; the re-skin themes' faces load only on use. -->
+    <link rel="preload" href="/fonts/bricolage-grotesque-normal-300-800.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/atkinson-hyperlegible-next-normal-300-800.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Applies the saved "Reduce motion" choice before first paint. External file: the CSP allows no inline script. -->
     <script is:inline src="/motion.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="wordmark" href="/">{site.name}</a>
+      <a class="wordmark" href="/" aria-label={`${site.name}, home`}>
+        <span>{site.name}</span><span class="marble wordmark__marble" aria-hidden="true"></span>
+      </a>
       <nav aria-label="Main">
         <ul>
           {NAV.map((item) => (
@@ -45,8 +51,10 @@ const path = Astro.url.pathname.replace(/\/?$/, '/');
       <slot />
     </main>
     <footer class="site-footer">
-      <p>Built by the team it describes. Source on <a href={site.repoUrl}>GitHub</a> under Apache-2.0.</p>
-      <p><a href="/credits/">Credits, licences and privacy</a> · No cookies, no analytics.</p>
+      <div class="site-footer__inner">
+        <p class="site-footer__line">Built by the team it describes. Source on <a href={site.repoUrl}>GitHub</a> under Apache-2.0.</p>
+        <p><a href="/credits/">Credits, licences and privacy</a>. No cookies, no analytics.</p>
+      </div>
     </footer>
     <script>
       import '../scripts/site.ts';
@@ -56,51 +64,38 @@ const path = Astro.url.pathname.replace(/\/?$/, '/');
 
 <style>
   .site-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-s) var(--space-m);
-    padding: var(--space-s) var(--gutter);
-    border-bottom: 1px solid var(--color-line);
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5);
+    max-width: 1240px; margin-inline: auto; padding: var(--space-5) var(--gutter);
   }
   .wordmark {
-    font-family: var(--font-display);
-    font-weight: 700;
-    color: var(--color-ink);
-    text-decoration: none;
-    margin-inline-end: auto;
+    display: inline-flex; align-items: baseline; gap: 0.2em; margin-inline-end: auto;
+    font: 800 var(--fs-2) / 1 var(--font-display); font-variation-settings: var(--display-variation);
+    letter-spacing: -0.015em; color: var(--c-on-bg); text-decoration: none;
   }
-  nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2xs) var(--space-m);
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  .wordmark__marble { width: 0.55em; height: 0.55em; }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:root:not([data-motion='off'])) .wordmark__marble { animation: roll-in var(--dur-long) var(--ease-out) both; }
   }
+  @keyframes roll-in {
+    from { transform: translateX(-9em) rotate(-540deg); }
+    to { transform: none; }
+  }
+  nav ul { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); margin: 0; padding: 0; list-style: none; }
   nav a {
-    color: var(--color-ink);
-    text-decoration: none;
-    padding-block: var(--space-3xs);
+    font-weight: 700; color: var(--c-on-bg); text-decoration: none; padding-block: var(--space-2);
+    text-decoration-thickness: 3px; text-underline-offset: 6px;
   }
-  nav a:hover,
-  nav a[aria-current='page'] {
-    text-decoration: underline;
+  nav a:hover, nav a[aria-current='page'] { text-decoration-line: underline; text-decoration-color: var(--c-accent); }
+  main:focus { outline: none; }
+  .site-footer { background: var(--c-accent-bg); color: var(--c-on-accent-bg); margin-top: var(--space-8); }
+  .site-footer__inner {
+    display: grid; gap: var(--space-2); max-width: 1240px; margin-inline: auto;
+    padding: var(--space-6) var(--gutter); font-size: var(--fs-sm); font-weight: 700;
   }
-  main {
-    max-width: var(--page-max);
-    margin-inline: auto;
-    padding: var(--space-xl) var(--gutter) var(--space-2xl);
-  }
-  main:focus {
-    outline: none;
-  }
-  .site-footer {
-    display: grid;
-    gap: var(--space-2xs);
-    padding: var(--space-l) var(--gutter);
-    border-top: 1px solid var(--color-line);
-    color: var(--color-ink-muted);
-    font-size: var(--step--1);
+  .site-footer a { color: inherit; }
+  .site-footer__line { font: 800 var(--fs-1) / 1.2 var(--font-display); font-variation-settings: var(--display-variation); }
+  @media (max-width: 40rem) {
+    .site-header { gap: var(--space-2) var(--space-4); }
+    nav ul { gap: 0 var(--space-4); }
   }
 </style>

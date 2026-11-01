@@ -1,0 +1,33 @@
+---
+/** Concept imagery from the registry (lib/images.ts), framed like the cards: responsive AVIF/WebP. */
+import { Picture } from 'astro:assets';
+import { ART, type ArtKey } from '../lib/images';
+
+interface Props {
+  name: ArtKey;
+  /** `sizes` for the layout it sits in. */
+  sizes?: string;
+  eager?: boolean;
+  caption?: string;
+  class?: string;
+}
+const { name, sizes = '(min-width: 60rem) 50vw, 100vw', eager = false, caption, class: cls } = Astro.props;
+const art = ART[name];
+---
+<figure class:list={['photo', cls]}>
+  <Picture
+    src={art.src}
+    alt={art.alt}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    widths={[480, 800, 1200, 1600].filter((w) => w <= art.src.width)}
+    sizes={sizes}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+  />
+  {caption && <figcaption class="photo__cap">{caption}</figcaption>}
+</figure>
+
+<style>
+  .photo__cap { margin-top: var(--space-2); font-size: var(--fs-sm); font-weight: 700; }
+</style>

@@ -1,0 +1,57 @@
+---
+/**
+ * The double diamond drawn as the marble run (Direction C): a wooden track that splits and merges twice,
+ * with a barrier at each gate. Static; the variations animate their own run. Credit on /credits/:
+ * Double Diamond by the Design Council, CC BY 4.0, adapted.
+ */
+interface Props {
+  current?: 'd1-diverge' | 'd1-converge' | 'd2-diverge' | 'd2-converge' | null;
+}
+const { current = null } = Astro.props;
+// Lanes fan out and back in (the diamonds). Coordinates in a 1000 x 300 box.
+const LANES = [-70, 0, 70];
+const lane = (x1: number, x2: number) =>
+  LANES.map((dy) => `M${x1} 150 C ${x1 + 60} 150, ${x2 - 120} ${150 + dy}, ${x2 - 60} ${150 + dy} S ${x2} 150, ${x2} 150`).join(' ');
+const SEG = {
+  'd1-diverge': [40, 270],
+  'd1-converge': [270, 500],
+  'd2-diverge': [500, 740],
+  'd2-converge': [740, 960],
+} as const;
+const GATES = [
+  { id: 'G1', x: 500, label: 'Gate 1' },
+  { id: 'G2', x: 640, label: 'Gate 2' },
+  { id: 'G3', x: 840, label: 'Gate 3' },
+  { id: 'G4', x: 960, label: 'Gate 4' },
+];
+---
+<figure class="sketch card">
+  <svg viewBox="0 0 1000 300" role="img" aria-labelledby="sketch-title">
+    <title id="sketch-title">The marble run is the double diamond: the track splits into many lanes and funnels back into one, twice. Gate 1 closes the first diamond; Gates 2 and 3 sit inside the second; Gate 4 is the end.</title>
+    <g class="sketch__lanes">
+      <path class="sketch__edge" d={lane(40, 500)} />
+      <path class="sketch__wood" d={lane(40, 500)} />
+      <path class="sketch__edge" d={lane(500, 960)} />
+      <path class="sketch__wood" d={lane(500, 960)} />
+    </g>
+    {current && <path class="sketch__current" d={`M${SEG[current][0]} 150 L${SEG[current][1]} 150`} />}
+    {GATES.map((g) => (
+      <g class="sketch__gate">
+        <line x1={g.x} y1="105" x2={g.x} y2="195" />
+        <text x={g.x} y="88" text-anchor="middle">{g.label}</text>
+      </g>
+    ))}
+  </svg>
+  <figcaption class="sketch__cap">Diverge, converge, twice. The barriers are where you decide.</figcaption>
+</figure>
+
+<style>
+  .sketch { margin: 0; padding: var(--space-5); display: grid; gap: var(--space-3); }
+  .sketch svg { width: 100%; height: auto; overflow: visible; }
+  .sketch__edge { fill: none; stroke: var(--c-rule); stroke-width: 15; stroke-linecap: round; }
+  .sketch__wood { fill: none; stroke: var(--c-wood); stroke-width: 10; stroke-linecap: round; }
+  .sketch__current { stroke: var(--c-go); stroke-width: 10; stroke-linecap: round; opacity: 0.9; }
+  .sketch__gate line { stroke: var(--c-gate); stroke-width: 10; stroke-linecap: round; }
+  .sketch__gate text { fill: var(--c-text); font: 800 26px var(--font-display); }
+  .sketch__cap { font-size: var(--fs-sm); font-weight: 700; }
+</style>
