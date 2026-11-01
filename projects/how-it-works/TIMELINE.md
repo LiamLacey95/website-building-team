@@ -5,7 +5,7 @@ Elapsed time per phase, kept by the PM from git commit times and thread messages
 | Phase | Start | End | Wall clock | Notes |
 |---|---|---|---|---|
 | Team setup (kit, one-off) | 11:45 | 12:18 | 33 min | 5 setup briefs plus the commercial upscaler |
-| Kit packaging (one-off) | 12:41 | in progress | | Portable kit, Impeccable, bootstrap, ComfyUI installer |
+| Kit packaging (one-off) | 12:41 | 17:00 (approx.) | about 4 h 20 min | Portable kit, Impeccable, bootstrap, ComfyUI installer, audit and fixes; includes a 2 h 16 min usage-limit pause for Review |
 | 0 Intake | 12:41 | 12:41 | | BRIEF.md |
 | 1 Discover | 12:41 | 13:01 | 20 min | Research: 8 teardowns, 46 screenshots |
 | 2 Define | 13:03 | 13:41 | 38 min | Research define done 13:07; stack proposal waited for Backend's kit work |

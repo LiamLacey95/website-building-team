@@ -31,8 +31,7 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | 03-backend-bootstrap | Backend | done (through 2bfed09) |
 | 03-review-portability | Review | done (016d9cd, c92a44d) |
 | 04-review-kit-audit | Review | done: REVISE (1 blocker, 4 major); report in history |
-| 06-kit-fixes | Front-end, Research, Backend, Concept, PM | all done (9e79e97, 5041947, 96f534a, 777a087, 0b6a9fa, 106d3a3) |
-| 06 re-test | Review | after 06-kit-fixes |
+| Kit packaging | all | **done, handoff-ready**: Review re-test PASS (a5f75ef); briefs and reports in `.team/history/2026-11-01-kit-packaging/`. Public-only items wait for Gate 1 Q2/Q10 |
 
 Note: before Phase 4, confirm the Impeccable hook fires in the Front-end thread (it was added mid-session); if it doesn't, start a fresh Front-end thread.
 

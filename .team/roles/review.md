@@ -20,7 +20,7 @@ Checklists: `docs/review/checklists/`. Tools: `docs/review/tools/` (see `docs/re
 
 ## Report format
 
-`projects/<slug>/review/<brief id>-<subject>.md`:
+`projects/<slug>/review/<brief id>-<subject>.md`, or `projects/<slug>/gates/G<n>-<name>/review.md` when you're checking a gate packet:
 
 ```
 Verdict: PASS | PASS WITH NOTES | REVISE
