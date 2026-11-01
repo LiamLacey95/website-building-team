@@ -48,9 +48,7 @@ Requirements: Windows 11 (tested; Linux is supported by the scripts but untested
 
 **This repo:** licence not chosen yet.
 
-**Bundled third-party code:**
-- [Impeccable](https://github.com/pbakaus/impeccable) skills in `.claude/` and `.agents/`: Apache-2.0, © Paul Bakaus. Its LICENSE and NOTICE are included alongside the skills. Its iOS and Android references derive from ehmo's `platform-design-skills` (MIT).
-- `modern-screenshot` (MIT), vendored inside the Impeccable skill.
+**Third-party components.** Impeccable 4.8.0 (https://impeccable.style) is vendored unmodified in `.claude/skills/impeccable/`, `.agents/skills/impeccable/` and `.claude/agents/impeccable-*.md`. It is © 2025 Paul Bakaus, licensed under Apache-2.0; see `LICENSE` and `NOTICE.md` in each skill folder. Its iOS and Android references are derived from ehmo's `platform-design-skills` (MIT; `LICENSE-platform-design-skills`), and its `scripts/modern-screenshot.umd.js` is modern-screenshot © 2021-present wxm (MIT; `scripts/LICENSE-modern-screenshot`). `THIRD-PARTY.md` in each skill folder maps every file to its licence. npm dependencies installed by the bootstrap (Playwright, Apache-2.0; the Impeccable CLI, Apache-2.0) are not committed.
 
 **Models** are downloaded at setup, not stored in the repo, and keep their own licences (full table in `artgen/README.md`):
 - FLUX 3 Image Klein: free for commercial use under US$5M revenue (FLUX Kommunity licence).
