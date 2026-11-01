@@ -26,7 +26,7 @@ Setup (Phase -1): each agent completes its `01-*-setup` brief.
 | 01-concept-setup | Concept | in progress |
 | 01-frontend-setup | Front-end | done (4bd9e26) |
 | 01-backend-setup | Backend | done (d5fea90) |
-| 01-review-setup | Review | in progress |
+| 01-review-setup | Review | done (e406ccf) |
 
 ## Gates
 
