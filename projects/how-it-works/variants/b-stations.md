@@ -59,6 +59,8 @@ Branch: `variant/how-it-works-g3-b-stations` · Port: 4322 · Worktree: `<worktr
 - Without JS every station stacks and the bar is hidden.
 - No errors (overlapping View Transitions are absorbed in the shared `transition()`).
 
+**Imagery.** The evidence uses Concept's production set: the six-figure cast in every shot, a station photograph for each agent's chapter, and the clay cup. It also uses Concept's token fixes: the text-safe tomato-ink accent, with bright tomato kept for shapes. The registry is shared (`web/src/lib/images.ts`). The suites were rerun after the swap and all pass.
+
 ## Evidence
 
 - **Screenshots:** `screenshots/g3/*-variant-how-it-works-g3-b-stations-{home,setup}-{390,768,1440,1920}.png`. Full-page shots show the first station only, because the stations are paged.

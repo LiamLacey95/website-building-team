@@ -76,6 +76,8 @@ Branch: `variant/how-it-works-g3-a-long-run` · Port: 4321 · Worktree: `<worktr
 - With reduced motion there's no rolling marble, a marble rests at each station, and the crossings are pre-lifted.
 - No errors or CSP violations.
 
+**Imagery.** The evidence uses Concept's production set: the six-figure cast in every shot, a station photograph for each agent's chapter, and the clay cup. It also uses Concept's token fixes: the text-safe tomato-ink accent, with bright tomato kept for shapes. The registry is shared (`web/src/lib/images.ts`). The suites were rerun after the swap and all pass. In A the hero track starts at the photograph's marble (position from Concept's sidecar), and each gate band has its own gate photograph.
+
 ## Evidence
 
 - **Screenshots:** `screenshots/g3/*-variant-how-it-works-g3-a-long-run-{home,setup}-{390,768,1440,1920}.png`.
