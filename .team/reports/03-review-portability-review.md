@@ -4,7 +4,7 @@ Status: DONE. Commit `016d9cd` (pathspec `docs/review`). All four deliverables a
 
 ## 1. Portability of `docs/review/`
 
-- **Output is out of git.** `docs/review/out/` is ignored, and the four old `out/test-*.md` files (which held absolute `F:\...` paths) were removed from the index. A committed sample takes their place: `docs/review/examples/selftest.md`. It contains no local paths.
+- **Output is out of git.** `docs/review/out/` is ignored, and the four old `out/test-*.md` files (which held absolute `F:\...` paths) are untracked. *Correction (04 audit):* they were not untracked in `016d9cd` as first reported. That pathspec commit re-added them because they still existed on disk. They were actually removed in `70716c4`. A committed sample takes their place: `docs/review/examples/selftest.md`. It contains no local paths.
 - **The tools no longer write machine paths into reports.**
   - Local files are shown as repo-relative paths (`docs/review/tools/fixtures/bad.html`), and "Wrote ..." and HTML report links are repo-relative too.
   - Local files and `file://` URLs are now served over `http://127.0.0.1` for the run. Lighthouse refuses `file://` outright (`INVALID_URL`), and serving also means a built `dist/` folder can be audited directly.
