@@ -38,6 +38,8 @@ const IMPECCABLE_LAUNCHER = '.claude/skills/impeccable/scripts/impeccable';
 const GB = 1024 ** 3;
 const DISK_NEEDED_COMFY_GB = 40;
 const DISK_NEEDED_BASE_GB = 3;
+// With --yes, missing models are fetched automatically only up to this size (a fresh clone lacks RealESRGAN, 67 MB).
+const AUTO_MODELS_MAX_BYTES = 2 * GB;
 
 // Kit policy: Impeccable telemetry is off unless the user explicitly sets the variable. Every child process inherits it.
 process.env.IMPECCABLE_NO_TELEMETRY ??= '1';
@@ -531,7 +533,7 @@ const gb = (n) => `${(Number(n || 0) / GB).toFixed(1)} GB`;
  * then, after confirmation, the real run with --yes --json (logs on stderr, one JSON object on stdout).
  * Returns the final JSON object (the plan in --dry-run), or null if blocked, declined or failed.
  */
-async function runInstaller(action, dir, sysPy, interactive) {
+async function runInstaller(action, dir, sysPy, interactive, { maxBytes = Infinity } = {}) {
   const base = [rel(COMFY_INSTALLER), action, dir];
   note(paint(2, `$ ${display(sysPy, [...base, '--dry-run', '--json'])}`));
   const plan = capture(sysPy, [...base, '--dry-run', '--json'], { timeout: 300_000 });
@@ -548,6 +550,11 @@ async function runInstaller(action, dir, sysPy, interactive) {
     for (const b of p.blockers ?? []) note(paint(31, `blocked: ${b}`));
     // The installer's blocker already explains the Hugging Face steps; ours is a fallback.
     if (p.gated_access && p.gated_access !== 'ok' && !(p.blockers ?? []).some((b) => /huggingface\.co/.test(b))) HF_HELP.forEach((l) => note(paint(33, l)));
+    return null;
+  }
+  if (action === '--models-only' && !todo.length && !Number(p.download_bytes)) { note('No models to download.'); return p; }
+  if (!interactive && Number(p.download_bytes) > maxBytes) {
+    note(paint(33, `Not downloading ${gb(p.download_bytes)} automatically. Re-run with --models-only to accept.`));
     return null;
   }
   if (DRY) { note(paint(36, `[dry-run] would run: ${display(sysPy, [...base, '--yes', '--json'])}`)); return p; }
@@ -612,22 +619,33 @@ async function setupComfy(mode, cfg, opts, sysPy, interactive) {
     if (out.python) cfg.comfyui.python = fwd(out.python);
   } else {
     let wantModels = Boolean(opts['models-only']);
+    let maxBytes = Infinity;
+    let verifyCode = 0;
     if (!wantModels) {
       note('Verifying the install and models (the first run hashes ~37 GB in a few minutes; later runs use a cache).');
       const args = [rel(COMFY_INSTALLER), '--verify', dir];
       if (DRY) note(paint(36, `[dry-run] ${display(sysPy, args)}`));
       else {
         note(paint(2, `$ ${display(sysPy, args)}`));
-        const code = spawnSync(sysPy, args, { cwd: REPO, stdio: 'inherit' }).status;
+        const code = verifyCode = spawnSync(sysPy, args, { cwd: REPO, stdio: 'inherit' }).status;
         if (code === 1 || code === 3) {
           note(paint(code === 1 ? 31 : 33, code === 1 ? 'Verification failed (red).' : 'Verified with warnings (amber).'));
-          note('Missing models can be downloaded with --models-only.');
-          wantModels = interactive && (await confirm('Check for missing models and download them now?', code === 1));
+          if (interactive) wantModels = await confirm('Check for missing models and download them now?', code === 1);
+          else { wantModels = true; maxBytes = AUTO_MODELS_MAX_BYTES; note('Checking for missing models (small downloads are fetched automatically with --yes).'); }
           if (!wantModels && code === 1) return false;
         } else if (code !== 0) { note(paint(31, `Verification could not run (exit ${code}).`)); return false; }
       }
     }
-    if (wantModels && !(await runInstaller('--models-only', dir, sysPy, interactive))) return false;
+    if (wantModels) {
+      const got = await runInstaller('--models-only', dir, sysPy, interactive, { maxBytes });
+      // Amber (only optional items) stays a pass even if the download is declined.
+      if (!got && verifyCode !== 3) return false;
+      // Red for a reason other than missing models (e.g. ComfyUI too old) is still red after the download.
+      if (got && verifyCode === 1 && !DRY && capture(sysPy, [rel(COMFY_INSTALLER), '--verify', dir, '--quick', '--json'], { timeout: 300_000 }).code === 1) {
+        note(paint(31, 'Still red after the model download; see the verification output above.'));
+        return false;
+      }
+    }
   }
 
   if (!cfg.comfyui.python) cfg.comfyui.python = detectComfyPython(dir);
