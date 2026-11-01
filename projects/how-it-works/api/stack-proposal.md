@@ -95,20 +95,44 @@ The text is extracted verbatim and rendered with a "from `<path>` at `<short sha
 
 ### Redaction (Q5 "curated")
 
-Every string from a source passes through a redaction step before it reaches HTML:
-- machine paths (`[A-Z]:\…`, `/home/…`, `/Users/…`) become `<repo>/…`;
-- T3 thread and environment ids are removed;
-- email addresses are removed.
+Every string from a source passes through a redaction step before it reaches HTML. One pattern list (`server/content/redact.ts`) drives both the redaction step and the post-build scan, so the two can't drift apart:
 
-A **post-build scan** of `dist/` fails CI if any of those patterns remain. It covers anything the redaction step missed.
+| What | Pattern (JS regex, case-insensitive unless noted) | Replaced with |
+|---|---|---|
+| Windows paths, either slash (`F:\ArtGen\…`, `F:/ArtGen/…`, `C:\Users\…\AppData\…`) | `\b[A-Za-z]:[\\/][^\s"'<>()\]]*` | the repo-relative path if it is inside the repo, else `<local path>` |
+| Git Bash / MSYS paths (`/c/Users/…`, `/f/ArtGen/…`) | `(?<![\w.])/[a-z]/(?:Users\|home\|[A-Za-z][\w .-]*)/[^\s"'<>()\]]*` | same |
+| POSIX home paths (`/home/…`, `/Users/…`) | `(?<![\w.])/(?:home\|Users)/[^/\s]+[^\s"'<>()\]]*` | same |
+| UNC paths | `\\\\[^\\\s]+\\[^\s"'<>()\]]*` | `<local path>` |
+| T3 thread ids | `thread:mcp:[0-9a-f-]{36}:[\w.:-]+` and `t3-thread://\S+` | `<thread>` |
+| Environment, thread and other UUIDs | `\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b` | `<id>` |
+| Email addresses | `[\w.+-]+@[\w-]+(?:\.[\w-]+)+` | `<email>` |
+
+Notes:
+- **Repo root first.** Before the patterns run, the repo root found at build time is replaced with nothing, in every spelling: back- and forward-slash, either drive-letter case, and the `/f/…` Git Bash form. This matters because the patterns stop at whitespace, and this repo's folder name contains a space (`Website Test`). In effect, a path inside the repo is rewritten to its repo-relative form, so `F:/ArtGen/Website Test/projects/how-it-works/BRIEF.md` reads `projects/how-it-works/BRIEF.md`. That keeps it useful as a citation. Other paths become `<local path>`.
+- **Git commit hashes are not touched.** They are hex but not UUID-shaped.
+- **The post-build scan** runs the same list over every text file in `dist/` (`.html`, `.txt`, `.md`, `.xml`, `.json`, `.js`, `.css`) and fails CI with the file and line. It covers anything the redaction step missed, such as text in an image `alt` or a JSON-LD block.
+- **Checked now:** these patterns were run against 12 real strings from this repo (all redacted) and 5 that must survive (all kept: commit hashes, URLs, repo-relative paths, ratios such as `4.5:1`, commands).
+- **Unit tests** use real strings from this repo's reports: forward- and back-slash drive paths, `/c/Users/…`, a `thread:mcp:…` id, an environment UUID and an email. There is also a negative case: a commit hash and a URL must survive.
 
 ### Licence guard
 
-An image is published only if its sidecar names a workflow on an allow-list. The allow-list holds the commercially licensed workflows: WEB1 to WEB5 and WEB6b. Anything else fails the build with the file name and a pointer to `artgen/README.md`. Examples:
-- **WEB6:** the 4x-UltraSharp upscaler is CC BY-NC-SA, so it is for concept boards only.
-- **Missing sidecar:** an image with no sidecar has no recorded provenance, so it is refused.
+An image is published only if its **whole provenance chain** passes, not just the top-level workflow. An upscale (WEB6b) records the image it started from in a nested `source_provenance`, and that source may be FLUX Klein output. The guard walks the chain the same way Review's `docs/review/tools/licences.mjs` does:
 
-The same check runs over `web/public/assets/generated/`. `research/refs/` is never read.
+1. **Find the sidecar:** `<image>.json` or `<image-without-ext>.json`. No sidecar, or invalid JSON: **fail**, because there is no recorded provenance.
+2. **Walk every node of the sidecar,** including nested `source_provenance`, and parse nested provenance that is stored as a JSON string. Collect:
+   - every `workflow` id;
+   - every model name (`model`, `upscale_model`, `unet_name`, `ckpt_name`, `clip_name`, `vae_name`, `lora_name`, `control_net_name`);
+   - every `licence`/`license` string.
+3. **Fail** if anything in the chain is:
+   - a workflow outside the allow-list (WEB1 to WEB5, WEB6b);
+   - a non-commercial model or licence (`/ultrasharp|non-?commercial|cc[ -]by-nc|by-nc-sa/i`). WEB6's 4x-UltraSharp is CC BY-NC-SA, so it is for concept boards only.
+4. **FLUX Klein follows the human's Gate 1 answer to Q11** (Klein is free for commercial use only under US$5M annual revenue). The answer is recorded in `server/content/licence-policy.json` as `{ "klein": "allowed" | "boards-only" }`:
+   - **Q11 A:** Klein in the chain passes. The image is listed on `/credits/` with the AI-imagery disclosure.
+   - **Q11 B:** Klein anywhere in the chain fails, so shipped images are Z-Image Turbo (Apache-2.0) only.
+   - **Not yet answered:** Klein passes in development and fails in the strict release build. Gate 4 can't ship an unanswered licence question.
+5. **Report.** Failures name the image, the offending node's path in the chain (for example `source_provenance.source_provenance.model`) and a pointer to `artgen/README.md`.
+
+The same check runs over `web/public/assets/generated/`, and `research/refs/` is never read. Review's `licences.mjs` stays the independent check at Gates 2 and 4: same rules, separate code.
 
 ### Images
 
@@ -120,6 +144,49 @@ The same check runs over `web/public/assets/generated/`. `research/refs/` is nev
   1. **Images outside `web/`:** Vite only reads files outside the project root if `server.fs.allow` includes the repo root (set in `astro.config`). If `astro:assets` refuses assets outside `web/`, the fallback is a 30-line prebuild step that copies the selected masters into a git-ignored `web/src/assets/artefacts/`. The rest of the design is unchanged.
   2. **CSP:** render a `<Picture>` and the three JS features under the real meta CSP. Confirm there are no inline `style` attributes and **zero CSP violations** in the console.
 
+### Git log: live or snapshot (Q10)
+
+Chapter 8 ("The receipt") and `/made/` read the commit history. Where it comes from depends on the human's answer to Q10:
+
+| Q10 | Public history | Source for chapter 8 |
+|---|---|---|
+| A, B | Unchanged | Live `git log` in CI (`fetch-depth: 0`) |
+| C (rewrite to remove the screenshots) | Same commits, new hashes | Live `git log`. Hashes are read at build time, so they match whatever is public |
+| **D (fresh squashed public repo)** | One initial commit | **A committed snapshot**, exported from the working repo just before the squash |
+
+**Snapshot format and location:** `projects/how-it-works/server/content/git-log.snapshot.json`, committed. It is plain JSON, so it's readable in the public repo, and redacted by the same patterns as everything else:
+
+```json
+{
+  "exportedAt": "2026-11-20T16:02:11Z",
+  "sourceHead": "<full sha of the working repo's HEAD at export>",
+  "sourceRepo": "private working copy",
+  "count": 214,
+  "commits": [
+    { "sha": "062f2ca1…", "short": "062f2ca", "date": "2026-11-01T10:12:03Z",
+      "role": "pm", "subject": "team playbook, roles, setup briefs",
+      "files": 18, "areas": ["team"] }
+  ]
+}
+```
+
+- **Fields** are the minimum the chapter needs: hash, ISO date (UTC), the role parsed from the `<role>: ` prefix (`other` when there's none), subject, files changed, and coarse areas (`team`, `kit`, `research`, `concepts`, `web`, `server`, `review`, `gates`).
+- **No author names or emails**, and no file paths. Subjects pass through redaction.
+- **Order:** oldest first, `git log --reverse`.
+
+**Exporter:** `node projects/how-it-works/server/content/export-git-log.mjs [--out <file>]`. It is about 60 lines, Node built-ins only, and I'll write it in Phase 5 with tests.
+- It runs `git log --reverse --format=%H%x1f%aI%x1f%s --shortstat` plus `--name-only` for the areas.
+- It refuses to run on a shallow clone.
+- It prints the count and the date range so the PM can check them before squashing.
+- It's ready under every Q10 answer and only needed under D.
+
+**When, under D:** it's the last commit in the working repo before the squash. Order: export, commit the snapshot, Review checks it (the redaction scan plus a count against `git rev-list --count HEAD`), then the PM creates the squashed public repo from that tree. The snapshot is then part of the public repo's single commit.
+
+**How the loader chooses:**
+- If `git-log.snapshot.json` exists, chapter 8 shows the snapshot's commits, then any live commits after the squash commit (fixes made in the public repo after launch). The caption says so plainly: *"History to <date>, exported from the team's working repository; the public repository starts from a single squashed commit."*
+- Snapshot hashes are shown as text, not links, because those commits don't exist in the public repo. Live commits link to GitHub.
+- Without a snapshot, the loader uses the live log. A shallow clone fails the release build rather than showing a wrong count (see Risks).
+
 ### Second outputs
 
 - `src/pages/llms.txt.ts` and `src/pages/story.md.ts` are build endpoints. They render the same collections as plain text and Markdown.
@@ -128,7 +195,12 @@ The same check runs over `web/public/assets/generated/`. `research/refs/` is nev
 
 ### Tests
 
-The pipeline gets unit tests with `node:test` (no extra dependency). They cover slot resolution, excerpt extraction (heading, marker, missing marker), commit parsing, redaction patterns and the licence guard. Fixtures live in `server/content/__fixtures__/`. CI runs them before the build.
+The pipeline gets unit tests with `node:test` (no extra dependency). They cover:
+- slot resolution;
+- excerpt extraction (heading, marker, missing marker);
+- commit parsing, and choosing between snapshot and live log;
+- redaction patterns, with real strings from this repo plus negative cases;
+- the licence guard on nested chains: a WEB6b upscale of a Klein source under each Q11 policy, and an UltraSharp node three levels deep. Fixtures live in `server/content/__fixtures__/`. CI runs them before the build.
 
 ## 3. Hosting and deploy
 
@@ -141,14 +213,22 @@ The pipeline gets unit tests with `node:test` (no extra dependency). They cover 
   2. `actions/setup-node` with Node 24 and an npm cache.
   3. `npm ci`, pipeline tests, `astro build` (with `STRICT_SLOTS=1` on the release run).
   4. Checks on `dist/`: link and base path, redaction scan, size budget.
-  5. `actions/upload-pages-artifact`, then `actions/deploy-pages@v4` with permissions `pages: write`, `id-token: write` ([deploy-pages README](https://github.com/actions/deploy-pages)).
+  5. `actions/upload-pages-artifact`, then `actions/deploy-pages@v4` with permissions `pages: write`, `id-token: write` ([deploy-pages README](https://github.com/actions/deploy-pages)). **This deploy job is only added at Gate 4, after the reviewer exists** (see the order below). Until then the workflow stops at step 4.
 
   Action versions get pinned when I write the workflow.
 - **CSP (meta tag, emitted by Astro):** `default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' <hashes>; script-src 'self' <hashes>; base-uri 'self'; form-action 'none'; object-src 'none'`.
   - A meta tag can't set `frame-ancestors` or reporting ([GitHub community discussion](https://github.com/orgs/community/discussions/54257)), so we accept that limit.
   - Analytics, if chosen, add one origin (§5).
 - **Limits** ([GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)): published site ≤ 1 GB, soft bandwidth 100 GB/month, deploys time out after 10 minutes, and the 10 builds/hour limit doesn't apply to custom Actions workflows. We're well inside all of them.
-- **Gate 4 enforced:** the deploy job uses the `github-pages` environment with a **required reviewer (the human)**. CI can build and check every push, but nothing goes live until the human approves the deployment.
+- **Gate 4 enforced, on a public repo only:** the deploy job uses the `github-pages` environment with a **required reviewer (the human)**. CI can build and check every push, but nothing goes live until the human approves the deployment.
+  - **Caveat:** GitHub says *"If you are on a GitHub Free, GitHub Pro, or GitHub Team plan, required reviewers are only available for public repositories"* ([Deployments and environments, "Required reviewers"](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)). The approval gate exists only on a **public** repo, so under Q2 B (a private repo on Pro or Team) it is **lost**; see the table below.
+  - **Order under Q2 A, at Gate 4**, so the first deploy can't run unapproved:
+    1. Do whatever Q10 requires (remove the screenshots, rewrite history, or create the fresh public repo).
+    2. Make the repo public.
+    3. Create the `github-pages` environment and set the human as a **required reviewer**. Restrict deployment branches to `master`.
+    4. Only then merge the deploy workflow (`.github/workflows/how-it-works.yml`) to `master`. Its first run then waits for approval.
+
+    Until step 4, CI is a build-and-check workflow with **no deploy job**, so nothing can be published by accident while the repo is private or before the reviewer exists.
 
 ### Preview builds
 
@@ -174,9 +254,9 @@ Instead:
 
 | Option (Q2) | Cost | Notes |
 |---|---|---|
-| **A. Make the repo public at Gate 4; Pages on GitHub Free** (recommended) | **$0** | The kit is meant to be cloned, so it goes public anyway. Until G4 the repo stays private: CI builds and checks; the deploy waits for approval. Before going public, act on Q10 (remove `research/refs/`) and run Review's secret and personal-data scan (brief 04). |
-| B. Keep the repo private; buy Pro (personal) or Team (org, $4/user/month) | Pro: unconfirmed, about $4/month; Team: $4/user/month plus moving to an org | The site is public but the code isn't, which contradicts "anyone can clone it". Only worth it if the kit must stay private. |
-| C. Another static host from the private repo (Cloudflare Pages, Netlify) | $0 on free tiers (`docs/api/stack-playbook.md`) | Another account to own; headers become possible (a real CSP header and `frame-ancestors`). Nothing in the stack changes except the deploy step. |
+| **A. Make the repo public at Gate 4; Pages on GitHub Free** (recommended) | **$0** | The kit is meant to be cloned, so it goes public anyway. Until G4 the repo stays private and CI only builds and checks (no deploy job). At G4, follow the four-step order above: Q10, then public, then reviewer, then the deploy workflow. Before going public, run Review's secret and personal-data scan. **Gate 4 approval: enforced by GitHub.** |
+| B. Keep the repo private; buy Pro (personal) or Team (org, $4/user/month) | Pro: unconfirmed, about $4/month; Team: $4/user/month plus moving to an org | The site is public but the code isn't, which contradicts "anyone can clone it". **The required-reviewer rule isn't available for private repos on Pro or Team, so the Gate 4 approval gate is lost.** The fallback is procedural: the deploy job runs only from a manual `workflow_dispatch` that the human triggers. Only worth it if the kit must stay private. |
+| C. Another static host from the private repo (Cloudflare Pages, Netlify) | $0 on free tiers (`docs/api/stack-playbook.md`) | Another account to own; headers become possible (a real CSP header and `frame-ancestors`). Nothing in the stack changes except the deploy step. **Gate 4 approval: the host's own control.** For example, production deploys only from a `release` branch the human merges into, or a manual production promote. It's not a GitHub environment. |
 
 ## 4. Interactivity budget
 
@@ -232,7 +312,7 @@ If Q9 becomes B, I recommend GoatCounter. Either way the privacy note must menti
 | Account | Owner | Env var(s) | Scope |
 |---|---|---|---|
 | GitHub repo `LiamLacey95/website-building-team` | the human | none: Pages uses the workflow's OIDC token | Workflow permissions `contents: read`, `pages: write`, `id-token: write` only |
-| `github-pages` environment reviewer | the human | n/a | Approves each production deploy (Gate 4) |
+| `github-pages` environment reviewer | the human | n/a | Approves each production deploy (Gate 4). Public repo only on Free, Pro and Team (§3) |
 | GoatCounter (only if Q9 = B) | the human | none (the site code is public) | n/a |
 
 No secrets are stored in the repo or in Actions for the recommended option.
@@ -253,6 +333,8 @@ No secrets are stored in the repo or in Actions for the recommended option.
 | Personal data or machine paths leak through artefacts | Medium | Redaction plus a post-build scan that fails CI; Review's kit audit before going public |
 | A non-commercial image slips into the site | Low | Licence guard on sidecars fails the build; `generate.py` already refuses WEB6 output into `web/` |
 | A shallow checkout gives an empty receipt chapter | Low | `fetch-depth: 0`; the loader detects a shallow repo and fails the release build rather than showing a wrong count |
+| The deploy workflow lands before the reviewer exists, so the first deploy is unapproved | Low | The four-step order at G4; until then CI has no deploy job |
+| Q10 D squashes the history the receipt chapter needs | Certain under D | The committed git-log snapshot, exported and checked before the squash |
 | Astro CSP blocks something Front-end adds (an inline handler, a third-party script) | Low | Inline handlers are banned in the component rules; Review checks the CSP in the G4 audit |
 | Repo stays private and the human doesn't want Pro or Team | Low | Option C (Cloudflare Pages or Netlify) swaps one deploy step |
 | Variants can't be previewed on Pages | Certain | Local preview via `tools/variants.mjs` plus downloadable CI artifacts, which is how Gate 3 already works |
