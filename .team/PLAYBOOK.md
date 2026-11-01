@@ -141,3 +141,5 @@ projects/<slug>/       one folder per website (see Project layout)
 - **Ports:** variants run on A 4321, B 4322 and C 4323 (`node tools/variants.mjs port`). Don't use those ports for anything else during Gate 3. ComfyUI uses 8188.
 - **Lighthouse and cookie banners:** measure with any consent banner dismissed, or CLS numbers are noise.
 - **Upscaler licence:** `WEB6` (4x-UltraSharp) is non-commercial and for boards only; anything in `web/` uses `WEB6b` (RealESRGAN). `generate.py` enforces this.
+- **Playwright version is pinned in two places** (`tools/` and `docs/review/tools/`, currently 1.64.1). Bump both together; Front-end tells Review first.
+- **Clean up headless browsers.** Close every Playwright or Lighthouse browser you open (`browser.close()` in `finally`). Never kill `chrome.exe` by name: the human's own Chrome uses the same executable.

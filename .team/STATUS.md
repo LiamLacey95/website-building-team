@@ -28,7 +28,7 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | 03-concept-comfyui-installer | Concept | done (1980bdb) |
 | concept no-GPU fallback note | Concept | done (fc7fc3f); option B (remote GPU support) is a Gate 1 question |
 | 03-backend-bootstrap | Backend | in progress |
-| 03-review-portability | Review | in progress |
+| 03-review-portability | Review | done (016d9cd, c92a44d) |
 | 04-review-kit-audit | Review | after the three 03 kit briefs |
 
 Note: before Phase 4, confirm the Impeccable hook fires in the Front-end thread (it was added mid-session); if it doesn't, start a fresh Front-end thread.
