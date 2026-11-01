@@ -15,7 +15,9 @@ The single source of truth for how this team works. Every agent reads this first
 | Backend developer | `Team · Backend` | `scripts/`, `docs/api/` (templates, stack playbook), `team.config.example.json` | `server/`, `api/` | `roles/backend.md` |
 | Review | `Team · Review` | `docs/review/` (checklists, tools) | `review/` (read-only everywhere else) | `roles/review.md` |
 
-"Per-project folders" are inside `projects/<slug>/`. Thread ids are recorded in `.team/STATUS.md` under **Roster**. The active project slug is in `.team/STATUS.md` and `team.config.json`.
+| All agents | | their own report `<brief id>-<role>.md` in `.team/reports/` (kit work) | their own report in `projects/<slug>/reports/` | n/a |
+
+"Per-project folders" are inside `projects/<slug>/`. The PM also owns `CLAUDE.md`, `AGENTS.md`, `.gitignore`, `.team/history/` and each project's `TIMELINE.md`. Concept writes final images into `projects/<slug>/web/public/assets/generated/`, the one exception inside Front-end's `web/`. Thread ids are recorded in `.team/STATUS.md` under **Roster**. The active project slug is in `.team/STATUS.md` and `team.config.json`.
 
 ## Project layout
 
@@ -39,7 +41,7 @@ projects/<slug>/
   server/           Backend: functions, API, content pipeline (only if needed)
 ```
 
-Kit-level work (changes to the team's own tooling) uses `.team/briefs/` and `.team/reports/`.
+Kit-level work (changes to the team's own tooling) uses `.team/briefs/` and `.team/reports/`. When a kit brief is finished, the PM moves the brief and its reports into `.team/history/<date>-<topic>/`, so `.team/briefs/` only ever holds live work.
 
 ## Method: from prompt to launch
 
@@ -109,6 +111,7 @@ Narrow targets beat whole pages: critique one section at a time.
 - Commit only paths you own, and **always name them in the commit itself**: `git add <your paths>` then `git commit -m "<role>: <what>" -- <your paths>`. The index is shared by every agent, so a bare `git commit` sweeps in whatever another agent has staged. Never `git add -A` or `git commit -a` at the root. Before committing, check `git diff --cached --name-only` shows only your files. If `index.lock` exists, wait a few seconds and retry; do not delete it unless it is over five minutes old.
 - Commit messages: `<role>: <what>` (for example `frontend: hero section for variant B`).
 - Variation worktrees live outside the repo in the folder named by `worktreesDir` in `team.config.json` (default: a sibling folder `<repo-folder>.worktrees`). Branches are `variant/<slug>-g3-a-<name>`, `-b-`, `-c-`. Manage them with `node tools/variants.mjs`. The chosen one is merged to `master` after Gate 3; the others are kept until Gate 4, then removed.
+- **Untracking a file:** a pathspec commit takes the working-tree state of the paths, so `git rm --cached X` followed by `git commit -- <dir>` silently re-adds X if it's still on disk. Delete it too (`git rm X`), and check `git show --stat HEAD` after committing.
 - Raw generated images (`artgen/output/`), models, `node_modules`, and `team.config.json` are git-ignored. Only curated picks are committed.
 
 ## Kit folder map
