@@ -1,258 +1,194 @@
 [
   {
-    "file": "2129-variant-how-it-works-g3-a-long-run-home-390.png",
+    "file": "2230-variant-how-it-works-g3-a-long-run-home-390.png",
     "label": "variant-how-it-works-g3-a-long-run",
     "route": "/",
     "width": 390,
     "url": "http://127.0.0.1:4321/",
-    "takenAt": "2026-11-01T21:29:55.610Z"
+    "takenAt": "2026-11-01T22:30:47.993Z"
   },
   {
-    "file": "2129-variant-how-it-works-g3-a-long-run-setup-390.png",
+    "file": "2230-variant-how-it-works-g3-a-long-run-setup-390.png",
     "label": "variant-how-it-works-g3-a-long-run",
     "route": "/setup",
     "width": 390,
     "url": "http://127.0.0.1:4321/setup",
-    "takenAt": "2026-11-01T21:29:56.730Z"
+    "takenAt": "2026-11-01T22:30:49.171Z"
   },
   {
-    "file": "2129-variant-how-it-works-g3-a-long-run-home-768.png",
+    "file": "2230-variant-how-it-works-g3-a-long-run-home-768.png",
     "label": "variant-how-it-works-g3-a-long-run",
     "route": "/",
     "width": 768,
     "url": "http://127.0.0.1:4321/",
-    "takenAt": "2026-11-01T21:30:03.492Z"
+    "takenAt": "2026-11-01T22:31:00.406Z"
   },
   {
-    "file": "2129-variant-how-it-works-g3-a-long-run-setup-768.png",
+    "file": "2230-variant-how-it-works-g3-a-long-run-setup-768.png",
     "label": "variant-how-it-works-g3-a-long-run",
     "route": "/setup",
     "width": 768,
     "url": "http://127.0.0.1:4321/setup",
-    "takenAt": "2026-11-01T21:30:04.550Z"
+    "takenAt": "2026-11-01T22:31:01.493Z"
   },
   {
-    "file": "2129-variant-how-it-works-g3-a-long-run-home-1440.png",
+    "file": "2230-variant-how-it-works-g3-a-long-run-home-1440.png",
     "label": "variant-how-it-works-g3-a-long-run",
     "route": "/",
     "width": 1440,
     "url": "http://127.0.0.1:4321/",
-    "takenAt": "2026-11-01T21:30:11.259Z"
+    "takenAt": "2026-11-01T22:31:13.723Z"
   },
   {
-    "file": "2129-variant-how-it-works-g3-a-long-run-setup-1440.png",
+    "file": "2230-variant-how-it-works-g3-a-long-run-setup-1440.png",
     "label": "variant-how-it-works-g3-a-long-run",
     "route": "/setup",
     "width": 1440,
     "url": "http://127.0.0.1:4321/setup",
-    "takenAt": "2026-11-01T21:30:12.339Z"
+    "takenAt": "2026-11-01T22:31:14.840Z"
   },
   {
-    "file": "2129-variant-how-it-works-g3-a-long-run-home-1920.png",
+    "file": "2230-variant-how-it-works-g3-a-long-run-home-1920.png",
     "label": "variant-how-it-works-g3-a-long-run",
     "route": "/",
     "width": 1920,
     "url": "http://127.0.0.1:4321/",
-    "takenAt": "2026-11-01T21:30:18.829Z"
+    "takenAt": "2026-11-01T22:31:26.853Z"
   },
   {
-    "file": "2129-variant-how-it-works-g3-a-long-run-setup-1920.png",
+    "file": "2230-variant-how-it-works-g3-a-long-run-setup-1920.png",
     "label": "variant-how-it-works-g3-a-long-run",
     "route": "/setup",
     "width": 1920,
     "url": "http://127.0.0.1:4321/setup",
-    "takenAt": "2026-11-01T21:30:19.856Z"
+    "takenAt": "2026-11-01T22:31:27.922Z"
   },
   {
-    "file": "2154-variant-how-it-works-g3-b-stations-home-390.png",
+    "file": "2231-variant-how-it-works-g3-b-stations-home-390.png",
     "label": "variant-how-it-works-g3-b-stations",
     "route": "/",
     "width": 390,
     "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T21:54:10.752Z"
+    "takenAt": "2026-11-01T22:31:29.504Z"
   },
   {
-    "file": "2154-variant-how-it-works-g3-b-stations-setup-390.png",
+    "file": "2231-variant-how-it-works-g3-b-stations-setup-390.png",
     "label": "variant-how-it-works-g3-b-stations",
     "route": "/setup",
     "width": 390,
     "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T21:54:11.887Z"
+    "takenAt": "2026-11-01T22:31:30.649Z"
   },
   {
-    "file": "2154-variant-how-it-works-g3-b-stations-home-768.png",
+    "file": "2231-variant-how-it-works-g3-b-stations-home-768.png",
     "label": "variant-how-it-works-g3-b-stations",
     "route": "/",
     "width": 768,
     "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T21:54:12.712Z"
+    "takenAt": "2026-11-01T22:31:31.525Z"
   },
   {
-    "file": "2154-variant-how-it-works-g3-b-stations-setup-768.png",
+    "file": "2231-variant-how-it-works-g3-b-stations-setup-768.png",
     "label": "variant-how-it-works-g3-b-stations",
     "route": "/setup",
     "width": 768,
     "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T21:54:13.730Z"
+    "takenAt": "2026-11-01T22:31:32.615Z"
   },
   {
-    "file": "2154-variant-how-it-works-g3-b-stations-home-1440.png",
+    "file": "2231-variant-how-it-works-g3-b-stations-home-1440.png",
     "label": "variant-how-it-works-g3-b-stations",
     "route": "/",
     "width": 1440,
     "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T21:54:14.596Z"
+    "takenAt": "2026-11-01T22:31:33.532Z"
   },
   {
-    "file": "2154-variant-how-it-works-g3-b-stations-setup-1440.png",
+    "file": "2231-variant-how-it-works-g3-b-stations-setup-1440.png",
     "label": "variant-how-it-works-g3-b-stations",
     "route": "/setup",
     "width": 1440,
     "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T21:54:15.665Z"
+    "takenAt": "2026-11-01T22:31:34.657Z"
   },
   {
-    "file": "2154-variant-how-it-works-g3-b-stations-home-1920.png",
+    "file": "2231-variant-how-it-works-g3-b-stations-home-1920.png",
     "label": "variant-how-it-works-g3-b-stations",
     "route": "/",
     "width": 1920,
     "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T21:54:16.529Z"
+    "takenAt": "2026-11-01T22:31:35.610Z"
   },
   {
-    "file": "2154-variant-how-it-works-g3-b-stations-setup-1920.png",
+    "file": "2231-variant-how-it-works-g3-b-stations-setup-1920.png",
     "label": "variant-how-it-works-g3-b-stations",
     "route": "/setup",
     "width": 1920,
     "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T21:54:17.531Z"
+    "takenAt": "2026-11-01T22:31:36.721Z"
   },
   {
-    "file": "2155-variant-how-it-works-g3-b-stations-home-390.png",
-    "label": "variant-how-it-works-g3-b-stations",
+    "file": "2231-variant-how-it-works-g3-c-table-home-390.png",
+    "label": "variant-how-it-works-g3-c-table",
     "route": "/",
     "width": 390,
-    "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T21:55:47.806Z"
+    "url": "http://127.0.0.1:4323/",
+    "takenAt": "2026-11-01T22:31:38.402Z"
   },
   {
-    "file": "2155-variant-how-it-works-g3-b-stations-setup-390.png",
-    "label": "variant-how-it-works-g3-b-stations",
+    "file": "2231-variant-how-it-works-g3-c-table-setup-390.png",
+    "label": "variant-how-it-works-g3-c-table",
     "route": "/setup",
     "width": 390,
-    "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T21:55:48.969Z"
+    "url": "http://127.0.0.1:4323/setup",
+    "takenAt": "2026-11-01T22:31:39.565Z"
   },
   {
-    "file": "2155-variant-how-it-works-g3-b-stations-home-768.png",
-    "label": "variant-how-it-works-g3-b-stations",
+    "file": "2231-variant-how-it-works-g3-c-table-home-768.png",
+    "label": "variant-how-it-works-g3-c-table",
     "route": "/",
     "width": 768,
-    "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T21:55:49.841Z"
+    "url": "http://127.0.0.1:4323/",
+    "takenAt": "2026-11-01T22:31:40.490Z"
   },
   {
-    "file": "2155-variant-how-it-works-g3-b-stations-setup-768.png",
-    "label": "variant-how-it-works-g3-b-stations",
+    "file": "2231-variant-how-it-works-g3-c-table-setup-768.png",
+    "label": "variant-how-it-works-g3-c-table",
     "route": "/setup",
     "width": 768,
-    "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T21:55:50.875Z"
+    "url": "http://127.0.0.1:4323/setup",
+    "takenAt": "2026-11-01T22:31:41.580Z"
   },
   {
-    "file": "2155-variant-how-it-works-g3-b-stations-home-1440.png",
-    "label": "variant-how-it-works-g3-b-stations",
+    "file": "2231-variant-how-it-works-g3-c-table-home-1440.png",
+    "label": "variant-how-it-works-g3-c-table",
     "route": "/",
     "width": 1440,
-    "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T21:55:51.764Z"
+    "url": "http://127.0.0.1:4323/",
+    "takenAt": "2026-11-01T22:31:42.531Z"
   },
   {
-    "file": "2155-variant-how-it-works-g3-b-stations-setup-1440.png",
-    "label": "variant-how-it-works-g3-b-stations",
+    "file": "2231-variant-how-it-works-g3-c-table-setup-1440.png",
+    "label": "variant-how-it-works-g3-c-table",
     "route": "/setup",
     "width": 1440,
-    "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T21:55:52.860Z"
+    "url": "http://127.0.0.1:4323/setup",
+    "takenAt": "2026-11-01T22:31:43.665Z"
   },
   {
-    "file": "2155-variant-how-it-works-g3-b-stations-home-1920.png",
-    "label": "variant-how-it-works-g3-b-stations",
+    "file": "2231-variant-how-it-works-g3-c-table-home-1920.png",
+    "label": "variant-how-it-works-g3-c-table",
     "route": "/",
     "width": 1920,
-    "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T21:55:53.803Z"
+    "url": "http://127.0.0.1:4323/",
+    "takenAt": "2026-11-01T22:31:44.644Z"
   },
   {
-    "file": "2155-variant-how-it-works-g3-b-stations-setup-1920.png",
-    "label": "variant-how-it-works-g3-b-stations",
+    "file": "2231-variant-how-it-works-g3-c-table-setup-1920.png",
+    "label": "variant-how-it-works-g3-c-table",
     "route": "/setup",
     "width": 1920,
-    "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T21:55:54.866Z"
-  },
-  {
-    "file": "2202-variant-how-it-works-g3-b-stations-home-390.png",
-    "label": "variant-how-it-works-g3-b-stations",
-    "route": "/",
-    "width": 390,
-    "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T22:02:02.374Z"
-  },
-  {
-    "file": "2202-variant-how-it-works-g3-b-stations-setup-390.png",
-    "label": "variant-how-it-works-g3-b-stations",
-    "route": "/setup",
-    "width": 390,
-    "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T22:02:03.519Z"
-  },
-  {
-    "file": "2202-variant-how-it-works-g3-b-stations-home-768.png",
-    "label": "variant-how-it-works-g3-b-stations",
-    "route": "/",
-    "width": 768,
-    "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T22:02:04.423Z"
-  },
-  {
-    "file": "2202-variant-how-it-works-g3-b-stations-setup-768.png",
-    "label": "variant-how-it-works-g3-b-stations",
-    "route": "/setup",
-    "width": 768,
-    "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T22:02:05.481Z"
-  },
-  {
-    "file": "2202-variant-how-it-works-g3-b-stations-home-1440.png",
-    "label": "variant-how-it-works-g3-b-stations",
-    "route": "/",
-    "width": 1440,
-    "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T22:02:06.386Z"
-  },
-  {
-    "file": "2202-variant-how-it-works-g3-b-stations-setup-1440.png",
-    "label": "variant-how-it-works-g3-b-stations",
-    "route": "/setup",
-    "width": 1440,
-    "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T22:02:07.481Z"
-  },
-  {
-    "file": "2202-variant-how-it-works-g3-b-stations-home-1920.png",
-    "label": "variant-how-it-works-g3-b-stations",
-    "route": "/",
-    "width": 1920,
-    "url": "http://127.0.0.1:4322/",
-    "takenAt": "2026-11-01T22:02:08.451Z"
-  },
-  {
-    "file": "2202-variant-how-it-works-g3-b-stations-setup-1920.png",
-    "label": "variant-how-it-works-g3-b-stations",
-    "route": "/setup",
-    "width": 1920,
-    "url": "http://127.0.0.1:4322/setup",
-    "takenAt": "2026-11-01T22:02:09.548Z"
+    "url": "http://127.0.0.1:4323/setup",
+    "takenAt": "2026-11-01T22:31:45.718Z"
   }
 ]
