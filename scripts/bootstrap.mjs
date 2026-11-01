@@ -32,6 +32,9 @@ const COMFY_INSTALLER = 'artgen/setup/install_comfyui.py';
 const COMFY_CONFIGURE = 'artgen/setup/configure.py';
 // Where `impeccable install --scope=project` puts each provider's skill.
 const IMPECCABLE_DIRS = { claude: '.claude/skills/impeccable', codex: '.agents/skills/impeccable' };
+// Fallback pin; the real pin is tools/package.json, so the installer matches the committed skill and engine.
+const IMPECCABLE_FALLBACK_VERSION = '4.8.0';
+const IMPECCABLE_LAUNCHER = '.claude/skills/impeccable/scripts/impeccable';
 const GB = 1024 ** 3;
 const DISK_NEEDED_COMFY_GB = 40;
 const DISK_NEEDED_BASE_GB = 3;
@@ -130,9 +133,10 @@ function note(msg) { console.log(`  ${msg}`); }
 const result = (item, status, detail = '', fix = '') => ({ item, status, detail, fix });
 
 function printResults(results) {
-  const w = Math.max(...results.map((r) => r.item.length)) + 2;
+  const w = Math.min(36, Math.max(...results.map((r) => r.item.length))) + 2;
   for (const r of results) {
-    console.log(`  ${LABEL[r.status]} ${r.item.padEnd(w)}${r.detail}`);
+    const item = r.item.length > w - 2 ? `${r.item.slice(0, w - 3)}…` : r.item;
+    console.log(`  ${LABEL[r.status]} ${item.padEnd(w)}${r.detail}`);
     if (r.fix && r.status !== 'green' && r.status !== 'info') console.log(`         ${' '.repeat(w)}${paint(2, `-> ${r.fix}`)}`);
   }
 }
@@ -144,7 +148,7 @@ function printResults(results) {
 let DRY = false;
 
 // npm/npx are .cmd shims on Windows and must go through the shell; quote arguments ourselves.
-const viaShell = (cmd) => IS_WIN && /^(npm|npx)$/i.test(cmd);
+const viaShell = (cmd) => IS_WIN && (/^(npm|npx)$/i.test(cmd) || /\.cmd$/i.test(cmd));
 const quote = (a) => (/[\s"&|<>^()]/.test(a) ? `"${a.replace(/"/g, '""')}"` : a);
 const display = (cmd, args) => [cmd, ...args].map(quote).join(' ');
 
@@ -433,12 +437,31 @@ function installChromium(opts) {
 // Step 4: Impeccable
 // ---------------------------------------------------------------------------------------------
 
+function impeccableVersion() {
+  const v = readJson(rel('tools/package.json'))?.devDependencies?.impeccable ?? '';
+  return v.replace(/^[\^~=v]+/, '') || IMPECCABLE_FALLBACK_VERSION;
+}
+
+/**
+ * The skills are committed, so a fresh clone normally needs no install. The version is pinned because a bare
+ * `npx impeccable` resolves a stale global first. --no-hooks: the team's gated hook is committed in
+ * .claude/settings.json and .codex/hooks.json; never run `impeccable hooks on` or `doctor --fix` from here.
+ */
 function installImpeccable(cfg, opts) {
   const providers = cfg.harnessProviders;
   if (!providers.length) { note('No harness providers configured; skipping Impeccable.'); return true; }
   const missing = providers.filter((p) => !IMPECCABLE_DIRS[p] || !exists(rel(IMPECCABLE_DIRS[p])));
-  if (!missing.length && !opts.reinstall) { note(`Impeccable present for ${providers.join(', ')}.`); return true; }
-  return stream('npx', ['--yes', 'impeccable', 'install', '--scope=project', `--providers=${providers.join(',')}`]);
+  let ok = true;
+  if (!missing.length && !opts.reinstall) note(`Impeccable skills present for ${providers.join(', ')} (committed).`);
+  else {
+    ok = stream('npx', ['--yes', `impeccable@${impeccableVersion()}`, 'install', '--scope=project',
+      `--providers=${providers.join(',')}`, '--no-hooks', '-y', '--force']);
+  }
+  // Warm the engine: a checksum-verified binary cached in ~/.impeccable (network needed once).
+  const launcher = IS_WIN ? rel(`${IMPECCABLE_LAUNCHER}.cmd`) : 'sh';
+  const args = IS_WIN ? ['--version'] : [rel(IMPECCABLE_LAUNCHER), '--version'];
+  if (exists(rel(IMPECCABLE_LAUNCHER))) ok = stream(launcher, args) && ok;
+  return ok;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -595,8 +618,13 @@ async function healthCheck(opts) {
       : exists(rel(d)) ? result(`Impeccable (${p})`, 'green', d) : result(`Impeccable (${p})`, 'red', `${d} missing`, 'Run bootstrap, or: npx impeccable install --scope=project'));
   }
   if (cfg.harnessProviders.length) {
-    const v = capture('npx', ['--yes', 'impeccable', '--version'], { timeout: 120_000 });
-    tools.push(result('Impeccable CLI', v.ok ? 'green' : 'amber', v.ok ? v.out.split(/\r?\n/).pop() : 'npx impeccable --version failed', 'Check network access to the npm registry'));
+    // Run in tools/ so npx resolves the pinned devDependency, never a global install.
+    const v = capture('npx', ['--no-install', 'impeccable', '--version'], { cwd: rel('tools'), timeout: 120_000 });
+    const want = impeccableVersion();
+    const got = v.ok ? v.out.split(/\r?\n/).pop().trim() : '';
+    tools.push(!v.ok
+      ? result('Impeccable CLI', 'red', 'npx impeccable --version failed in tools/', 'Run bootstrap to install tools/ packages')
+      : result('Impeccable CLI', got.includes(want) ? 'green' : 'amber', got, `Expected ${want}; re-run bootstrap with --reinstall`));
   }
   groups.push(['Tooling', tools]);
 

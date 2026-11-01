@@ -2,6 +2,7 @@
   "version": 1,
   "activeProject": "",
   "worktreesDir": "",
+  "variantBasePort": 4321,
   "harnessProviders": ["claude", "codex"],
   "comfyui": {
     "path": "",
