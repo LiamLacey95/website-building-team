@@ -1,0 +1,66 @@
+[
+  {
+    "file": "2129-variant-how-it-works-g3-a-long-run-home-390.png",
+    "label": "variant-how-it-works-g3-a-long-run",
+    "route": "/",
+    "width": 390,
+    "url": "http://127.0.0.1:4321/",
+    "takenAt": "2026-11-01T21:29:55.610Z"
+  },
+  {
+    "file": "2129-variant-how-it-works-g3-a-long-run-setup-390.png",
+    "label": "variant-how-it-works-g3-a-long-run",
+    "route": "/setup",
+    "width": 390,
+    "url": "http://127.0.0.1:4321/setup",
+    "takenAt": "2026-11-01T21:29:56.730Z"
+  },
+  {
+    "file": "2129-variant-how-it-works-g3-a-long-run-home-768.png",
+    "label": "variant-how-it-works-g3-a-long-run",
+    "route": "/",
+    "width": 768,
+    "url": "http://127.0.0.1:4321/",
+    "takenAt": "2026-11-01T21:30:03.492Z"
+  },
+  {
+    "file": "2129-variant-how-it-works-g3-a-long-run-setup-768.png",
+    "label": "variant-how-it-works-g3-a-long-run",
+    "route": "/setup",
+    "width": 768,
+    "url": "http://127.0.0.1:4321/setup",
+    "takenAt": "2026-11-01T21:30:04.550Z"
+  },
+  {
+    "file": "2129-variant-how-it-works-g3-a-long-run-home-1440.png",
+    "label": "variant-how-it-works-g3-a-long-run",
+    "route": "/",
+    "width": 1440,
+    "url": "http://127.0.0.1:4321/",
+    "takenAt": "2026-11-01T21:30:11.259Z"
+  },
+  {
+    "file": "2129-variant-how-it-works-g3-a-long-run-setup-1440.png",
+    "label": "variant-how-it-works-g3-a-long-run",
+    "route": "/setup",
+    "width": 1440,
+    "url": "http://127.0.0.1:4321/setup",
+    "takenAt": "2026-11-01T21:30:12.339Z"
+  },
+  {
+    "file": "2129-variant-how-it-works-g3-a-long-run-home-1920.png",
+    "label": "variant-how-it-works-g3-a-long-run",
+    "route": "/",
+    "width": 1920,
+    "url": "http://127.0.0.1:4321/",
+    "takenAt": "2026-11-01T21:30:18.829Z"
+  },
+  {
+    "file": "2129-variant-how-it-works-g3-a-long-run-setup-1920.png",
+    "label": "variant-how-it-works-g3-a-long-run",
+    "route": "/setup",
+    "width": 1920,
+    "url": "http://127.0.0.1:4321/setup",
+    "takenAt": "2026-11-01T21:30:19.856Z"
+  }
+]
