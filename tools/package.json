@@ -1,0 +1,15 @@
+{
+  "name": "website-team-tools",
+  "private": true,
+  "type": "module",
+  "description": "Front-end tooling: screenshots, contact sheets, variant worktrees.",
+  "scripts": {
+    "screenshot": "node screenshot.mjs",
+    "contact-sheet": "node contact-sheet.mjs",
+    "variants": "node variants.mjs",
+    "install-browsers": "playwright install chromium"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.1"
+  }
+}

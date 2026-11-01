@@ -1,0 +1,66 @@
+[
+  {
+    "file": "1149-variant-g3-z-dry-run-home-390.png",
+    "label": "variant-g3-z-dry-run",
+    "route": "/",
+    "width": 390,
+    "url": "http://127.0.0.1:4346/",
+    "takenAt": "2026-11-01T11:49:13.443Z"
+  },
+  {
+    "file": "1149-variant-g3-z-dry-run-home-768.png",
+    "label": "variant-g3-z-dry-run",
+    "route": "/",
+    "width": 768,
+    "url": "http://127.0.0.1:4346/",
+    "takenAt": "2026-11-01T11:49:14.215Z"
+  },
+  {
+    "file": "1149-variant-g3-z-dry-run-home-1440.png",
+    "label": "variant-g3-z-dry-run",
+    "route": "/",
+    "width": 1440,
+    "url": "http://127.0.0.1:4346/",
+    "takenAt": "2026-11-01T11:49:14.954Z"
+  },
+  {
+    "file": "1149-variant-g3-z-dry-run-home-1920.png",
+    "label": "variant-g3-z-dry-run",
+    "route": "/",
+    "width": 1920,
+    "url": "http://127.0.0.1:4346/",
+    "takenAt": "2026-11-01T11:49:15.718Z"
+  },
+  {
+    "file": "1149-variant-g3-y-dry-run-alt-home-390.png",
+    "label": "variant-g3-y-dry-run-alt",
+    "route": "/",
+    "width": 390,
+    "url": "http://127.0.0.1:4345/",
+    "takenAt": "2026-11-01T11:49:18.221Z"
+  },
+  {
+    "file": "1149-variant-g3-y-dry-run-alt-home-768.png",
+    "label": "variant-g3-y-dry-run-alt",
+    "route": "/",
+    "width": 768,
+    "url": "http://127.0.0.1:4345/",
+    "takenAt": "2026-11-01T11:49:18.999Z"
+  },
+  {
+    "file": "1149-variant-g3-y-dry-run-alt-home-1440.png",
+    "label": "variant-g3-y-dry-run-alt",
+    "route": "/",
+    "width": 1440,
+    "url": "http://127.0.0.1:4345/",
+    "takenAt": "2026-11-01T11:49:19.935Z"
+  },
+  {
+    "file": "1149-variant-g3-y-dry-run-alt-home-1920.png",
+    "label": "variant-g3-y-dry-run-alt",
+    "route": "/",
+    "width": 1920,
+    "url": "http://127.0.0.1:4345/",
+    "takenAt": "2026-11-01T11:49:20.879Z"
+  }
+]
