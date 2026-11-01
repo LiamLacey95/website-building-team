@@ -15,3 +15,5 @@ __pycache__/
 .playwright/
 test-results/
 playwright-report/
+team.config.json
+artgen/models/

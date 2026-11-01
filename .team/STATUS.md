@@ -12,24 +12,24 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | Backend | Team · Backend | `thread:mcp:406317ba-0bfb-4435-b210-2935ffdb7cad:team-setup-2026-11-01:3` |
 | Review | Team · Review | `thread:mcp:406317ba-0bfb-4435-b210-2935ffdb7cad:team-setup-2026-11-01:4` |
 
-## Current project
+## Active project
 
-None yet. Waiting for the human's website prompt.
+`how-it-works`: a creative website that explains how this team works (`projects/how-it-works/BRIEF.md`). Phase 1 Discover.
 
-## Phase
-
-Setup complete. Team idle and ready for intake.
+## Briefs in flight
 
 | Brief | Owner | State |
 |---|---|---|
-| 01-research-setup | Research | done (cc6600a) |
-| 01-concept-setup | Concept | done (94d1c50) |
-| 02-concept-commercial-upscaler | Concept | done (17c1e1e) |
-| 01-frontend-setup | Front-end | done (4bd9e26) |
-| 01-backend-setup | Backend | done (d5fea90) |
-| 01-review-setup | Review | done (e406ccf) |
+| how-it-works/01-research-discover | Research | in progress |
+| 03-frontend-impeccable-and-portability | Front-end | in progress |
+| 03-concept-comfyui-installer | Concept | in progress |
+| 03-backend-bootstrap | Backend | in progress |
+| 03-review-portability | Review | in progress |
+| 04-review-kit-audit | Review | after the three 03 kit briefs |
 
-## Gates
+Setup history: `.team/history/2026-11-01-initial-setup/`.
+
+## Gates (how-it-works)
 
 | Gate | State | Decision |
 |---|---|---|
