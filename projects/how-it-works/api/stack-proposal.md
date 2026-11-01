@@ -3,7 +3,7 @@
 Owner: Backend (with Front-end). Phase: 2 Define. Feeds: **Gate 1** (answers `research/define/gate1-questions.md` Q2 and Q9 on the technical side).
 Date: 2026-11-01. Brief: `briefs/02-backend-stack-proposal.md`. Site type (see `docs/api/stack-playbook.md`): **1 Brochure / 3 Content**: a static story site with no runtime backend.
 
-Front-end sign-off on §1 (framework) and §4 (interactivity): **pending**, see the end of this file.
+Front-end sign-off on §1 (framework) and §4 (interactivity): **OK with notes** (2026-11-01), recorded at the end of this file.
 
 ## Requirements that drive the stack
 
@@ -30,6 +30,11 @@ Front-end sign-off on §1 (framework) and §4 (interactivity): **pending**, see 
 - **Content:** Astro content collections with **custom loaders** from the Content Loader API. The built-in `glob()` loader reads Markdown, JSON and YAML from any folder on disk, including outside `web/` ([Astro Content Loader API](https://docs.astro.build/en/reference/content-loader-reference/)). A custom loader handles the git log and slots (§2).
 - **Images:** `astro:assets` `<Picture formats={['avif','webp']} widths=[…]>`, which uses sharp at build time.
 - **CSP:** Astro's built-in CSP (`security.csp`, stable since Astro 6 per [Report URI's Astro guide](https://docs.report-uri.com/frameworks/astro/); it began as [an experimental flag in 5.9](https://docs.astro.build/en/reference/experimental-flags/csp)). It hashes Astro's own inline scripts and styles and emits a `<meta http-equiv="Content-Security-Policy">`, which is the only option on Pages. **Limit:** `<ClientRouter />` view transitions are incompatible with it, so we use cross-document `@view-transition` in CSS if we want transitions at all.
+- **Component rules under this CSP (Review checks them):**
+  - no inline event handlers;
+  - no `style="…"` attributes, because a hashed `style-src` does not cover them;
+  - no `define:vars`. Values travel through data attributes and classes instead.
+- **Fonts:** self-hosted woff2, through Astro's fonts API or plain `@font-face`. Only the display face is preloaded, and the OFL text ships alongside. This fits `font-src 'self'`.
 - **Why:** it is the playbook default for content sites. It already does everything the outline needs: content from files, image pipeline, static HTML, zero JS by default, base-path support and a documented Pages deploy. Research's evidence points to exactly this shape.
 
 ### Option B: Eleventy 3 + a sharp script
@@ -108,10 +113,12 @@ The same check runs over `web/public/assets/generated/`. `research/refs/` is nev
 ### Images
 
 - PNG masters stay where they are.
-- At build, `<Picture>` emits AVIF and WebP at about 4 widths (for example 480, 960, 1440, 1920; the final set comes from Front-end's layout), with explicit `width`/`height` to keep CLS at 0. Images below the fold use `loading="lazy"`.
+- At build, `<Picture>` emits AVIF and WebP. **Front-end sets the widths and `sizes` per component.** The working default for artefacts is 400, 800, 1200 and 1600, plus 2400 only for a full-bleed hero. Explicit `width`/`height` keep CLS at 0, and images below the fold use `loading="lazy"`.
 - Contact sheets are rebuilt from the individual screenshots at each width rather than shipped as one huge PNG.
 - **Size estimate:** about 60 images × 4 widths × 2 formats × ~80 KB ≈ **40 MB**, against Pages' 1 GB limit. A CI check fails the build if `dist/` exceeds **150 MB** (the budget, not the platform limit).
-- **To verify first in Phase 4:** Vite only reads files outside the project root if `server.fs.allow` includes the repo root (set in `astro.config`). If `astro:assets` refuses assets outside `web/`, the fallback is a 30-line prebuild step that copies the selected masters into a git-ignored `web/src/assets/artefacts/`. The rest of the design is unchanged.
+- **Phase 4 spike (first thing, Backend with Front-end):**
+  1. **Images outside `web/`:** Vite only reads files outside the project root if `server.fs.allow` includes the repo root (set in `astro.config`). If `astro:assets` refuses assets outside `web/`, the fallback is a 30-line prebuild step that copies the selected masters into a git-ignored `web/src/assets/artefacts/`. The rest of the design is unchanged.
+  2. **CSP:** render a `<Picture>` and the three JS features under the real meta CSP. Confirm there are no inline `style` attributes and **zero CSP violations** in the console.
 
 ### Second outputs
 
@@ -173,7 +180,7 @@ Instead:
 
 ## 4. Interactivity budget
 
-No client framework. Everything below is vanilla TypeScript in Astro `<script>` tags, which Astro bundles as small modules. **The whole site's JS is expected under 10 KB gzipped against the 150 KB budget.** All of it is progressive enhancement: with JS off, every story, artefact and link still works.
+No client framework. **One shared vanilla TypeScript module** (`web/src/scripts/site.ts`, bundled by Astro) holds the copy button, the motion toggle and the width switcher. That keeps the story outline's "at most two small JS islands" honest: one module, plus the tiny head snippet for motion. **Hard cap: 10 KB gzipped for the whole site**, against the 150 KB budget. All of it is progressive enhancement: with JS off, every story, artefact and link still works.
 
 | Feature | Where | JS (gzipped, est.) | Without JS |
 |---|---|---|---|
@@ -181,7 +188,9 @@ No client framework. Everything below is vanilla TypeScript in Astro `<script>` 
 | Reduce-motion toggle | Header, every page | ~1 KB: sets `data-motion="off"` on `<html>`. Persisted in `localStorage` because the visitor asked for it (strictly necessary, so no banner; named in the privacy note). An inline head snippet (CSP-hashed) applies it before first paint, so there's no flash | Hidden; CSS still honours the OS setting |
 | Contact-sheet width switcher | Chapter 6, `/made/` | ~1 KB: buttons, not swipe (WCAG 2.5.7) | All widths shown stacked |
 | Scroll-driven effects (diamond draw, artefacts sliding in, prompt token) | Home story | **0 KB.** Pure CSS inside `@supports (animation-timeline: view())`, `@media (prefers-reduced-motion: no-preference)` and `:root:not([data-motion="off"])` | Static story; content is never hidden at `opacity: 0` by default |
-| Chapter nav and progress rail | Home | 0 KB: anchor links; current chapter by CSS scroll-driven state where supported | Plain links |
+| Chapter nav and progress rail; mobile nav | Home; every page | 0 KB: anchor links, `<details>` or popover; current chapter by CSS scroll-driven state where supported | Plain links |
+| View transitions between pages (only if a Gate 3 variation wants them) | Site-wide | 0 KB: CSS `@view-transition { navigation: auto }`, behind `prefers-reduced-motion: no-preference` and `:root:not([data-motion="off"])` | Normal navigation |
+| Artefact viewer (full-size image or contact sheet), only if a Gate 3 variation needs it | Chapters 5 and 6, `/made/` | 0 KB first: `<dialog>` or popover with `command`/`commandfor` invokers. If a polyfill is needed, it stays under 2 KB and inside the 10 KB cap | A plain link to the full image |
 
 Explicitly out: animation libraries, WebGL or canvas on first load, scroll-jacking, client-side data fetching, `<ClientRouter />`.
 
@@ -263,7 +272,13 @@ The main risk is image handling for files outside `web/`, with a known small fal
 
 ## Front-end sign-off
 
-| Item | Status |
-|---|---|
-| §1 Framework and build | pending |
-| §4 Interactivity budget | pending |
+Signed off by Front-end on 2026-11-01 as **"OK with notes"**. None of the notes changes the stack; all are folded in above.
+
+| Item | Status | Notes |
+|---|---|---|
+| §1 Framework and build | **OK** | (1) Front-end sets image widths and `sizes` per component; the default is 400/800/1200/1600, plus 2400 for a full-bleed hero, and the 40 MB estimate holds. (2) Component rules: no `style=` attributes, no `define:vars`, no inline handlers. The spike checks `<Picture>` under the real CSP for zero violations. (3) Self-hosted woff2, display face preloaded, OFL text shipped. (4) Backend publishes `api/contract.md` plus fixtures for **both filled and pending** slot states **before Gate 3 work starts**; all three variations build against them. |
+| §4 Interactivity budget | **OK** | (5) View transitions are CSS-only and gated by motion preferences; whether to use them is a Gate 3 design call. (6) A possible artefact viewer, zero-JS first, under 2 KB if a polyfill is needed. (7) Copy button, motion toggle and width switcher share one module, to honour the outline's two-island limit (Backend's call). |
+
+Front-end-side follow-ups (not Backend's):
+- `tools/screenshot.mjs` is being fixed to keep the base path. Local dev and preview URLs are `http://127.0.0.1:4321/website-building-team/`.
+- Each variant worktree runs its own `npm ci` in `projects/how-it-works/web/`.
