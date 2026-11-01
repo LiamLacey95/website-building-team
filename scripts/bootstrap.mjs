@@ -39,6 +39,9 @@ const GB = 1024 ** 3;
 const DISK_NEEDED_COMFY_GB = 40;
 const DISK_NEEDED_BASE_GB = 3;
 
+// Kit policy: Impeccable telemetry is off unless the user explicitly sets the variable. Every child process inherits it.
+process.env.IMPECCABLE_NO_TELEMETRY ??= '1';
+
 if (Number(process.versions.node.split('.')[0]) < NODE_MIN) {
   console.error(`Node ${NODE_MIN}+ is required (found ${process.versions.node}). Install the LTS from https://nodejs.org/`);
   process.exit(1);
