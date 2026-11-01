@@ -77,7 +77,7 @@ def web1():
         "feature illustrations. Write a **full scene caption**: subject, setting, light, palette, lens/camera, "
         "and where the **empty space for the headline** goes.\n\n"
         "- **Aspect (Resolution node):** 16:9 hero (default), 21:9 ultrawide banner, 3:2 section/feature image. "
-        "2.0 MP default (~1920 px wide). Run WEB6 for 2x.\n"
+        "2.0 MP default (~1920 px wide). 2x: WEB6b for shipped assets, WEB6 for boards.\n"
         "- **Model:** full model, 30 steps, CFG 3.5 (~40 s). 50 steps for finals. "
         "Drafts: switch to `flux3_image_klein_sd_int8_convrot`, steps 12, **CFG 1** (~12 s).\n"
         "- **Negative** only works when CFG > 1 (full model). It already bans text and logos.\n"
@@ -326,30 +326,44 @@ def web5():
     return g, manifest
 
 
-def web6():
-    g = Graph("WEB6 Upscale 2x")
-    g.note(
-        "## WEB6 Upscale 2x\n"
-        "4x-UltraSharp, then halved back to 2x so it stays sharp without over-sharpening. "
-        "Set the scale to 1.0 for a full 4x. ~13 s at 1.5 MP in.\n\n"
-        "- Hero at 2 MP (1936 px) becomes ~3870 px: enough for 1920 px at 2x DPR.\n"
-        "- **Licence:** 4x-UltraSharp is CC BY-NC-SA 4.0 (non-commercial). Fine for boards and gate packets. "
-        "For images that ship on a commercial site, switch the loader to a permissively licensed model "
-        "(e.g. `RealESRGAN_x4plus`, BSD-3) once it is installed.\n"
-        "- Textures from WEB5 stay seamless when upscaled.",
-        height=260)
+def upscale(name, model, prefix, note):
+    g = Graph(name)
+    g.note(note, height=280)
     i = g.add("LoadImage", {"image": EXAMPLE_IMAGE}, col=0, size=[380, 380])
-    u = g.add("UpscaleModelLoader", {"model_name": "4x-UltraSharp.safetensors"}, col=1)
+    u = g.add("UpscaleModelLoader", {"model_name": model}, col=1)
     up = g.add("ImageUpscaleWithModel", links={"upscale_model": out(u), "image": out(i)}, col=1)
     sc = g.add("ImageScaleBy", {"upscale_method": "lanczos", "scale_by": 0.5}, links={"image": out(up)}, col=1)
-    s = g.add("SaveImage", {"filename_prefix": "web/web6_upscaled"}, links={"images": out(sc)}, col=2,
-              size=[560, 520])
+    s = g.add("SaveImage", {"filename_prefix": prefix}, links={"images": out(sc)}, col=2, size=[560, 520])
     manifest = {"kind": "upscale", "family": "upscale", "prompt": None, "negative": None,
                 "image": i, "upscale_model": [u, "model_name"], "scale": [sc, "scale_by"], "save": s}
     return g, manifest
 
 
-WORKFLOWS = [web1, web2, web3, web4, web5, web6]
+def web6():
+    return upscale(
+        "WEB6 Upscale 2x", "4x-UltraSharp.safetensors", "web/web6_upscaled",
+        "## WEB6 Upscale 2x (boards only)\n"
+        "4x-UltraSharp, then halved back to 2x so it stays sharp without over-sharpening. "
+        "Set the scale to 1.0 for a full 4x. ~13 s at 2 MP in.\n\n"
+        "- **Licence: CC BY-NC-SA 4.0, non-commercial.** Use it for moodboards, gate packets and reviews only. "
+        "Anything that ships on the site goes through **WEB6b** (`generate.py` enforces this for `web/`).\n"
+        "- Textures from WEB5 stay seamless when upscaled.")
+
+
+def web6b():
+    return upscale(
+        "WEB6b Upscale 2x (commercial)", "RealESRGAN_x4plus.pth", "web/web6b_upscaled",
+        "## WEB6b Upscale 2x (commercial, for shipped assets)\n"
+        "RealESRGAN_x4plus, then halved back to 2x. Set the scale to 1.0 for a full 4x. ~13 s at 2 MP in.\n\n"
+        "- **Licence: BSD-3-Clause**, commercial use OK. This is the upscaler for everything in "
+        "`web/public/assets/generated/`.\n"
+        "- The model lives in `artgen/models/upscale_models/` (project-only, via `extra_model_paths.yaml`). "
+        "If the loader shows it missing, start ComfyUI with this project's launcher.\n"
+        "- Hero at 2 MP (1936 px) becomes ~3870 px: enough for 1920 px at 2x DPR.\n"
+        "- Textures from WEB5 stay seamless when upscaled.")
+
+
+WORKFLOWS = [web1, web2, web3, web4, web5, web6, web6b]
 
 
 # ---------------------------------------------------------------------------------------------

@@ -250,5 +250,23 @@
   "save": 6,
   "name": "WEB6 Upscale 2x",
   "file": "WEB6 Upscale 2x.json"
+ },
+ "WEB6b": {
+  "kind": "upscale",
+  "family": "upscale",
+  "prompt": null,
+  "negative": null,
+  "image": 2,
+  "upscale_model": [
+   3,
+   "model_name"
+  ],
+  "scale": [
+   5,
+   "scale_by"
+  ],
+  "save": 6,
+  "name": "WEB6b Upscale 2x (commercial)",
+  "file": "WEB6b Upscale 2x (commercial).json"
  }
 }

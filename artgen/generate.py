@@ -10,9 +10,10 @@ Examples:
   generate.py WEB1 --prompt "..." --size 1920x816 --model fast          (exact size, distilled drafts)
   generate.py WEB2 --image pick.png --ref hero.png --prompt "... <ref_image_1> ..."
   generate.py WEB5 --prompt "Seamless tileable ..." --size 768x768
-  generate.py WEB6 --image artgen/output/web1/web1_00001_.png
+  generate.py WEB6 --image artgen/output/web1/web1_00001_.png            (boards: 4x-UltraSharp, non-commercial)
+  generate.py WEB6b --image ... --out web/public/assets/generated       (shipped: RealESRGAN_x4plus, BSD-3)
   generate.py --jobs batch.json                         (list of job objects, same keys as the flags)
-  generate.py --stop                                    (stop a headless server)
+  generate.py --start / --stop                          (start or stop the headless server by hand)
 
 If ComfyUI is not running it is started headless (output to artgen/output, log in
 artgen/user/comfyui_headless.log) and stopped again when the run ends, unless --keep-server.
@@ -45,6 +46,8 @@ INPUT_DIR = os.path.join(ARTGEN, "input")
 OUTPUT_DIR = os.path.join(ARTGEN, "output")
 LOG_FILE = os.path.join(USER_DIR, "comfyui_headless.log")
 PID_FILE = os.path.join(USER_DIR, "comfyui_headless.pid")
+EXTRA_MODEL_PATHS = os.path.join(ARTGEN, "extra_model_paths.yaml")
+WEB_DIR = os.path.join(REPO, "web")
 SERVER = os.environ.get("COMFY_URL", "http://127.0.0.1:8188")
 
 MODELS = {
@@ -62,7 +65,11 @@ LICENCES = {
     "klein": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
     "zimage": "Apache 2.0",
     "4x-UltraSharp.safetensors": "CC BY-NC-SA 4.0 (non-commercial: boards only, not shipped assets)",
+    "RealESRGAN_x4plus.pth": "BSD-3-Clause (commercial use OK)",
 }
+# Upscalers that must never produce files for web/ (anything shipped on the site).
+NONCOMMERCIAL_UPSCALERS = {"4x-UltraSharp.safetensors"}
+COMMERCIAL_UPSCALER = "RealESRGAN_x4plus.pth"
 JOB_KEYS = ["workflow", "prompt", "negative", "size", "mp", "seed", "count", "out", "name", "steps", "cfg",
             "model", "image", "refs", "scale", "upscale_model", "seam_denoise", "ref_mp"]
 
@@ -111,7 +118,8 @@ def start_server(wait=240):
         flags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS | subprocess.CREATE_NO_WINDOW
     proc = subprocess.Popen(
         [COMFY_PY, "main.py", "--preview-method", "none", "--user-directory", USER_DIR,
-         "--input-directory", INPUT_DIR, "--output-directory", OUTPUT_DIR],
+         "--input-directory", INPUT_DIR, "--output-directory", OUTPUT_DIR,
+         "--extra-model-paths-config", EXTRA_MODEL_PATHS],
         cwd=COMFY, stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=flags)
     with open(PID_FILE, "w") as f:
         f.write(str(proc.pid))
@@ -179,9 +187,10 @@ def load_manifest():
 
 
 def resolve_workflow(manifest, name):
-    key = name.strip().upper().split(" ")[0]
-    if key in manifest:
-        return key
+    key = name.strip().split(" ")[0].lower()
+    for k in manifest:
+        if k.lower() == key:
+            return k
     for k, m in manifest.items():
         if m["name"].lower().startswith(name.lower()):
             return k
@@ -196,6 +205,11 @@ def setv(api, ref, value):
 def getv(api, ref):
     node, inp = ref
     return api[str(node)]["inputs"].get(inp)
+
+
+def is_shipping(out_dir):
+    """True for anything written under web/ (assets that ship on the site)."""
+    return norm(out_dir) == norm(WEB_DIR) or norm(out_dir).startswith(norm(WEB_DIR) + os.sep)
 
 
 def round16(v):
@@ -341,6 +355,12 @@ def build_prompt(m, base, job, seed):
     if kind == "upscale":
         if job.get("upscale_model"):
             setv(api, m["upscale_model"], job["upscale_model"])
+        if job.get("_shipping") and getv(api, m["upscale_model"]) in NONCOMMERCIAL_UPSCALERS:
+            if job.get("upscale_model"):
+                sys.exit(f"{job['upscale_model']} is non-commercial and cannot write into web/; "
+                         f"use {COMMERCIAL_UPSCALER} (WEB6b)")
+            say(f"output goes into web/: using the commercial upscaler {COMMERCIAL_UPSCALER}")
+            setv(api, m["upscale_model"], COMMERCIAL_UPSCALER)
         if job.get("scale"):
             setv(api, m["scale"], float(job["scale"]))
         info["upscale_model"] = getv(api, m["upscale_model"])
@@ -440,6 +460,7 @@ def run_job(manifest, job, client_id, comfy_version):
     seed0 = int(seed0) if seed0 is not None else random.randint(0, 2 ** 48)
     out_dir = job.get("out") or os.path.join(OUTPUT_DIR, key.lower())
     out_dir = out_dir if os.path.isabs(out_dir) else os.path.join(REPO, out_dir)
+    job["_shipping"] = is_shipping(out_dir)
     name = job.get("name") or key.lower()
     prefix_dir = os.path.relpath(out_dir, OUTPUT_DIR) if norm(out_dir).startswith(norm(OUTPUT_DIR)) else "_generate"
     results = []
@@ -487,6 +508,10 @@ def replay(sidecar, client_id, comfy_version, out=None):
     save = next(k for k, n in api.items() if n["class_type"] == "SaveImage")
     out_dir = out or os.path.dirname(os.path.abspath(sidecar))
     out_dir = out_dir if os.path.isabs(out_dir) else os.path.join(REPO, out_dir)
+    if is_shipping(out_dir):
+        for n in api.values():
+            if n["class_type"] == "UpscaleModelLoader" and n["inputs"].get("model_name") in NONCOMMERCIAL_UPSCALERS:
+                sys.exit(f"this graph uses {n['inputs']['model_name']} (non-commercial); it cannot write into web/")
     prefix_dir = os.path.relpath(out_dir, OUTPUT_DIR) if norm(out_dir).startswith(norm(OUTPUT_DIR)) else "_generate"
     api[save]["inputs"]["filename_prefix"] = f"{prefix_dir}/replay".replace("\\", "/")
     t0 = time.time()
@@ -519,7 +544,7 @@ OBJECT_INFO = {}
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("workflow", nargs="?", help="WEB1..WEB6 (or a name prefix)")
+    ap.add_argument("workflow", nargs="?", help="WEB1..WEB6, WEB6b (or a name prefix)")
     ap.add_argument("--prompt", "-p")
     ap.add_argument("--negative", "-n", help="negative prompt (WEB1/WEB4, only used at CFG > 1)")
     ap.add_argument("--size", "-s", help="WxH (multiples of 16) or an aspect: 1:1 2:3 3:2 3:4 4:3 9:16 16:9 21:9")
@@ -540,6 +565,7 @@ def main():
     ap.add_argument("--jobs", help="JSON file: a list of job objects with the same keys as these flags")
     ap.add_argument("--replay", help="re-run the exact graph stored in a provenance sidecar .json")
     ap.add_argument("--keep-server", action="store_true", help="leave a server this run started running")
+    ap.add_argument("--start", action="store_true", help="start this team's headless ComfyUI (if down) and exit")
     ap.add_argument("--stop", action="store_true", help="stop this team's headless ComfyUI and exit")
     ap.add_argument("--list", action="store_true", help="list workflows and exit")
     ap.add_argument("--dry-run", action="store_true", help="print the patched API graph instead of running")
@@ -551,10 +577,17 @@ def main():
     manifest = load_manifest()
     if args.list:
         for k, m in manifest.items():
-            print(f"{k:5} {m['name']:38} kind={m['kind']}")
+            print(f"{k:6} {m['name']:38} kind={m['kind']}")
         return
     if args.stop:
         stop_server()
+        return
+    if args.start:
+        stats = server_stats()
+        if stats is None:
+            start_server()
+        else:
+            say("ComfyUI already running" + ("" if server_is_ours(stats) else " (started by another project)"))
         return
     if args.jobs:
         with open(args.jobs, encoding="utf-8") as f:

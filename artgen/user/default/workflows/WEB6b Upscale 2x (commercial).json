@@ -1,0 +1,256 @@
+{
+ "id": "b20f35bb-c0e1-5c26-b2ba-9ad87a581c88",
+ "revision": 0,
+ "last_node_id": 6,
+ "last_link_id": 4,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "MarkdownNote",
+   "pos": [
+    40,
+    40
+   ],
+   "size": [
+    380,
+    280
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "properties": {},
+   "widgets_values": [
+    "## WEB6b Upscale 2x (commercial, for shipped assets)\nRealESRGAN_x4plus, then halved back to 2x. Set the scale to 1.0 for a full 4x. ~13 s at 2 MP in.\n\n- **Licence: BSD-3-Clause**, commercial use OK. This is the upscaler for everything in `web/public/assets/generated/`.\n- The model lives in `artgen/models/upscale_models/` (project-only, via `extra_model_paths.yaml`). If the loader shows it missing, start ComfyUI with this project's launcher.\n- Hero at 2 MP (1936 px) becomes ~3870 px: enough for 1920 px at 2x DPR.\n- Textures from WEB5 stay seamless when upscaled."
+   ]
+  },
+  {
+   "id": 2,
+   "type": "LoadImage",
+   "pos": [
+    40,
+    370
+   ],
+   "size": [
+    380,
+    380
+   ],
+   "flags": {},
+   "order": 1,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      2
+     ]
+    },
+    {
+     "name": "MASK",
+     "type": "MASK",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "LoadImage"
+   },
+   "widgets_values": [
+    "web_example.png",
+    "image"
+   ]
+  },
+  {
+   "id": 3,
+   "type": "UpscaleModelLoader",
+   "pos": [
+    470,
+    40
+   ],
+   "size": [
+    380,
+    100
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "UPSCALE_MODEL",
+     "type": "UPSCALE_MODEL",
+     "links": [
+      1
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "UpscaleModelLoader"
+   },
+   "widgets_values": [
+    "RealESRGAN_x4plus.pth"
+   ]
+  },
+  {
+   "id": 4,
+   "type": "ImageUpscaleWithModel",
+   "pos": [
+    470,
+    190
+   ],
+   "size": [
+    380,
+    98
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "upscale_model",
+     "type": "UPSCALE_MODEL",
+     "link": 1
+    },
+    {
+     "name": "image",
+     "type": "IMAGE",
+     "link": 2
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      3
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "ImageUpscaleWithModel"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 5,
+   "type": "ImageScaleBy",
+   "pos": [
+    470,
+    338
+   ],
+   "size": [
+    380,
+    128
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "image",
+     "type": "IMAGE",
+     "link": 3
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      4
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "ImageScaleBy"
+   },
+   "widgets_values": [
+    "lanczos",
+    0.5
+   ]
+  },
+  {
+   "id": 6,
+   "type": "SaveImage",
+   "pos": [
+    900,
+    40
+   ],
+   "size": [
+    560,
+    520
+   ],
+   "flags": {},
+   "order": 5,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "link": 4
+    }
+   ],
+   "outputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SaveImage"
+   },
+   "widgets_values": [
+    "web/web6b_upscaled"
+   ]
+  }
+ ],
+ "links": [
+  [
+   1,
+   3,
+   0,
+   4,
+   0,
+   "UPSCALE_MODEL"
+  ],
+  [
+   2,
+   2,
+   0,
+   4,
+   1,
+   "IMAGE"
+  ],
+  [
+   3,
+   4,
+   0,
+   5,
+   0,
+   "IMAGE"
+  ],
+  [
+   4,
+   5,
+   0,
+   6,
+   0,
+   "IMAGE"
+  ]
+ ],
+ "groups": [],
+ "config": {},
+ "extra": {
+  "ds": {
+   "scale": 0.75,
+   "offset": [
+    0,
+    0
+   ]
+  }
+ },
+ "version": 0.4
+}

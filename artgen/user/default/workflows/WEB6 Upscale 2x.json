@@ -13,7 +13,7 @@
    ],
    "size": [
     380,
-    260
+    280
    ],
    "flags": {},
    "order": 0,
@@ -22,7 +22,7 @@
    "outputs": [],
    "properties": {},
    "widgets_values": [
-    "## WEB6 Upscale 2x\n4x-UltraSharp, then halved back to 2x so it stays sharp without over-sharpening. Set the scale to 1.0 for a full 4x. ~13 s at 1.5 MP in.\n\n- Hero at 2 MP (1936 px) becomes ~3870 px: enough for 1920 px at 2x DPR.\n- **Licence:** 4x-UltraSharp is CC BY-NC-SA 4.0 (non-commercial). Fine for boards and gate packets. For images that ship on a commercial site, switch the loader to a permissively licensed model (e.g. `RealESRGAN_x4plus`, BSD-3) once it is installed.\n- Textures from WEB5 stay seamless when upscaled."
+    "## WEB6 Upscale 2x (boards only)\n4x-UltraSharp, then halved back to 2x so it stays sharp without over-sharpening. Set the scale to 1.0 for a full 4x. ~13 s at 2 MP in.\n\n- **Licence: CC BY-NC-SA 4.0, non-commercial.** Use it for moodboards, gate packets and reviews only. Anything that ships on the site goes through **WEB6b** (`generate.py` enforces this for `web/`).\n- Textures from WEB5 stay seamless when upscaled."
    ]
   },
   {
@@ -30,7 +30,7 @@
    "type": "LoadImage",
    "pos": [
     40,
-    350
+    370
    ],
    "size": [
     380,

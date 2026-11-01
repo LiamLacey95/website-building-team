@@ -8,7 +8,9 @@ Tuned for an RTX 4070 SUPER (12 GB).
 
 - **Headless (normal for the team):** just run `generate.py`. If ComfyUI is not up, it starts it in the background, generates, and stops it again (pass `--keep-server` to leave it running for a batch).
 - **UI:** double-click **`Launch ComfyUI (Website).bat`**. ComfyUI opens at http://127.0.0.1:8188. Press **W** for the Workflows panel; the website workflows start with `WEB`.
-- **Background server by hand:** `start "" /min "Launch ComfyUI (Website, headless).bat"`. Stop it with `generate.py --stop`.
+- **Background server by hand:** `generate.py --start` (or `start "" /min "Launch ComfyUI (Website, headless).bat"`). Stop it with `generate.py --stop`.
+
+All of these pass `--extra-model-paths-config artgen\extra_model_paths.yaml`, which adds this project's own models in `artgen\models\` (currently the commercial upscaler). A ComfyUI started any other way will not see them.
 
 Safeguard's launcher uses the same port (8188), so only one of the two can run at a time. `generate.py` refuses to use a ComfyUI that Safeguard started, because inputs would land in Safeguard's folders.
 
@@ -22,6 +24,8 @@ Safeguard's launcher uses the same port (8188), so only one of the two can run a
 | `artgen\input` | Reference images. `generate.py` copies its inputs into `input\_generate\` (ignored) |
 | `artgen\output` | Every generated image (git-ignored). Copy picks out with their `.json` sidecar |
 | `artgen\tools\build_workflows.py` | Single source for the WEB workflows; writes both formats |
+| `artgen\models` | Project-only models (git-ignored; sources and hashes under *Models and licences*) |
+| `artgen\extra_model_paths.yaml` | Points ComfyUI at `artgen\models\` |
 
 ## Which workflow
 
@@ -32,7 +36,8 @@ Safeguard's launcher uses the same port (8188), so only one of the two can run a
 | **WEB3 Z-Image - Fast Exploration** | Moodboard drafts, trying many compositions quickly | Z-Image Turbo, 8 steps, CFG 1 | ~6 s at 1 MP (~8 s including load) |
 | **WEB4 Klein - Style Frame** | Full-page "feel" mockups for Gate 2 boards, portrait (scrolling page) or landscape (viewport). Mood image, not a layout | Klein full, 30 steps, CFG 3.5 | ~31 s at 1.5 MP |
 | **WEB5 Texture and Pattern** | Seamless tiles: paper, grain, fabric, terrazzo, subtle backgrounds | Klein distilled, 2 passes x 12 steps | ~14 s at 1024 px (~17 s including load) |
-| **WEB6 Upscale 2x** | Take a pick to production size (1936 px becomes 3872 px) | 4x-UltraSharp, then 0.5x | ~7-13 s |
+| **WEB6b Upscale 2x (commercial)** | **Anything that ships on the site.** Take a pick to production size (1936 px becomes 3872 px) | RealESRGAN_x4plus (BSD-3), then 0.5x | ~10-13 s |
+| **WEB6 Upscale 2x** | **Boards only** (moodboards, gate packets, reviews). Slightly more faithful detail, but non-commercial | 4x-UltraSharp (CC BY-NC-SA), then 0.5x | ~10-13 s |
 
 Times were measured on this machine during setup (Nov 2026) with the models already in system RAM. Server start is ~14 s. Switching between Klein full, Klein distilled and Z-Image reloads models (5-6 GB each), which adds 10-20 s, so **batch work per model family**: all WEB3 drafts, then all WEB1/WEB4 (Klein full), then WEB2/WEB5 (Klein distilled).
 
@@ -49,7 +54,8 @@ set PY=F:\ArtGen\ComfyUI\venv\Scripts\python.exe
 %PY% artgen\generate.py WEB4 -p "..." --size 16:9                          (landscape style frame)
 %PY% artgen\generate.py WEB2 -i pick.png --ref hero.png -p "... <ref_image_1> ..."
 %PY% artgen\generate.py WEB5 -p "Seamless tileable ..." --size 768x768
-%PY% artgen\generate.py WEB6 -i artgen\output\web1\hero_00001_.png --out web\public\assets\generated
+%PY% artgen\generate.py WEB6b -i artgen\output\web1\hero_00001_.png --out web\public\assets\generated
+%PY% artgen\generate.py WEB6 -i artgen\output\web1\hero_00001_.png --out design\concepts\a-calm     (boards)
 %PY% artgen\generate.py --jobs artgen\smoke_jobs.json --out artgen\output\_smoke
 %PY% artgen\generate.py --replay artgen\output\web1\hero_00001_.json
 %PY% artgen\generate.py --stop
@@ -63,11 +69,13 @@ set PY=F:\ArtGen\ComfyUI\venv\Scripts\python.exe
 | `--seed`, `--count/-c` | First seed (random if omitted); each extra image uses seed + 1 |
 | `--out/-o`, `--name` | Output folder (default `artgen/output/<web#>`) and filename prefix |
 | `--model` | `full` or `fast` (Klein), or a filename. Switching applies the tuned steps/CFG unless you pass `--steps`/`--cfg` |
-| `--image/-i`, `--ref` | WEB2 `<ref_image_0>` and extra refs (repeat `--ref`); WEB6 image to upscale |
-| `--ref-mp`, `--seam-denoise`, `--scale`, `--upscale-model` | WEB2 working size; WEB5 seam repaint strength (0.75); WEB6 scale after 4x (0.5) and model |
+| `--image/-i`, `--ref` | WEB2 `<ref_image_0>` and extra refs (repeat `--ref`); WEB6/WEB6b image to upscale |
+| `--ref-mp`, `--seam-denoise`, `--scale`, `--upscale-model` | WEB2 working size; WEB5 seam repaint strength (0.75); WEB6/WEB6b scale after 4x (0.5) and model |
 | `--jobs` | JSON list of jobs with the same keys (`workflow`, `prompt`, `size`, `seed`, `count`, `image`, `refs`, ...). Command-line flags act as defaults. One server start for the whole batch |
 | `--replay` | Re-run the exact API graph stored in a sidecar (bit-identical result on the same engine) |
-| `--keep-server`, `--stop`, `--dry-run` | Leave the server up; stop it; print the patched graph without running |
+| `--keep-server`, `--start`, `--stop`, `--dry-run` | Leave the server up; start it and exit; stop it; print the patched graph without running |
+
+**Shipping rule (enforced):** any output written under `web\` must use a commercial upscaler. If you run WEB6 with `--out web\...`, `generate.py` switches it to RealESRGAN_x4plus and says so. Explicitly asking for `--upscale-model 4x-UltraSharp.safetensors` into `web\`, or `--replay`ing an UltraSharp graph into `web\`, is refused.
 
 **Provenance.** Every image gets `<image>.json` beside it with the workflow, prompt, negative, seed, model, steps, CFG, sampler, size, input images and refs (with their own sidecars embedded), licence, timing, ComfyUI version and the full API graph. Copy the `.json` with the image whenever a pick leaves `artgen/output/`.
 
@@ -90,8 +98,8 @@ set PY=F:\ArtGen\ComfyUI\venv\Scripts\python.exe
 
 | Section | Aspect | Generate at | Ship at |
 |---|---|---|---|
-| Full-bleed hero (desktop) | 16:9 | WEB1 2 MP (1936x1088) | WEB6 2x, crop to 2560-3840 wide |
-| Ultrawide banner | 21:9 | WEB1 2 MP (2208x944) | WEB6 2x |
+| Full-bleed hero (desktop) | 16:9 | WEB1 2 MP (1936x1088) | WEB6b 2x, crop to 2560-3840 wide |
+| Ultrawide banner | 21:9 | WEB1 2 MP (2208x944) | WEB6b 2x |
 | Mobile hero (art-directed crop) | 4:5 or 9:16 | WEB1 `--size 1088x1360` / `9:16` | 1080-1440 wide |
 | Section / feature image | 3:2 or 4:3 | WEB1 1.5 MP | 1200-1600 wide |
 | Card thumbnail | 1:1, 4:3 or 3:2 | WEB1 `--model fast`, 1 MP | 600-800 wide |
@@ -108,18 +116,29 @@ Export shipped images as AVIF or WebP at the sizes Front-end asks for. Keep the 
 | FLUX 3 Image Klein, distilled | `flux3_image_klein_sd_int8_convrot` | as above |
 | Klein text encoder / VAE | `qwen3vl_4b_int8_convrot`, `flux2-vae` | Apache 2.0 / as above |
 | Z-Image Turbo (+ encoder, VAE) | `z_image_turbo_int8_convrot`, `qwen_3_4b_fp8_mixed`, `ae` | Apache 2.0 |
-| 4x-UltraSharp | `4x-UltraSharp` | **CC BY-NC-SA 4.0: non-commercial** |
+| 4x-UltraSharp (WEB6) | `4x-UltraSharp` | **CC BY-NC-SA 4.0: non-commercial, boards only** |
+| RealESRGAN x4plus (WEB6b) | `RealESRGAN_x4plus.pth` in `artgen\models\upscale_models\` | BSD-3-Clause: commercial use OK |
 
 Record the model licence in every `direction.md`. Klein outputs are fine for a client whose revenue is under US$5M; above that, check the licence or use Z-Image (Apache 2.0).
 
-**Upscaling for shipped assets:** 4x-UltraSharp is non-commercial, so it is fine for boards and gate packets but not for images that ship on a commercial site. Before the Build phase, add a permissive upscaler (e.g. `RealESRGAN_x4plus`, BSD-3) and run WEB6 with `--upscale-model RealESRGAN_x4plus.pth`.
+**Upscaling for shipped assets:** use WEB6b. 4x-UltraSharp is non-commercial, so it stays for boards and gate packets only.
+
+RealESRGAN_x4plus source (official xinntao/Real-ESRGAN release v0.1.0, downloaded 2026-11-01):
+
+- URL: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+- SHA-256: `4fa0d38905f75ac06eb49a7951b426670021be3018265fd191d2125df9d682f1`
+- Size: 67,040,989 bytes. ComfyUI loads `.pth` files with `weights_only=True`.
+
+To restore it on a fresh checkout, download it into `artgen\models\upscale_models\` and check the hash (`certutil -hashfile RealESRGAN_x4plus.pth SHA256`).
+
+**Quality, WEB6b vs WEB6.** The comparison uses the same 1936 px hero, with crops in `artgen\output\_smoke\upscaler_side_by_side.png`. RealESRGAN is a little smoother: it softens film grain, fine skin texture and the throwing lines on the clay. It can also turn faint speckles in flat areas into crisp dark hairlines. UltraSharp stays closer to the source. At normal web display sizes the difference is small. Before shipping, check flat copy areas (sky, walls) at 100% for stray marks and retouch them. If grain matters, add it back in post.
 
 ## Changing a workflow
 
 Edit the definition in `tools\build_workflows.py`, then rebuild both formats (needs a running server):
 
 ```bat
-start "" /min "artgen\Launch ComfyUI (Website, headless).bat"
+%PY% artgen\generate.py --start
 %PY% artgen\tools\build_workflows.py
 %PY% artgen\generate.py --stop
 ```
