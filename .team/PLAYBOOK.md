@@ -88,3 +88,8 @@ server/                backend
 - Responsive at 390, 768, 1440 and 1920 px wide.
 - No lorem ipsum at Gate 3 or later; use real or realistic draft copy.
 - Every generated image used on the site must have its prompt and workflow recorded next to it (see `roles/concept.md`).
+
+## Known gotchas (shared)
+
+- **Git Bash path rewriting:** Git Bash turns a bare `/` argument into `C:/Program Files/Git/`. Pass routes by name (`--routes home`) or run the command from PowerShell. `tools/screenshot.mjs` catches this, but other scripts may not.
+- **Ports:** variants run on A 4321, B 4322 and C 4323 (`tools/variants.mjs port`). Don't use those ports for anything else during Gate 3.
