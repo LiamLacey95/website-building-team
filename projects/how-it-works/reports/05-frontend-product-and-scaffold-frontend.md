@@ -178,3 +178,37 @@ The built pages contain 0 inline scripts, styles or `style=` attributes. The beh
 Evidence: `screenshots/2026-11-01/spikes/1720-spike-themes-reskinned-1280.png`.
 
 **GSAP** may be used inside `web/` if a scrubbed set piece needs it (about 28 KB plus 18 KB for ScrollTrigger, self-hosted, which is fine under the CSP). It never goes into the kit's `tools/` or templates (DECISIONS, 2026-11-01).
+
+### Content contract 0.2.0 wired
+
+Backend's collections are now wired: `web/src/content.config.ts` follows the contract's snippet, with `vite.resolve.dedupe: ['zod']` and `server.fs.allow: ['..']` (nothing above `projects/how-it-works`). `src/data/site.ts` is removed.
+
+**Pages:**
+- Home renders the hero and chapters 1 to 9 from `chapters`: rendered bodies, scenes, artefacts (file, terminal, slot, diagram) and gate cards.
+- `/setup/` renders requirements (inline Markdown via `inlineMd`), steps, commands, the real `--check` output and the FAQ.
+- `/credits/` and `/made/` render roles, gates, slots and numbers.
+- `/llms.txt` and `/story.md` render from the same collections.
+
+**Images.** Filled slots render through `<Picture>`:
+- formats AVIF and WebP, with `fallbackFormat` WebP;
+- widths 400, 800, 1200 and 1600, capped at each master's size;
+- `sizes` set, and lazy loading.
+
+**Checks:**
+- `astro check`: 0 errors.
+- Backend's `check-dist`: clean (header CSP plus meta, paths, budget) in both auto and `CONTENT_SLOTS=filled` modes.
+- `<picture>` output has 0 `style=` attributes.
+- Behaviour suite under the header CSP: all pass (its only non-PASS line is the deliberate `/nope` 404).
+
+**Detector, on rendered pages at 390, 768, 1440 and 1920 px:** 0 findings, after two fixes.
+- **Stragglers:** `text-wrap: pretty` now also covers `li`, `dd`, `figcaption`, table cells and `summary`.
+- **Line length:** `--measure` went from 68ch to 60ch (about 72 to 78 characters).
+- **One advisory left, judged a false positive:** `em-dash-overuse` on `/setup/`. The detector counts `--` in command-line flags inside `<code>` (`--check`, `--yes`, `--skip-comfyui`). There are no em-dashes in the copy.
+
+**Visual history:** `screenshots/2026-11-01/1726-master-content-*` (16 shots, real mode, all slots pending).
+
+**Copy flags sent to Backend (G1 Q6, no time or cost):**
+- "what it costs" in the G1 packet and in chapter 4;
+- "the same afternoon" in the G1 revise outcome.
+
+**Typing:** `slotSchema(image)` types `src` as `unknown`. `Slot.astro` casts it to `ImageMetadata` for now, and I've asked Backend to make the helper generic.

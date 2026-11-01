@@ -5,10 +5,13 @@
  */
 interface Props {
   sentence: string;
+  /** site.setupIntro */
+  label: string;
+  /** site.gpuNotice: G1 Q7 D says it appears beside every setup block. */
+  notice: string;
   id?: string;
-  label?: string;
 }
-const { sentence, id = 'setup', label = 'Yours starts with this one:' } = Astro.props;
+const { sentence, label, notice, id = 'setup' } = Astro.props;
 ---
 <div class="setup" data-copy-block>
   <p class="setup__label" id={`${id}-label`}>{label}</p>
@@ -19,6 +22,7 @@ const { sentence, id = 'setup', label = 'Yours starts with this one:' } = Astro.
     </button>
   </div>
   <p class="setup__hint">Select the sentence and copy it.</p>
+  <p class="setup__notice">{notice}</p>
   <p class="visually-hidden" role="status" aria-live="polite" data-copy-status></p>
 </div>
 
@@ -29,7 +33,8 @@ const { sentence, id = 'setup', label = 'Yours starts with this one:' } = Astro.
     max-width: 44rem;
   }
   .setup__label,
-  .setup__hint {
+  .setup__hint,
+  .setup__notice {
     color: var(--color-ink-muted);
     font-size: var(--step--1);
   }

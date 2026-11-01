@@ -1,0 +1,49 @@
+---
+/**
+ * A content slot (contract: `slots`). Filled: responsive AVIF/WebP via <Picture> with the master's intrinsic
+ * size (CLS 0). Pending: a designed placeholder naming the gate, never an empty box.
+ */
+import { Picture } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  slot: string;
+  caption: string;
+}
+const { slot, caption } = Astro.props;
+const entry = await getEntry('slots', slot);
+const data = entry?.data;
+---
+{data?.status === 'filled' ? (
+  <figure class="slot slot--filled">
+    {data.items.map((item) => (
+      <Picture
+        src={item.src as ImageMetadata /* contract: image() -> ImageMetadata; schema typing loses it (asked Backend) */}
+        alt={item.alt}
+        formats={['avif', 'webp']}
+        fallbackFormat="webp"
+        widths={[400, 800, 1200, 1600]}
+        sizes="(min-width: 80rem) 72rem, 100vw"
+        loading="lazy"
+      />
+    ))}
+    <figcaption>{caption}{data.items[0]?.caption && ` · ${data.items[0].caption}`}</figcaption>
+  </figure>
+) : (
+  <figure class="slot slot--pending">
+    <p class="slot__label">{data?.pendingLabel ?? 'This happens at a later gate.'}</p>
+    <figcaption>{caption}</figcaption>
+  </figure>
+)}
+
+<style>
+  .slot { margin: 0; display: grid; gap: var(--space-2xs); }
+  .slot--filled :global(img) { width: 100%; height: auto; border-radius: var(--radius-m); }
+  .slot--pending {
+    place-items: center; text-align: center; min-height: 10rem; padding: var(--space-l);
+    border: 2px dashed var(--color-line); border-radius: var(--radius-m);
+  }
+  .slot__label { font-weight: 600; }
+  figcaption { color: var(--color-ink-muted); font-size: var(--step--1); }
+</style>

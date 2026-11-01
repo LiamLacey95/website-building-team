@@ -1,22 +1,22 @@
 import type { APIRoute } from 'astro';
-import { CHAPTERS, SITE } from '../data/site';
+import { getChapters, getSite } from '../lib/content';
 
-/** Markdown twin of the home story, generated from the same content as the page. */
-export const GET: APIRoute = () => {
+/** Markdown twin of the home story, generated from the same chapter files as the page. */
+export const GET: APIRoute = async () => {
+  const site = await getSite();
+  const chapters = await getChapters();
   const body = [
-    `# ${SITE.heroLine}`,
+    `# ${site.heroLine}`,
     '',
-    `Yours starts with this one: \`${SITE.setupSentence}\``,
+    `${site.setupIntro} \`${site.setupSentence}\``,
     '',
-    SITE.whatHappensNext,
+    site.whatHappensNext,
     '',
-    ...CHAPTERS.flatMap((c) => [
-      `## ${c.title}`,
-      '',
-      c.summary,
-      ...(c.gate ? ['', `_This chapter's artefacts arrive at Gate ${c.gate.slice(1)}._`] : []),
-      '',
-    ]),
+    site.gpuNotice,
+    '',
+    ...chapters
+      .filter((c) => c.data.order > 0)
+      .flatMap((c) => [`## ${c.data.title}`, '', `_${c.data.dek}_`, '', (c.body ?? '').trim(), '']),
   ].join('\n');
   return new Response(body, { headers: { 'Content-Type': 'text/markdown; charset=utf-8' } });
 };

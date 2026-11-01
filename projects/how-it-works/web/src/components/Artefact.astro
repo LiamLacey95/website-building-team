@@ -1,0 +1,36 @@
+---
+/** One chapter artefact (contract: chapters.artefacts, a union on `kind`). Neutral rendering until Gate 3. */
+import type { CollectionEntry } from 'astro:content';
+import DoubleDiamond from './DoubleDiamond.astro';
+import Slot from './Slot.astro';
+
+type Artefact = CollectionEntry<'chapters'>['data']['artefacts'][number];
+interface Props {
+  artefact: Artefact;
+  diamond?: CollectionEntry<'chapters'>['data']['diamond'];
+}
+const { artefact: a, diamond = null } = Astro.props;
+---
+{a.kind === 'file' && (
+  <figure class="artefact">
+    <figcaption><strong>{a.title}</strong> <code>{a.path}</code></figcaption>
+    <pre><code>{a.lines.join('\n')}</code></pre>
+  </figure>
+)}
+{a.kind === 'terminal' && (
+  <figure class="artefact">
+    <pre><code><span class="prompt">$ </span>{a.command}{a.output.length ? `\n${a.output.join('\n')}` : ''}</code></pre>
+  </figure>
+)}
+{a.kind === 'slot' && <Slot slot={a.slot} caption={a.caption} />}
+{a.kind === 'diagram' && <DoubleDiamond current={diamond} />}
+
+<style>
+  .artefact { margin: 0; display: grid; gap: var(--space-2xs); }
+  figcaption { display: flex; flex-wrap: wrap; gap: var(--space-2xs); font-size: var(--step--1); color: var(--color-ink-muted); }
+  pre {
+    margin: 0; padding: var(--space-s); overflow-x: auto; background: var(--color-surface);
+    border: 1px solid var(--color-line); border-radius: var(--radius-m); font-size: var(--step--1); line-height: 1.5;
+  }
+  .prompt { color: var(--color-ink-muted); user-select: none; }
+</style>

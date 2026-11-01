@@ -9,6 +9,7 @@ npm run build      # -> dist/
 npm run preview
 npm run check      # astro check (types)
 npm run spikes     # dev server with the set-piece spikes enabled: /spikes/<name>/
+CONTENT_SLOTS=filled npm run build   # every slot filled with stand-ins (Gate 3 variants); =pending shows the placeholders
 ```
 
 ## Structure
@@ -22,7 +23,9 @@ npm run spikes     # dev server with the set-piece spikes enabled: /spikes/<name
 | `src/components/SetupSentence.astro` | The setup sentence with an accessible copy button (works without JS) |
 | `src/components/MotionToggle.astro` | The "Reduce motion" toggle |
 | `src/scripts/site.ts` | The one site-wide module: copy button and motion toggle |
-| `src/data/site.ts` | Placeholder working copy until Backend's content model (`../api/contract.md`) lands |
+| `src/content.config.ts` | Wires Backend's collections (`../api/contract.md`, schemas and loaders in `../server/`). Connect only; never define schemas here |
+| `src/lib/content.ts` | Typed helpers: `getSite()`, `getChapters()` (sorted by `order`), `roleName()`, `NAV` |
+| `src/components/{Artefact,Slot,GateCard,Scene,DoubleDiamond}.astro` | Neutral renderers for the contract's artefacts, slots (`<Picture>` AVIF/WebP, or a designed pending state), gate cards, scenes and the static diagram |
 | `src/pages/` | `/`, `/made/`, `/setup/`, `/credits/`, `404`, `/llms.txt`, `/story.md` |
 | `src/spikes/`, `src/pages/spikes/` | Technique spikes. Pages are generated **only** when `SPIKES=1`, so normal builds contain none |
 

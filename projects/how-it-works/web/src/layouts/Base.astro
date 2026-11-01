@@ -1,14 +1,15 @@
 ---
 import '../styles/global.css';
 import MotionToggle from '../components/MotionToggle.astro';
-import { NAV, SITE } from '../data/site';
+import { NAV, getSite } from '../lib/content';
 
 interface Props {
   title?: string;
   description?: string;
 }
-const { title, description = SITE.description } = Astro.props;
-const pageTitle = title ? `${title} · ${SITE.name}` : SITE.name;
+const site = await getSite();
+const { title, description = site.meta.description } = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : site.meta.title;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const path = Astro.url.pathname.replace(/\/?$/, '/');
 ---
@@ -30,7 +31,7 @@ const path = Astro.url.pathname.replace(/\/?$/, '/');
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="wordmark" href="/">{SITE.name}</a>
+      <a class="wordmark" href="/">{site.name}</a>
       <nav aria-label="Main">
         <ul>
           {NAV.map((item) => (
@@ -44,7 +45,7 @@ const path = Astro.url.pathname.replace(/\/?$/, '/');
       <slot />
     </main>
     <footer class="site-footer">
-      <p>Built by the team it describes. Source on <a href={SITE.repoUrl}>GitHub</a> under Apache-2.0.</p>
+      <p>Built by the team it describes. Source on <a href={site.repoUrl}>GitHub</a> under Apache-2.0.</p>
       <p><a href="/credits/">Credits, licences and privacy</a> · No cookies, no analytics.</p>
     </footer>
     <script>

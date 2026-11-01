@@ -126,5 +126,133 @@
     "width": 1920,
     "url": "http://127.0.0.1:4330/credits",
     "takenAt": "2026-11-01T17:14:13.112Z"
+  },
+  {
+    "file": "1726-master-content-home-390.png",
+    "label": "master-content",
+    "route": "/",
+    "width": 390,
+    "url": "http://127.0.0.1:4330/",
+    "takenAt": "2026-11-01T17:26:55.411Z"
+  },
+  {
+    "file": "1726-master-content-made-390.png",
+    "label": "master-content",
+    "route": "/made",
+    "width": 390,
+    "url": "http://127.0.0.1:4330/made",
+    "takenAt": "2026-11-01T17:26:56.602Z"
+  },
+  {
+    "file": "1726-master-content-setup-390.png",
+    "label": "master-content",
+    "route": "/setup",
+    "width": 390,
+    "url": "http://127.0.0.1:4330/setup",
+    "takenAt": "2026-11-01T17:26:57.583Z"
+  },
+  {
+    "file": "1726-master-content-credits-390.png",
+    "label": "master-content",
+    "route": "/credits",
+    "width": 390,
+    "url": "http://127.0.0.1:4330/credits",
+    "takenAt": "2026-11-01T17:26:58.382Z"
+  },
+  {
+    "file": "1726-master-content-home-768.png",
+    "label": "master-content",
+    "route": "/",
+    "width": 768,
+    "url": "http://127.0.0.1:4330/",
+    "takenAt": "2026-11-01T17:27:00.332Z"
+  },
+  {
+    "file": "1726-master-content-made-768.png",
+    "label": "master-content",
+    "route": "/made",
+    "width": 768,
+    "url": "http://127.0.0.1:4330/made",
+    "takenAt": "2026-11-01T17:27:01.371Z"
+  },
+  {
+    "file": "1726-master-content-setup-768.png",
+    "label": "master-content",
+    "route": "/setup",
+    "width": 768,
+    "url": "http://127.0.0.1:4330/setup",
+    "takenAt": "2026-11-01T17:27:02.337Z"
+  },
+  {
+    "file": "1726-master-content-credits-768.png",
+    "label": "master-content",
+    "route": "/credits",
+    "width": 768,
+    "url": "http://127.0.0.1:4330/credits",
+    "takenAt": "2026-11-01T17:27:03.109Z"
+  },
+  {
+    "file": "1726-master-content-home-1440.png",
+    "label": "master-content",
+    "route": "/",
+    "width": 1440,
+    "url": "http://127.0.0.1:4330/",
+    "takenAt": "2026-11-01T17:27:05.398Z"
+  },
+  {
+    "file": "1726-master-content-made-1440.png",
+    "label": "master-content",
+    "route": "/made",
+    "width": 1440,
+    "url": "http://127.0.0.1:4330/made",
+    "takenAt": "2026-11-01T17:27:06.468Z"
+  },
+  {
+    "file": "1726-master-content-setup-1440.png",
+    "label": "master-content",
+    "route": "/setup",
+    "width": 1440,
+    "url": "http://127.0.0.1:4330/setup",
+    "takenAt": "2026-11-01T17:27:07.457Z"
+  },
+  {
+    "file": "1726-master-content-credits-1440.png",
+    "label": "master-content",
+    "route": "/credits",
+    "width": 1440,
+    "url": "http://127.0.0.1:4330/credits",
+    "takenAt": "2026-11-01T17:27:08.269Z"
+  },
+  {
+    "file": "1726-master-content-home-1920.png",
+    "label": "master-content",
+    "route": "/",
+    "width": 1920,
+    "url": "http://127.0.0.1:4330/",
+    "takenAt": "2026-11-01T17:27:10.435Z"
+  },
+  {
+    "file": "1726-master-content-made-1920.png",
+    "label": "master-content",
+    "route": "/made",
+    "width": 1920,
+    "url": "http://127.0.0.1:4330/made",
+    "takenAt": "2026-11-01T17:27:11.513Z"
+  },
+  {
+    "file": "1726-master-content-setup-1920.png",
+    "label": "master-content",
+    "route": "/setup",
+    "width": 1920,
+    "url": "http://127.0.0.1:4330/setup",
+    "takenAt": "2026-11-01T17:27:12.521Z"
+  },
+  {
+    "file": "1726-master-content-credits-1920.png",
+    "label": "master-content",
+    "route": "/credits",
+    "width": 1920,
+    "url": "http://127.0.0.1:4330/credits",
+    "takenAt": "2026-11-01T17:27:13.341Z"
   }
 ]

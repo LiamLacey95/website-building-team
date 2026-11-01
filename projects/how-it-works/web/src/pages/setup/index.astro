@@ -1,41 +1,78 @@
 ---
+import { getCollection, getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import SetupSentence from '../../components/SetupSentence.astro';
-import { SITE } from '../../data/site';
+import { getSite } from '../../lib/content';
+import { inlineMd } from '../../../../server/content/inline-md.ts';
+
+const site = await getSite();
+const setup = (await getEntry('setup', 'main'))?.data;
+if (!setup) throw new Error('setup: entry "main" missing');
+const requirements = (await getCollection('requirements')).sort((a, b) => a.data.order - b.data.order);
 ---
 <Base title="Set it up">
   <h1>Set it up</h1>
-  <p class="lede">Everything you need before and during setup. Most of it installs itself.</p>
-  <SetupSentence sentence={SITE.setupSentence} id="setup-page" label="The sentence:" />
+  <SetupSentence sentence={site.setupSentence} label={site.setupIntro} notice={site.gpuNotice} id="setup-page" />
+  <p class="next">{site.whatHappensNext}</p>
+
   <section id="requirements" aria-labelledby="requirements-title">
     <h2 id="requirements-title">Requirements</h2>
-    <p>An NVIDIA GPU, Node.js, Python, git, and Claude Code or T3 Code. This kit is not suited to machines without an NVIDIA GPU.</p>
+    <table>
+      <thead><tr><th scope="col">Need</th><th scope="col">Minimum</th><th scope="col">Notes</th></tr></thead>
+      <tbody>
+        {requirements.map((r) => (
+          <tr>
+            <th scope="row">{r.data.need}</th>
+            <td set:html={inlineMd(r.data.minimum)} />
+            <td set:html={inlineMd(r.data.notes)} />
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </section>
+
   <section id="what-happens" aria-labelledby="what-happens-title">
     <h2 id="what-happens-title">What happens next</h2>
-    <p>The thread you paste the sentence into becomes the project manager, runs the bootstrap, creates five agent threads and asks for your first website prompt.</p>
+    <ol class="steps">{setup.steps.map((s) => <li><strong>{s.title}.</strong> {s.detail}</li>)}</ol>
   </section>
-  <section id="claude-or-t3" aria-labelledby="claude-or-t3-title">
-    <h2 id="claude-or-t3-title">Claude Code alone or T3 Code</h2>
-    <p>Placeholder: the comparison is written in Phase 5.</p>
+
+  <section id="commands" aria-labelledby="commands-title">
+    <h2 id="commands-title">Useful commands</h2>
+    <dl>
+      {setup.commands.map((c) => <><dt>{c.label}</dt><dd><code>{c.command}</code></dd></>)}
+    </dl>
   </section>
+
   <section id="health-check" aria-labelledby="health-check-title">
-    <h2 id="health-check-title">Health check</h2>
-    <p>Placeholder: sample bootstrap output, captured by Backend.</p>
+    <h2 id="health-check-title">What a healthy machine looks like</h2>
+    <p>A real <code>node scripts/bootstrap.mjs --check</code> run, with local paths removed:</p>
+    <pre><code>{setup.checkOutput.join('\n')}</code></pre>
   </section>
+
   <section id="faq" aria-labelledby="faq-title">
-    <h2 id="faq-title">Questions and troubleshooting</h2>
-    <p>Placeholder: written in Phase 5.</p>
-  </section>
-  <section id="glossary" aria-labelledby="glossary-title">
-    <h2 id="glossary-title">Glossary</h2>
-    <p>Thread, brief, gate, worktree, variation, contact sheet, sidecar, Impeccable, detector.</p>
+    <h2 id="faq-title">Questions</h2>
+    {setup.faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
   </section>
 </Base>
 
 <style>
-  h1 { margin-block-end: var(--space-s); }
-  .lede { color: var(--color-ink-muted); margin-block-end: var(--space-xl); }
-  .lede + :global(.setup) { margin-block-end: var(--space-xl); }
+  h1 { margin-block-end: var(--space-l); }
+  .next { color: var(--color-ink-muted); margin-block: var(--space-s) var(--space-xl); }
   section { display: grid; gap: var(--space-s); padding-block: var(--space-l); border-top: 1px solid var(--color-line); }
+  table { border-collapse: collapse; width: 100%; max-width: 60rem; }
+  th, td { text-align: left; vertical-align: top; padding: var(--space-2xs) var(--space-s) var(--space-2xs) 0; border-bottom: 1px solid var(--color-line); }
+  .steps { margin: 0; padding-inline-start: var(--space-m); display: grid; gap: var(--space-2xs); max-width: var(--measure); }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2xs) var(--space-m); margin: 0; }
+  dd { margin: 0; overflow-wrap: anywhere; }
+  pre { margin: 0; padding: var(--space-s); overflow-x: auto; background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-m); font-size: var(--step--1); line-height: 1.5; }
+  details { max-width: var(--measure); border-bottom: 1px solid var(--color-line); padding-block: var(--space-xs); }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { margin-block-start: var(--space-2xs); }
+  @media (max-width: 40rem) {
+    dl { grid-template-columns: 1fr; }
+    table, thead, tbody, tr, th, td { display: block; }
+    thead { display: none; }
+    tr { padding-block: var(--space-xs); border-bottom: 1px solid var(--color-line); }
+    th, td { border: 0; padding: 0; }
+  }
 </style>

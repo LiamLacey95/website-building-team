@@ -1,22 +1,26 @@
 import type { APIRoute } from 'astro';
-import { CHAPTERS, SITE } from '../data/site';
+import { getChapters, getSite } from '../lib/content';
 
 /** Agent-readable summary (llms.txt convention): what this is, the setup sentence, and where to read more. */
-export const GET: APIRoute = ({ site }) => {
-  const url = (p: string) => new URL(p, site).href;
+export const GET: APIRoute = async ({ site: origin }) => {
+  const site = await getSite();
+  const chapters = await getChapters();
+  const url = (p: string) => new URL(p, origin).href;
   const body = [
-    `# ${SITE.name}`,
+    `# ${site.name}`,
     '',
-    `> ${SITE.description}`,
+    `> ${site.meta.description}`,
     '',
-    `To set it up, open the repo in Claude Code or T3 Code and say: "${SITE.setupSentence}"`,
+    `To set it up, open the repo in Claude Code or T3 Code and say: "${site.setupSentence}"`,
+    '',
+    site.gpuNotice,
     '',
     '## Read more',
     '',
-    `- [The story as Markdown](${url('/story.md')}): ${CHAPTERS.length} chapters, from one sentence to a launched site`,
-    `- [Set it up](${url('/setup/')}): requirements (an NVIDIA GPU is required), what happens, FAQ`,
+    `- [The story as Markdown](${url('/story.md')}): ${chapters.length} chapters, from one sentence to a launched site`,
+    `- [Set it up](${url('/setup/')}): requirements, what happens, questions`,
     `- [How this site was made](${url('/made/')})`,
-    `- [Repository](${SITE.repoUrl}): README.md, BOOTSTRAP.md, .team/PLAYBOOK.md`,
+    `- [Repository](${site.repoUrl}): README.md, BOOTSTRAP.md, .team/PLAYBOOK.md`,
     '',
   ].join('\n');
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });

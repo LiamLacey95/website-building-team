@@ -1,41 +1,45 @@
 ---
+import { getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+
+const credits = (await getEntry('credits', 'main'))?.data;
+if (!credits) throw new Error('credits: entry "main" missing');
 ---
 <Base title="Credits and licences">
   <h1>Credits and licences</h1>
-  <p class="lede">Who and what made this site, under which licences, and what we do and don’t collect.</p>
-  <section id="licence" aria-labelledby="licence-title">
-    <h2 id="licence-title">This site and the kit</h2>
-    <p>Apache-2.0. Impeccable (Apache-2.0, © Paul Bakaus) is vendored with its NOTICE.</p>
+
+  <section id="licences" aria-labelledby="licences-title">
+    <h2 id="licences-title">Licences</h2>
+    <ul class="licences">
+      {credits.licences.map((l) => (
+        <li>
+          <h3><a href={l.url}>{l.name}</a></h3>
+          <p>{l.what}. <strong>{l.licence}</strong>{l.note && `. ${l.note}`}</p>
+        </li>
+      ))}
+    </ul>
+    <p>{credits.diamondCredit}</p>
   </section>
-  <section id="tools" aria-labelledby="tools-title">
-    <h2 id="tools-title">Tools and skills</h2>
-    <p>Astro, Playwright, ComfyUI, axe, Lighthouse, Impeccable.</p>
-  </section>
-  <section id="models" aria-labelledby="models-title">
-    <h2 id="models-title">Image models</h2>
-    <p>Placeholder: the model and licence table from the image sidecars, written in Phase 5.</p>
-  </section>
-  <section id="diamond" aria-labelledby="diamond-title">
-    <h2 id="diamond-title">The Double Diamond</h2>
-    <p>Double Diamond by the Design Council, CC BY 4.0, adapted.</p>
-  </section>
-  <section id="privacy" aria-labelledby="privacy-title">
-    <h2 id="privacy-title">Privacy</h2>
-    <p>No cookies and no analytics. If you press Reduce motion, that choice is kept in your browser’s local storage, and nowhere else.</p>
-  </section>
-  <section id="accessibility" aria-labelledby="accessibility-title">
-    <h2 id="accessibility-title">Accessibility statement</h2>
-    <p>Target: WCAG 2.2 AA. Test results are published here after the Gate 4 audit.</p>
-  </section>
+
   <section id="ai-imagery" aria-labelledby="ai-imagery-title">
     <h2 id="ai-imagery-title">AI-generated imagery</h2>
-    <p>Placeholder: which images are generated, with which model and workflow, written once the images exist.</p>
+    <p>{credits.aiDisclosure}</p>
+  </section>
+
+  <section id="privacy" aria-labelledby="privacy-title">
+    <h2 id="privacy-title">Privacy</h2>
+    <p>{credits.privacy}</p>
+  </section>
+
+  <section id="accessibility" aria-labelledby="accessibility-title">
+    <h2 id="accessibility-title">Accessibility</h2>
+    <p>{credits.accessibility}</p>
   </section>
 </Base>
 
 <style>
-  h1 { margin-block-end: var(--space-s); }
-  .lede { color: var(--color-ink-muted); margin-block-end: var(--space-xl); }
+  h1 { margin-block-end: var(--space-l); }
   section { display: grid; gap: var(--space-s); padding-block: var(--space-l); border-top: 1px solid var(--color-line); }
+  .licences { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-m); }
+  .licences h3 { font-size: var(--step-1); }
 </style>

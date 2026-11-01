@@ -1,61 +1,62 @@
 ---
+import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import SetupSentence from '../components/SetupSentence.astro';
-import { CHAPTERS, SITE } from '../data/site';
+import Artefact from '../components/Artefact.astro';
+import GateCard from '../components/GateCard.astro';
+import Scene from '../components/Scene.astro';
+import { getChapters, getSite } from '../lib/content';
+
+const site = await getSite();
+const chapters = await Promise.all(
+  (await getChapters()).map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+const story = chapters.filter(({ entry }) => entry.data.order > 0);
+const hero = chapters.find(({ entry }) => entry.data.order === 0);
 ---
 <Base>
   <section class="hero" aria-labelledby="hero-title">
-    <h1 id="hero-title">{SITE.heroLine}</h1>
-    <SetupSentence sentence={SITE.setupSentence} id="hero-setup" />
-    <p class="next">{SITE.whatHappensNext}</p>
+    <h1 id="hero-title">{site.heroLine}</h1>
+    {hero && <div class="body"><hero.Content /></div>}
+    <SetupSentence sentence={site.setupSentence} label={site.setupIntro} notice={site.gpuNotice} id="hero-setup" />
+    <p class="next">{site.whatHappensNext}</p>
+    {hero?.entry.data.artefacts.map((a) => <Artefact artefact={a} diamond={hero.entry.data.diamond} />)}
   </section>
 
   <nav class="chapters" aria-label="Chapters">
     <ol>
-      {CHAPTERS.map((c) => <li><a href={`#${c.id}`}>{c.title}</a></li>)}
+      {story.map(({ entry }) => <li><a href={`#${entry.data.slug}`}>{entry.data.title}</a></li>)}
     </ol>
   </nav>
 
-  {CHAPTERS.map((c) => (
-    <section class="chapter" id={c.id} aria-labelledby={`${c.id}-title`}>
-      <h2 id={`${c.id}-title`}>{c.title}</h2>
-      <p>{c.summary}</p>
-      {c.gate && <p class="pending">This chapter’s artefacts arrive at Gate {c.gate.slice(1)}.</p>}
-      {c.id === 'your-turn' && <SetupSentence sentence={SITE.setupSentence} id="end-setup" label="The same sentence, once more:" />}
+  {story.map(({ entry, Content }) => (
+    <section class="chapter" id={entry.data.slug} aria-labelledby={`${entry.data.slug}-title`}>
+      <h2 id={`${entry.data.slug}-title`}>{entry.data.title}</h2>
+      <p class="dek">{entry.data.dek}</p>
+      <div class="body"><Content /></div>
+      {entry.data.scenes.map((id) => <Scene id={id} />)}
+      {entry.data.artefacts.map((a) => <Artefact artefact={a} diamond={entry.data.diamond} />)}
+      {entry.data.gate && <GateCard gate={entry.data.gate} />}
+      {entry.data.order === 9 && (
+        <SetupSentence sentence={site.setupSentence} label={site.setupIntro} notice={site.gpuNotice} id="end-setup" />
+      )}
     </section>
   ))}
 
-  <p class="scaffold-note">Scaffold: structure and working copy only. The visual design is chosen at Gate 3.</p>
+  <p class="scaffold-note">Scaffold: draft copy from the content contract, neutral styling. The visual design is chosen at Gate 3.</p>
 </Base>
 
 <style>
-  .hero {
-    display: grid;
-    gap: var(--space-m);
-    padding-block: var(--space-xl) var(--space-2xl);
-  }
-  .hero h1 {
-    max-width: 20ch;
-  }
-  .next {
-    color: var(--color-ink-muted);
-  }
+  .hero { display: grid; gap: var(--space-m); padding-block: var(--space-xl) var(--space-2xl); }
+  .hero h1 { max-width: 20ch; }
+  .next, .dek { color: var(--color-ink-muted); }
+  .dek { font-size: var(--step-1); }
+  .body { display: grid; gap: var(--space-s); }
+  .body :global(p) { max-width: var(--measure); }
   .chapters ol {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2xs) var(--space-m);
-    padding-inline-start: var(--space-m);
-    margin: 0 0 var(--space-xl);
+    display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-m);
+    padding-inline-start: var(--space-m); margin: 0 0 var(--space-xl);
   }
-  .chapter {
-    display: grid;
-    gap: var(--space-s);
-    padding-block: var(--space-xl);
-    border-top: 1px solid var(--color-line);
-  }
-  .pending,
-  .scaffold-note {
-    color: var(--color-ink-muted);
-    font-size: var(--step--1);
-  }
+  .chapter { display: grid; gap: var(--space-m); padding-block: var(--space-xl); border-top: 1px solid var(--color-line); }
+  .scaffold-note { color: var(--color-ink-muted); font-size: var(--step--1); }
 </style>

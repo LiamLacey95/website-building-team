@@ -12,5 +12,11 @@ export default defineConfig({
   // CSP is a real header (vercel.json, Backend): script-src 'self'; style-src 'self'. So nothing may be inline:
   // stylesheets and scripts are always external files, and components follow the inline bans in README.md.
   build: { inlineStylesheets: 'never' },
-  vite: { build: { assetsInlineLimit: 0 } },
+  vite: {
+    build: { assetsInlineLimit: 0 },
+    // Content schemas and loaders live in ../server (Backend's contract); they import zod from outside web/.
+    resolve: { dedupe: ['zod'] },
+    // Dev server may read the project folder (../server, ../concepts), nothing above projects/how-it-works.
+    server: { fs: { allow: ['..'] } },
+  },
 });

@@ -31,7 +31,7 @@
   --step-4: clamp(2.44rem, 2rem + 2.2vw, 4rem);
   --leading-tight: 1.1;
   --leading-body: 1.6;
-  --measure: 68ch;
+  --measure: 60ch; /* ~72-78 characters of proportional text (ch = width of "0") */
 
   /* Space: 4px-based steps. */
   --space-3xs: 0.25rem;
