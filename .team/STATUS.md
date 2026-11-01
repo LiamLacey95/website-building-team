@@ -26,7 +26,7 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | how-it-works/03-review-gate1 | Review | done: REVISE, then PASS WITH NOTES after the packet revision (71e1b37) |
 | how-it-works/04-define-alignment | Research, Backend | done (9c48e5c, d5f0dbc) |
 | how-it-works/05-concept-directions | Concept | in progress (critical path to G2) |
-| how-it-works/05-frontend-product-and-scaffold | Front-end | in progress |
+| how-it-works/05-frontend-product-and-scaffold | Front-end | done (624e028) |
 | how-it-works/05-backend-contract-vercel | Backend | in progress |
 | how-it-works/05-review-creativity-rubric | Review | done (6b2d024) |
 | how-it-works/05-research-creative-benchmark | Research | done (bfdc459) |
