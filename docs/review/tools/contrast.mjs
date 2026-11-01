@@ -12,14 +12,14 @@
 //   { "text": { "ink": "#111" }, "background": { "paper": "#fff" } }    every text x background
 //   { "colors": { "ink": "#111", "paper": "#fff", "accent": "#c33" } }   every unordered pair
 //
-// Exit code 1 if any pair fails AA for its kind (normal 4.5, large 3, ui 3).
+// Exit code 1 if any pair fails AA for its kind (normal 4.5, large 3, ui 3); 2 on bad input.
 import { readFileSync } from 'node:fs';
-import { parseArgs, writeOut, esc, isMain } from './lib.mjs';
+import { parseArgs, writeOut, esc, isMain, run, displayPath, ToolError } from './lib.mjs';
 
 export function parseHex(hex) {
   let h = String(hex).trim().replace(/^#/, '');
   if (h.length === 3 || h.length === 4) h = [...h].map((c) => c + c).join('');
-  if (!/^[0-9a-f]{6}([0-9a-f]{2})?$/i.test(h)) throw new Error(`Bad hex colour: ${hex}`);
+  if (!/^[0-9a-f]{6}([0-9a-f]{2})?$/i.test(h)) throw new ToolError(`Bad hex colour: ${hex}`);
   const n = (i) => parseInt(h.slice(i, i + 2), 16);
   return { r: n(0), g: n(2), b: n(4), a: h.length === 8 ? n(6) / 255 : 1 };
 }
@@ -29,7 +29,7 @@ export const luminance = ({ r, g, b }) => 0.2126 * lin(r) + 0.7152 * lin(g) + 0.
 
 export function contrast(fgHex, bgHex) {
   const bg = parseHex(bgHex);
-  if (bg.a < 1) throw new Error(`Background must be opaque: ${bgHex}`);
+  if (bg.a < 1) throw new ToolError(`Background must be opaque: ${bgHex}`);
   const f = parseHex(fgHex);
   const fg = { r: f.r * f.a + bg.r * (1 - f.a), g: f.g * f.a + bg.g * (1 - f.a), b: f.b * f.a + bg.b * (1 - f.a) };
   const [hi, lo] = [luminance(fg), luminance(bg)].sort((x, y) => y - x);
@@ -54,21 +54,21 @@ function pairsFromPalette(p) {
     const e = Object.entries(p.colors);
     return e.flatMap(([an, a], i) => e.slice(i + 1).map(([bn, b]) => ({ fg: a, bg: b, label: `${an} / ${bn}` })));
   }
-  throw new Error('Palette needs "pairs", "text"+"background", or "colors".');
+  throw new ToolError('Palette needs "pairs", "text"+"background", or "colors".');
 }
 
-function main() {
+async function main() {
   const opts = parseArgs();
   let pairs = opts._.map((s) => {
     const [fg, bg, kind = 'normal'] = s.split(':');
     return { fg, bg, kind, label: '' };
   });
   if (opts.palette) pairs = pairs.concat(pairsFromPalette(JSON.parse(readFileSync(opts.palette, 'utf8'))));
-  if (!pairs.length) { console.error('Usage: node contrast.mjs FG:BG[:normal|large|ui] ... | --palette file.json [--out file.md]'); process.exit(2); }
+  if (!pairs.length) { console.error('Usage: node contrast.mjs FG:BG[:normal|large|ui] ... | --palette file.json [--out file.md]'); process.exitCode = 2; return; }
 
   let failures = 0;
   const rows = pairs.map(({ fg, bg, label = '', kind = 'normal' }) => {
-    if (!AA[kind]) throw new Error(`Unknown kind "${kind}" (use normal, large or ui)`);
+    if (!AA[kind]) throw new ToolError(`Unknown kind "${kind}" (use normal, large or ui)`);
     const g = grade(contrast(fg, bg), kind);
     if (!g.aa) failures++;
     const yn = (v) => (v == null ? 'n/a' : v ? 'pass' : '**FAIL**');
@@ -85,8 +85,8 @@ function main() {
   ].join('\n');
 
   console.log(md);
-  if (opts.out) console.error(`Wrote ${writeOut(opts.out, md)}`);
+  if (opts.out) console.error(`Wrote ${displayPath(writeOut(opts.out, md))}`);
   process.exitCode = failures ? 1 : 0;
 }
 
-if (isMain(import.meta.url)) main();
+if (isMain(import.meta.url)) run(main);

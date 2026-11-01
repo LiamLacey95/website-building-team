@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Review agent checks: contrast, axe accessibility, Lighthouse mobile.",
+  "description": "Review agent checks: contrast, axe accessibility, Lighthouse mobile, generated-image licences, self-test.",
   "scripts": {
+    "selftest": "node selftest.mjs",
     "contrast": "node contrast.mjs",
     "a11y": "node a11y.mjs",
-    "lighthouse": "node lighthouse.mjs"
+    "lighthouse": "node lighthouse.mjs",
+    "licences": "node licences.mjs"
   },
   "engines": {
     "node": ">=20"
@@ -16,6 +18,6 @@
     "@axe-core/playwright": "^4.14.0",
     "chrome-launcher": "^1.2.2",
     "lighthouse": "^13.6.0",
-    "playwright": "^1.64.1"
+    "playwright": "1.64.1"
   }
 }

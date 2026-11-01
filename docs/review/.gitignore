@@ -1,3 +1,2 @@
-out/*-html/
-out/*.json
-out/*.log
+# Tool output is machine-specific and regenerated on demand. See examples/ for a committed sample.
+out/
