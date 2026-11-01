@@ -7,7 +7,7 @@
 <style>
   :root {
     --paper: #f4f1ea; --ink: #1b1a17; --muted: #6b665c; --rule: #d9d3c5;
-    --accent: #c8401e; --accent-soft: #f3ddd3; --ok: #2f6b4f;
+    --accent: #b83a1b; --accent-soft: #f3ddd3; --ok: #2f6b4f;
     --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
     --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
   }
@@ -53,7 +53,7 @@
 <main>
   <div class="eyebrow">how-it-works · Gate 1 of 4 · Strategy and scope</div>
   <h1>Six AI agents, four human gates, one prompt to a launched website.</h1>
-  <p class="lede">This site is its own case study. Decide the strategy, structure and stack, and answer ten questions. Then Concept starts three creative directions.</p>
+  <p class="lede">This site is its own case study. Decide the strategy, structure and stack, and answer eleven questions. Then Concept starts three creative directions.</p>
 
   <section>
     <h2>Three principles, from the research</h2>
@@ -72,7 +72,7 @@
         <path d="M530 115 L755 25 L980 115 L755 205 Z"/>
         <line x1="470" y1="115" x2="530" y2="115"/>
       </g>
-      <g fill="none" stroke="#c8401e" stroke-width="1.5" stroke-dasharray="4 4">
+      <g fill="none" stroke="#b83a1b" stroke-width="1.5" stroke-dasharray="4 4">
         <path d="M500 104 C 480 60, 420 60, 400 88"/>
         <path d="M640 72 C 625 40, 590 40, 585 70"/>
         <path d="M845 72 C 830 40, 795 40, 790 70"/>
@@ -83,7 +83,7 @@
         <text x="560" y="150">CONCEPT</text><text x="690" y="150">VARIATIONS</text><text x="860" y="150">BUILD · QA</text>
       </g>
       <g font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="700" fill="#fff">
-        <circle cx="500" cy="115" r="16" fill="#c8401e"/><text x="489" y="119">G1</text>
+        <circle cx="500" cy="115" r="16" fill="#b83a1b"/><text x="489" y="119">G1</text>
         <circle cx="645" cy="88" r="16" fill="#1b1a17"/><text x="634" y="92">G2</text>
         <circle cx="850" cy="88" r="16" fill="#1b1a17"/><text x="839" y="92">G3</text>
         <circle cx="972" cy="115" r="16" fill="#1b1a17"/><text x="961" y="119">G4</text>
@@ -126,28 +126,30 @@
   </section>
 
   <section>
-    <h2>Ten questions · recommended answers highlighted</h2>
+    <h2>Eleven questions · recommended answer highlighted · letters match the README</h2>
     <table>
-      <thead><tr><th>#</th><th>Question</th><th>Recommended</th><th class="alt">Main alternative</th></tr></thead>
+      <thead><tr><th>#</th><th>Question</th><th>Recommended</th><th class="alt">Other options</th></tr></thead>
       <tbody>
-        <tr><td class="q">1</td><td>Product name</td><td><span class="rec">Keep "Website Building Team"</span></td><td class="alt">Name the studio</td></tr>
-        <tr><td class="q">2</td><td>Hosting and going public</td><td><span class="rec">GitHub Pages; repo public at G4, $0</span></td><td class="alt">Paid plan for a private repo, or another host</td></tr>
-        <tr><td class="q">3</td><td>How meta</td><td><span class="rec">Fully meta: this run is the spine</span></td><td class="alt">Generic explainer plus a case-study strand</td></tr>
-        <tr><td class="q">4</td><td>Repo licence</td><td><span class="rec">Apache-2.0</span></td><td class="alt">MIT</td></tr>
-        <tr><td class="q">5</td><td>Quote agents and your decisions verbatim</td><td><span class="rec">Yes, curated and redacted</span></td><td class="alt">Everything, or paraphrase only</td></tr>
-        <tr><td class="q">6</td><td>Publish time and cost</td><td><span class="rec">Time now; cost decided at G4</span></td><td class="alt">Both now, or neither</td></tr>
-        <tr><td class="q">7</td><td>No NVIDIA GPU</td><td><span class="rec">Document the free art-directed path</span><br><span class="pending">Your call: also add rented cloud GPU support? (≈½ day, ≈$1–3 per round)</span></td><td class="alt">BFL API option, or "GPU required"</td></tr>
-        <tr><td class="q">8</td><td>Hero line</td><td><span class="rec">"This website started as one sentence. Here's everything that happened next."</span></td><td class="alt">"One prompt in. A website out. Four times, you decide."</td></tr>
-        <tr><td class="q">9</td><td>Analytics</td><td><span class="rec">None at launch</span></td><td class="alt">GoatCounter, cookieless</td></tr>
-        <tr><td class="q">10</td><td>Other sites' screenshots, once public</td><td><span class="rec">Remove from tree; keep links</span></td><td class="alt">Also rewrite history</td></tr>
+        <tr><td class="q">1</td><td>Product name</td><td><span class="rec">A. Keep "Website Building Team"</span></td><td class="alt">B. Name the studio · C. Keep name, add a nickname</td></tr>
+        <tr><td class="q">2</td><td>Hosting and going public</td><td><span class="rec">A. GitHub Pages; repo public at G4, $0</span></td><td class="alt">B. Private repo on a paid plan (loses the G4 approval rule) · C. Another host</td></tr>
+        <tr><td class="q">3</td><td>How meta</td><td><span class="rec">A. Fully meta: this run is the spine</span></td><td class="alt">B. Generic plus a case-study strand · C. Generic only</td></tr>
+        <tr><td class="q">4</td><td>Repo licence</td><td><span class="rec">A. Apache-2.0</span></td><td class="alt">B. MIT · C. Other</td></tr>
+        <tr><td class="q">5</td><td>Quote agents and your decisions verbatim</td><td><span class="rec">B. Yes, curated and redacted</span></td><td class="alt">A. Everything · C. Paraphrase only</td></tr>
+        <tr><td class="q">6</td><td>Publish time and cost</td><td><span class="rec">B. Time now; cost decided at G4</span></td><td class="alt">A. Both now · C. Neither</td></tr>
+        <tr><td class="q">7</td><td>No NVIDIA GPU (kit scope; not this project)</td><td><span class="rec">A. Document the free art-directed path</span></td><td class="alt">B. A + rented cloud GPU (≈½ day, ≈$1–3 per round) · C. A + BFL API · D. GPU required</td></tr>
+        <tr><td class="q">8</td><td>Hero line</td><td><span class="rec">A. "This website started as one sentence. Here's everything that happened next."</span></td><td class="alt">B. "One prompt in. A website out. Four times, you decide." · C. Leave to G2</td></tr>
+        <tr><td class="q">9</td><td>Analytics</td><td><span class="rec">A. None at launch</span></td><td class="alt">B. GoatCounter, cookieless · C. Conventional (needs a banner)</td></tr>
+        <tr><td class="q">10</td><td>Other sites' screenshots, once public</td><td><span class="rec">C. Rewrite history at G4; keep the real log (PM)</span></td><td class="alt">D. Fresh squashed public repo (Review's pick) · B. Delete from files only · A. Keep</td></tr>
+        <tr><td class="q">11</td><td>FLUX Klein licence: revenue with affiliates under US$5M?</td><td><span class="rec">A. Yes: Klein images may ship</span></td><td class="alt">B. No or unsure: ship Z-Image only</td></tr>
       </tbody>
     </table>
+    <p class="alt" style="margin-top:12px">Q10: the PM recommends C, Review recommends D. Both reasons are in the README. Nothing goes public before Gate 4.</p>
   </section>
 
   <div class="answer">
     <span>Reply with</span>
     <code>Gate 1: accept all recommendations</code>
-    <span>or question numbers and letters, or "revise: …"</span>
+    <span>or question numbers and letters (e.g. "Q7 B, Q10 D"), or "revise: …"</span>
   </div>
 </main>
 </body>
