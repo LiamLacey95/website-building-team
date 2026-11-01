@@ -71,13 +71,15 @@ async function settle(page) {
     }
     window.scrollTo(0, 0);
     await document.fonts.ready;
-    await Promise.all(
-      [...document.images].map((img) =>
-        img.complete ? null : new Promise((r) => {
-          img.addEventListener('load', r, { once: true });
-          img.addEventListener('error', r, { once: true });
-        })),
-    );
+    // Only rendered images (lazy images inside hidden panels never load), and never more than 8 s in total.
+    const rendered = [...document.images].filter((img) => !img.complete && img.getClientRects().length > 0);
+    await Promise.race([
+      Promise.all(rendered.map((img) => new Promise((r) => {
+        img.addEventListener('load', r, { once: true });
+        img.addEventListener('error', r, { once: true });
+      }))),
+      new Promise((r) => setTimeout(r, 8000)),
+    ]);
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
   });
   await page.waitForLoadState('networkidle').catch(() => {});
