@@ -4,7 +4,7 @@
 
 PM thread id: `_set by PM_` (environment `_set by PM_`)
 
-| Role | Thread title | Thread id |
+| Role | Thread title | Thread id (T3) or session name (Claude Code) |
 |---|---|---|
 | Research | Team · Research | _pending_ |
 | Concept creator | Team · Concept (ComfyUI) | _pending_ |

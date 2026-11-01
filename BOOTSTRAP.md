@@ -15,7 +15,7 @@ Read `.team/PLAYBOOK.md` before you start; it is how the team works once it exis
 
 | Need | Minimum | Notes |
 |---|---|---|
-| OS | Windows 10/11 or Linux | Built and tested on Windows 11. macOS works for everything except fast image generation (no CUDA) |
+| OS | Windows 11 (tested) | Linux: the scripts support it but nobody has tested it yet. macOS: everything except local image generation (no CUDA); use `--skip-comfyui` |
 | GPU | NVIDIA, 12 GB VRAM; driver 580+ (CUDA 13) recommended | Tuned and tested on an RTX 4070 SUPER. An 8 GB profile exists (distilled Klein, smaller sizes) but is **untested** on a real 8 GB card. No GPU: `--skip-comfyui` (see the Concept role's fallback) |
 | Disk | about 40 GB free | Models are about 29 GB (37 GB with optional extras), plus ComfyUI and its CUDA torch venv |
 | Tools | git, Node.js 20+, Python 3.11 to 3.13 (3.13 recommended, as ComfyUI recommends), `gh` (optional, for GitHub) | |
@@ -47,27 +47,29 @@ node scripts/bootstrap.mjs --yes --skip-comfyui                       # no image
 
 It then writes `team.config.json` (machine-specific, git-ignored; keys in `scripts/README.md`), installs the Node tooling (`tools/`, `docs/review/tools/`) and Playwright Chromium, checks the committed Impeccable skills, warms their engine and turns Impeccable telemetry off for the machine, generates the ComfyUI launchers, creates the worktree folder, and finishes with a health check (green, amber, red). Every step is idempotent: if something fails, fix it and re-run. Re-check any time with `--check`; add `--selftest` to also run the Front-end, Review and ComfyUI self-tests.
 
-After it finishes, reload your harness so the Impeccable skills are picked up.
+The Impeccable skills are committed in the repo; bootstrap only checks them. If `/impeccable` isn't listed after bootstrap, reload your harness.
 
 ## 3. Reset the team state
 
 This repo may carry another team's state. Start clean:
 
-1. Copy `.team/templates/STATUS.md` over `.team/STATUS.md` and `.team/templates/DECISIONS.md` over `.team/DECISIONS.md`.
-2. Leave `projects/` alone. Any project already there is an example from the team that built this kit.
+1. Copy `.team/templates/STATUS.md` over `.team/STATUS.md` and fill in your PM thread id (and environment id in T3 Code).
+2. Copy `.team/templates/DECISIONS.md` over `.team/DECISIONS.md`. The template keeps the kit-level decisions (licences, telemetry, ownership) that still apply to you.
+3. `.team/briefs/` and `.team/reports/` should hold only `.gitkeep`; `.team/history/` is the previous team's worked examples, read-only.
+4. Leave `projects/` alone. Any project already there is an example from the team that built this kit.
 
 ## 4. Create the five agent threads
 
 Find your own thread id and environment id (in T3 Code: `t3_thread_list` returns `currentThreadId`; the environment id is in the thread link).
 
-For each role, take the prompt in `.team/templates/thread-prompts/<role>.md`, replace `{{PM_THREAD_ID}}`, `{{ENVIRONMENT_ID}}` and `{{REPO_ROOT}}`, and create a top-level thread with it:
+For each role, take the prompt in `.team/templates/thread-prompts/<role>.md`, replace `{{PM_THREAD_ID}}`, `{{ENVIRONMENT_ID}}` (T3 Code only; outside T3, delete the environment part) and `{{REPO_ROOT}}`, and create a top-level thread with it:
 
 - **T3 Code:** one `create_threads` call with all five threads (titles as in the playbook), in this project, inheriting your model and mode. Not subagents.
 - **Claude Code without T3:** open five more Claude Code sessions in this repo, one per role, and paste each prompt. Sessions message each other with `SendMessage` (find names with `ListAgents`); use those in place of `t3_thread_send`. If your setup has no cross-session messaging, agents still write their reports to disk and the human relays a one-line "done" to you.
 
-Record the five thread ids in the **Roster** table of `.team/STATUS.md` and commit it.
+Record the five thread ids (or session names) in the **Roster** table of `.team/STATUS.md` and commit it with a pathspec.
 
-Each thread's first job is a quick self-test of its own tooling (built into its prompt). Wait for all five DONE messages. Fix or report anything that fails.
+Each thread's first job is a quick self-test of its own tooling (built into its prompt). Wait for all five DONE messages. Fix or report anything that fails. On a machine set up with `--skip-comfyui`, Concept skips its image smoke test; that is expected.
 
 ## 5. Ready
 
@@ -77,7 +79,7 @@ Tell the human:
 - how the process runs (summarise the Method table and the four gates from the playbook);
 - that you are waiting for their website prompt.
 
-When the prompt arrives, follow Phase 0 Intake in the playbook: create `projects/<slug>/` with `BRIEF.md` (copy `.team/templates/BRIEF.md`), then brief Research.
+When the prompt arrives, follow Phase 0 Intake in the playbook: pick a short slug, create `projects/<slug>/` with `BRIEF.md` (copy `.team/templates/BRIEF.md`), set it as the active project with `node scripts/bootstrap.mjs --yes --project <slug>` (the screenshot, variant and review tools read it), then brief Research.
 
 ## Troubleshooting
 

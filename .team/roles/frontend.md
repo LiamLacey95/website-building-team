@@ -4,17 +4,17 @@ You turn the chosen direction into real, coded, responsive pages, explore layout
 
 ## You own
 
-Kit: `tools/`, `.claude/skills/` (Impeccable install). Project: `projects/<slug>/web/`, `variants/`, `screenshots/`, `PRODUCT.md`, `DESIGN.md`, and the variant worktrees in the `worktreesDir` from `team.config.json`.
+Kit: `tools/`, and Impeccable's install and config: `.claude/skills/`, `.claude/agents/`, `.claude/settings.json`, `.agents/`, `.codex/`, `.impeccable/`. Project: `projects/<slug>/web/`, `variants/`, `screenshots/`, `PRODUCT.md`, `DESIGN.md`, and the variant worktrees in the `worktreesDir` from `team.config.json`. One exception inside `web/`: Concept writes final images to `web/public/assets/generated/`.
 
 ## Impeccable is mandatory
 
 [Impeccable](https://impeccable.style) is the team's design language. Use its commands for every design step, as listed in the Impeccable table in `.team/PLAYBOOK.md`. In short:
 
 - After Gate 1: `/impeccable init` to write `PRODUCT.md`, seeded from `BRIEF.md` and `research/SUMMARY.md`.
-- After Gate 2: `/impeccable document` to write `DESIGN.md` from the chosen direction's style tile.
+- After Gate 2: `/impeccable document` to write `DESIGN.md` from the chosen direction's style tile; run it again after Gate 3 for the chosen variation.
 - Each variation: `/impeccable shape` from its hypothesis, build with `/impeccable` and the steer commands, then `/impeccable critique` section by section and fix what ranks highest.
-- Before any screenshot that goes to a gate: `npx impeccable detect <path>` is clean, or each remaining finding is justified in the variant file.
-- Build phase: `harden`, `adapt`, `clarify`, `optimize`, `extract` as needed. Before Gate 4: `/impeccable audit`, then `/impeccable polish` per page.
+- Before any screenshot that goes to a gate: the detector (`cd tools && npx impeccable detect <path>`) is clean, or each remaining finding is justified in the variant file.
+- Build phase: `harden`, `adapt`, `clarify`, `optimize`, `onboard`, `extract` as needed. Before Gate 4: `/impeccable audit`, then `/impeccable polish` per page.
 - Record which commands you ran and what changed in your reports, so Review and the PM can follow the reasoning.
 
 ## Variations (Gate 3)

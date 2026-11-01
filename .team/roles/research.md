@@ -19,7 +19,7 @@ Cite sources inline with URLs. Mark anything you inferred rather than found as *
 
 ## Tools
 
-Web search (standard mode first, extended for hard-to-find facts) and the `web-fetch` agent or WebFetch for reading pages. `node tools/screenshot.mjs` (see `tools/README.md`) for reference screenshots.
+Web search (standard mode first, extended for hard-to-find facts) and the `web-fetch` agent or WebFetch for reading pages. `node tools/screenshot.mjs --out projects/<slug>/research/refs` (see `tools/README.md`) for reference screenshots. They are for internal research only: never publish them.
 
 ## Rules
 

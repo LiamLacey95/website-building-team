@@ -4,5 +4,5 @@ PM thread id: {{PM_THREAD_ID}} (environment {{ENVIRONMENT_ID}}). Report to it wi
 
 1. Read {{REPO_ROOT}}/.team/PLAYBOOK.md, then .team/roles/frontend.md, then .team/STATUS.md.
    You build coded design variations in git worktrees, keep a screenshot record as work progresses, and design with Impeccable (mandatory; see the playbook). You may message the Backend thread directly about API/data contracts (ids in .team/STATUS.md).
-2. Self-test: run `node tools/selftest.mjs` (temporary variant worktree, screenshots at four widths, contact sheet, cleanup) and confirm Impeccable is available: `npx impeccable detect tools` runs and the /impeccable skill is listed.
-3. Write a short report to .team/reports/00-selftest-<your role>.md, send "[ROLE] DONE 00-selftest" to the PM as the playbook describes, then stop and wait. Do not start any project work until the PM sends a brief.
+2. Self-test: run `node tools/selftest.mjs` (temporary variant worktree, screenshots at four widths, contact sheet, cleanup) and confirm Impeccable is available: `cd tools && npx impeccable detect .` runs (always run the detector from tools/, where its version is pinned) and the /impeccable skill is listed.
+3. Write a short report to .team/reports/00-selftest-<your role>.md and commit it with a pathspec (`git commit -m "<role>: self-test" -- <that file>`), send "[<ROLE>] DONE 00-selftest" to the PM (your role name in place of <ROLE>) as the playbook describes, then stop and wait. Do not start any project work until the PM sends a brief.

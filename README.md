@@ -28,9 +28,9 @@ Clone this repo, open it in Claude Code or T3 Code, start a thread and say:
 
 > Set up the website building team from BOOTSTRAP.md.
 
-That thread becomes the project manager. It installs or connects ComfyUI and the image models, installs Impeccable and the screenshot and review tooling, creates the five agent threads, and asks you for your first website prompt. See [`BOOTSTRAP.md`](BOOTSTRAP.md).
+That thread becomes the project manager. It installs or connects ComfyUI and the image models, checks the bundled Impeccable skills, installs the screenshot and review tooling, creates the five agent threads, and asks you for your first website prompt. See [`BOOTSTRAP.md`](BOOTSTRAP.md).
 
-Requirements: Windows or Linux, an NVIDIA GPU with 12 GB VRAM (an 8 GB profile exists but is untested), about 40 GB of disk, git, Node.js 20+, Python 3.11 to 3.13. A fresh ComfyUI install also needs a free Hugging Face account to download FLUX Klein. Full details are in [`BOOTSTRAP.md`](BOOTSTRAP.md).
+Requirements: Windows 11 (tested; Linux is supported by the scripts but untested; macOS works except for local image generation), an NVIDIA GPU with 12 GB VRAM (an 8 GB profile exists but is untested), about 40 GB of disk, git, Node.js 20+, Python 3.11 to 3.13. A fresh ComfyUI install also needs a free Hugging Face account to download FLUX Klein. Full details are in [`BOOTSTRAP.md`](BOOTSTRAP.md).
 
 ## Layout
 
@@ -46,4 +46,16 @@ Requirements: Windows or Linux, an NVIDIA GPU with 12 GB VRAM (an 8 GB profile e
 
 ## Licences
 
-Code in this repo: licence not chosen yet. Models are downloaded at setup under their own licences (listed in `artgen/README.md`): FLUX 3 Image Klein is free for commercial use under US$5M revenue; 4x-UltraSharp is non-commercial and used for concept boards only. Impeccable is Apache-2.0.
+**This repo:** licence not chosen yet.
+
+**Bundled third-party code:**
+- [Impeccable](https://github.com/pbakaus/impeccable) skills in `.claude/` and `.agents/`: Apache-2.0, © Paul Bakaus. Its LICENSE and NOTICE are included alongside the skills. Its iOS and Android references derive from ehmo's `platform-design-skills` (MIT).
+- `modern-screenshot` (MIT), vendored inside the Impeccable skill.
+
+**Models** are downloaded at setup, not stored in the repo, and keep their own licences (full table in `artgen/README.md`):
+- FLUX 3 Image Klein: free for commercial use under US$5M revenue (FLUX Kommunity licence).
+- Z-Image Turbo: Apache-2.0.
+- RealESRGAN: BSD-3. Used for every shipped upscale.
+- 4x-UltraSharp: CC BY-NC-SA, non-commercial. Used for concept boards only.
+
+`artgen/input/web_example.png` is a FLUX Klein output (its provenance sidecar is next to it).

@@ -4,5 +4,5 @@ PM thread id: {{PM_THREAD_ID}} (environment {{ENVIRONMENT_ID}}). Report to it wi
 
 1. Read {{REPO_ROOT}}/.team/PLAYBOOK.md, then .team/roles/concept.md, then .team/STATUS.md.
    You own the ComfyUI image pipeline in artgen/. The ComfyUI install path is in team.config.json.
-2. Self-test: run `python artgen/generate.py --smoke` (it starts ComfyUI headless if needed, generates one image per core workflow, then stops the server). Record timings.
-3. Write a short report to .team/reports/00-selftest-<your role>.md, send "[ROLE] DONE 00-selftest" to the PM as the playbook describes, then stop and wait. Do not start any project work until the PM sends a brief.
+2. Self-test: if `comfyui.path` in team.config.json is empty (the machine was set up with --skip-comfyui), skip image generation, read the "No GPU" section of your role file and report that you're in no-GPU mode. Otherwise run `python artgen/generate.py --smoke` (it starts ComfyUI headless if needed, generates one image per core workflow, then stops the server). Record timings.
+3. Write a short report to .team/reports/00-selftest-<your role>.md and commit it with a pathspec (`git commit -m "<role>: self-test" -- <that file>`), send "[<ROLE>] DONE 00-selftest" to the PM (your role name in place of <ROLE>) as the playbook describes, then stop and wait. Do not start any project work until the PM sends a brief.

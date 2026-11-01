@@ -26,6 +26,7 @@ Each website is one folder. Several projects can live in one repo; the shared ki
 ```
 projects/<slug>/
   BRIEF.md          PM: intake brief, the human's prompt verbatim plus goals, audience, constraints
+  TIMELINE.md       PM: phase start and end times (from commit times)
   PRODUCT.md        Front-end via /impeccable init (after Gate 1)
   DESIGN.md         Front-end via /impeccable document (after Gate 2, updated after Gate 3)
   briefs/           PM: task briefs  <NN>-<role>-<slug>.md
@@ -49,7 +50,7 @@ Double Diamond (Discover, Define, Develop, Deliver) with exactly **four human ga
 
 | Phase | Who leads | Output | Ends with |
 |---|---|---|---|
-| **0 Intake** | PM | `projects/<slug>/BRIEF.md`: goals, audience, constraints, open questions | n/a |
+| **0 Intake** | PM | `projects/<slug>/BRIEF.md` (from `.team/templates/BRIEF.md`): goals, audience, constraints, open questions. Set the active project: `node scripts/bootstrap.mjs --yes --project <slug>`. Start `TIMELINE.md` | n/a |
 | **1 Discover** | Research (Backend and Front-end advise on feasibility) | Market and competitor teardown, audience and personas, content inventory, reference sites, accessibility and legal needs | n/a |
 | **2 Define** | PM + Research, Front-end and Backend propose stack | Positioning, sitemap and IA, key user journeys, content model, success metrics, tech stack proposal | **GATE 1: Strategy and scope** |
 | **3 Concept** | Concept creator (Research supplies references) | 3 distinct creative directions: moodboard, palette, type pairing, key art from ComfyUI, one style tile each | **GATE 2: Creative direction** |
@@ -61,7 +62,7 @@ Max four human gates. If the human asks for another round at a gate, it happens 
 
 ### Gate packet
 
-For every gate the PM assembles `projects/<slug>/gates/G<n>-<name>/` containing:
+For every gate the PM assembles a folder in `projects/<slug>/gates/`: `G1-strategy/`, `G2-direction/`, `G3-design/` or `G4-release/`, containing:
 
 - `README.md`: what is being decided, the options, the team's recommendation and why, open risks, and the exact question for the human.
 - `contact-sheet.html`: a self-contained page showing the options side by side. The PM renders it in chat.
@@ -92,8 +93,9 @@ Narrow targets beat whole pages: critique one section at a time.
 
 ## Communication protocol
 
-- **PM to agent:** a brief file, then a `t3_thread_send` to the agent's thread pointing at it. Briefs state: goal, inputs, deliverables with exact paths, acceptance criteria, deadline in phase terms.
-- **Agent to PM:** when a task is finished, blocked, or needs a decision, send one message to the PM thread with `t3_thread_send` (`threadId` from the Roster, `mode: "queue"`). Format:
+- **Messaging tool:** in T3 Code, threads message each other with `t3_thread_send` (`mode: "queue"`; `"steer"` only for urgent mid-task corrections). In plain Claude Code, each role is its own session and uses `SendMessage` (find names with `ListAgents`); read "thread id" as "session name" below. Without any messaging, agents write their report and the human relays a one-line "done".
+- **PM to agent:** a brief file, then a message to the agent's thread pointing at it. Briefs state: goal, inputs, deliverables with exact paths, acceptance criteria, deadline in phase terms.
+- **Agent to PM:** when a task is finished, blocked, or needs a decision, send one message to the PM thread (id in the Roster). Format:
   ```
   [ROLE] DONE|BLOCKED|QUESTION <brief id>
   Summary: 1 to 3 lines
