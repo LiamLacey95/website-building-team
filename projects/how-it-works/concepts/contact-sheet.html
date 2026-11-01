@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gate 2 contact sheet: three creative directions · Website Building Team</title>
+<link rel="stylesheet" href="_fonts/fonts.css">
+<style>
+:root{--bg:#E3E6E8;--ink:#1B1B19;--muted:#55534D;--line:#CFCBC1}
+*{box-sizing:border-box}
+img{max-width:100%;height:auto}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 'Atkinson Hyperlegible Next',system-ui,sans-serif}
+.wrap{max-width:1480px;margin:0 auto;padding:32px clamp(14px,3vw,40px) 64px}
+header h1{font:800 34px/1.1 'Bricolage Grotesque',sans-serif;font-variation-settings:'opsz' 48,'wdth' 90;margin:0 0 6px}
+header p{margin:0;color:var(--muted);max-width:90ch}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:26px}
+.dir{border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+.dir .in{padding:20px 20px 22px;display:flex;flex-direction:column;gap:14px;flex:1}
+.dir h2{margin:0;font-size:30px;line-height:1.05}
+.dir .one{margin:0;font-size:16.5px}
+.dir img{width:100%;display:block}
+.pair{display:grid;grid-template-columns:3fr 2fr;gap:10px;align-items:start}
+.pair img{border-radius:3px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips i{width:30px;height:30px;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgb(0 0 0 / .2)}
+.type{line-height:1.2}
+.blk{margin:0;font-size:15px}
+.blk b{display:inline}
+.mem{font-size:16px;margin:0;padding:12px 14px;border-radius:4px}
+.links{display:flex;gap:16px;flex-wrap:wrap;font-size:15px;margin-top:auto}
+.cx{display:inline-block;padding:2px 10px;border-radius:999px;font-weight:700;font-size:14px}
+/* A */
+.a{background:#24412F;color:#F7F2E7;font-family:'Newsreader',Georgia,serif}
+.a h2{font-family:'Young Serif',Georgia,serif;font-weight:400}
+.a .type .d{font:400 30px 'Young Serif',serif} .a .type .t{font:400 17px 'Newsreader',serif} .a .type .m{font:400 14px 'Courier Prime',monospace}
+.a .mem{background:#F7F2E7;color:#1F1C17}
+.a a{color:#E0B04A}
+.a .cx{background:#E0B04A;color:#24412F}
+/* B */
+.b{background:#0D0E0C;color:#ECE8DC;font-family:'Archivo',sans-serif}
+.b h2{font-family:'Archivo',sans-serif;font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:27px}
+.b .type .d{font:800 26px 'Archivo',sans-serif;font-stretch:125%;text-transform:uppercase} .b .type .t{font:400 16px 'Archivo',sans-serif} .b .type .m{font:500 13px 'Martian Mono',monospace;color:#FFB224}
+.b .mem{background:#181A17;border:1px solid #2C2F2A}
+.b a{color:#FFB224}
+.b .cx{background:#FF5A47;color:#0D0E0C}
+.b img{border-radius:4px}
+/* C */
+.c{background:#FFC53D;color:#1C2147}
+.c h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-variation-settings:'opsz' 96,'wdth' 85}
+.c .type .d{font:800 30px 'Bricolage Grotesque',sans-serif;font-variation-settings:'opsz' 96,'wdth' 85} .c .type .t{font:400 16px 'Atkinson Hyperlegible Next',sans-serif} .c .type .m{font:600 13px ui-monospace,monospace}
+.c .mem{background:#FFFFFF;border:2.5px solid #1C2147;border-radius:14px}
+.c img{border-radius:12px;border:2.5px solid #1C2147}
+.c a{color:#1C2147}
+.c .cx{background:#1C2147;color:#FFC53D}
+.lab{font-size:13px;opacity:.85;margin:0}
+table{width:100%;border-collapse:collapse;margin-top:30px;background:#F8F9FA;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700}
+caption{text-align:left;font:800 22px 'Bricolage Grotesque',sans-serif;padding:0 0 10px}
+footer{margin-top:28px;color:var(--muted);font-size:14px;max-width:110ch}
+a:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+@media (max-width:1100px){.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Gate 2: three creative directions for the how-it-works site</h1>
+  <p>Three different worlds for telling the same story: one sentence, six agents, four human gates. Each column shows the key art, a full-page style frame (a mood image: its lettering is fake; real text is set in HTML), the palette, the type, the signature set piece and what it would be like to build. Every image was generated locally with FLUX 3 Klein; prompts and seeds are in each <code>images/</code> folder.</p>
+</header>
+
+<div class="cols">
+  <article class="dir a" aria-labelledby="ha">
+    <img src="a-paper-trail/images/a-hero.webp" alt="Direction A key art: a deep green leather blotter seen from above, a blank cream sheet on the left and studio tools on the right." loading="lazy">
+    <div class="in">
+      <h2 id="ha">A · Paper Trail</h2>
+      <p class="one">The process as one sheet of paper crossing a studio desk: typed, clipped, traced over, stamped and finally bound into the book you are reading.</p>
+      <div class="pair">
+        <img src="a-paper-trail/images/a-frame-home.webp" alt="Style frame for direction A: a tall page on green leather with cream paper sheets, a pencil diamond on tracing paper, a stamped folder and a bound book." loading="lazy">
+        <div>
+          <div class="chips" aria-label="Palette: blotter green, sheet cream, ink, vermilion, brass, carbon blue"><i style="background:#24412F"></i><i style="background:#F7F2E7"></i><i style="background:#1F1C17"></i><i style="background:#B8321B"></i><i style="background:#E0B04A"></i><i style="background:#2C4A75"></i></div>
+          <div class="type" style="margin-top:12px"><div class="d">Gate 2</div><div class="t">Newsreader for reading, at length.</div><div class="m">Courier Prime · typed</div></div>
+          <p class="lab" style="margin-top:10px">Young Serif · Newsreader · Courier Prime (OFL)</p>
+        </div>
+      </div>
+      <p class="blk"><b>Set piece:</b> a pencil draws the double diamond on tracing paper as the sheet travels, and at each gate you press a real rubber stamp to approve or revise. At the end every page you scrolled past squares up and is bound into a book whose cover is this site.</p>
+      <p class="blk"><b>Explains by:</b> lifting the tracing paper to compare each brief with what came back.</p>
+      <p class="mem">“You stamp the four human decisions yourself with a rubber stamp, and when you reach the bottom every page you scrolled past gets bound into a book.”</p>
+      <p class="blk"><b>Build:</b> <span class="cx">medium</span> SVG and CSS scroll drawing, no canvas.</p>
+      <div class="links"><a href="a-paper-trail/style-tile.html">Style tile</a><a href="a-paper-trail/direction.md">Direction</a><a href="a-paper-trail/images/README.md">Images and prompts</a></div>
+    </div>
+  </article>
+
+  <article class="dir b" aria-labelledby="hb">
+    <img src="b-signal-path/images/b-hero.webp" alt="Direction B key art: a dark modular hardware rack with a single glowing amber patch cable weaving through it." loading="lazy">
+    <div class="in">
+      <h2 id="hb">B · Signal Path</h2>
+      <p class="one">The team as a modular instrument in a dark studio: your sentence is the signal, six modules process it, and at four gates it waits for a human to throw a switch.</p>
+      <div class="pair">
+        <img src="b-signal-path/images/b-frame-home.webp" alt="Style frame for direction B: a tall dark page with an amber oscilloscope strip, six module panels and a guarded switch." loading="lazy">
+        <div>
+          <div class="chips" aria-label="Palette: panel black, silkscreen white, signal amber, go green, guard red"><i style="background:#0D0E0C"></i><i style="background:#181A17"></i><i style="background:#ECE8DC"></i><i style="background:#FFB224"></i><i style="background:#6BD38A"></i><i style="background:#FF5A47"></i></div>
+          <div class="type" style="margin-top:12px"><div class="d">Gate 2</div><div class="t">Archivo at normal width for reading.</div><div class="m">MARTIAN MONO · LABELS</div></div>
+          <p class="lab" style="margin-top:10px">Archivo · Martian Mono (OFL)</p>
+        </div>
+      </div>
+      <p class="blk"><b>Set piece:</b> a live oscilloscope traces the double diamond as the signal's envelope while you scroll. At each gate the trace holds until you lift a red cover and throw a real switch; “revise” patches the cable back.</p>
+      <p class="blk"><b>Explains by:</b> pulling the Review module's cable to see the issues that would have shipped, and routing your own sentence through the modules.</p>
+      <p class="mem">“It's built like a synthesiser: your sentence travels as a signal through six modules, it won't pass a gate until you flip the switch, and you can pull Review's cable to see the bugs that would have shipped.”</p>
+      <p class="blk"><b>Build:</b> <span class="cx">high</span> scroll-synced canvas scope, stateful switches, dark UI.</p>
+      <div class="links"><a href="b-signal-path/style-tile.html">Style tile</a><a href="b-signal-path/direction.md">Direction</a><a href="b-signal-path/images/README.md">Images and prompts</a></div>
+    </div>
+  </article>
+
+  <article class="dir c" aria-labelledby="hc">
+    <img src="c-marble-run/images/c-hero.webp" alt="Direction C key art: a handmade wooden marble run against a sunflower-yellow wall, a glass marble at the top and clay figures at stations." loading="lazy">
+    <div class="in">
+      <h2 id="hc">C · Marble Run</h2>
+      <p class="one">A clay-and-wood marble run built down the whole page: your sentence is a glass marble, six clay figures work the stations, and a real human hand lifts each barrier.</p>
+      <div class="pair">
+        <img src="c-marble-run/images/c-frame-home.webp" alt="Style frame for direction C: a tall yellow page with a wooden track zig-zagging down, white rounded cards and clay figures." loading="lazy">
+        <div>
+          <div class="chips" aria-label="Palette: sunflower, white, navy, tomato, mint, sky"><i style="background:#FFC53D;box-shadow:inset 0 0 0 2px #1C2147"></i><i style="background:#FFFFFF"></i><i style="background:#1C2147"></i><i style="background:#E8492C"></i><i style="background:#4DBF95"></i><i style="background:#BFE3F2"></i></div>
+          <div class="type" style="margin-top:12px"><div class="d">Gate 2</div><div class="t">Atkinson Hyperlegible Next for reading.</div><div class="m">mono for paths</div></div>
+          <p class="lab" style="margin-top:10px">Bricolage Grotesque · Atkinson Hyperlegible Next (OFL)</p>
+        </div>
+      </div>
+      <p class="blk"><b>Set piece:</b> a glass marble rolls down one continuous track as you scroll; the track splits and funnels twice (the double diamond) and the marble waits at four level crossings until you lift the barrier.</p>
+      <p class="blk"><b>Explains by:</b> “Run it without humans”: lift every barrier at once and the marble flies off the table, listing the four decisions that run skipped.</p>
+      <p class="mem">“A glass marble rolls down the whole page through a clay marble run, a real human hand has to lift each barrier, and if you take the barriers away the marble flies straight off the table.”</p>
+      <p class="blk"><b>Build:</b> <span class="cx">medium-high</span> CSS offset-path marble on one long SVG track, around ten consistent cast images.</p>
+      <div class="links"><a href="c-marble-run/style-tile.html">Style tile</a><a href="c-marble-run/direction.md">Direction</a><a href="c-marble-run/images/README.md">Images and prompts</a></div>
+    </div>
+  </article>
+</div>
+
+<table>
+  <caption>Side by side</caption>
+  <thead><tr><th scope="col"></th><th scope="col">A · Paper Trail</th><th scope="col">B · Signal Path</th><th scope="col">C · Marble Run</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Hero line</th><td>One sentence went in. A website came out. This is the paper trail.</td><td>Input: one sentence. Output: this website. Follow the signal.</td><td>We dropped one sentence in at the top. Watch where it rolls.</td></tr>
+    <tr><th scope="row">The team are</th><td>six tools on a desk</td><td>six modules in a rack</td><td>six clay figures at stations</td></tr>
+    <tr><th scope="row">A gate is</th><td>a rubber stamp on a manila folder</td><td>a toggle switch under a red cover</td><td>a level crossing a human hand lifts</td></tr>
+    <tr><th scope="row">The double diamond is</th><td>pencil on tracing paper</td><td>the signal's envelope on an oscilloscope</td><td>the shape of the track</td></tr>
+    <tr><th scope="row">Mood</th><td>tactile, quiet, exact, literate</td><td>precise, nocturnal, warm-lit, engineered</td><td>playful, handmade, cheerful, kinetic</td></tr>
+    <tr><th scope="row">Suits most</th><td>studio owners who need trust and receipts</td><td>builders who want the mechanics</td><td>everyone; most shareable</td></tr>
+    <tr><th scope="row">Biggest risk</th><td>reads as merely tasteful unless the stamp and binding delight</td><td>the most engineering; dark UI shows every flaw</td><td>keeping the clay cast consistent; must not feel childish</td></tr>
+    <tr><th scope="row">Build complexity</th><td>medium</td><td>high</td><td>medium-high</td></tr>
+  </tbody>
+</table>
+
+<p style="margin-top:22px;max-width:110ch"><strong>Shared by all three:</strong> the Gate 2 chapter lets visitors "wear" all three directions: choosing one re-skins the next screen in it, then returns to the chosen world (idea from Research's creative benchmark, "You are the human"). The style tiles' tokens are built as swappable themes for this.</p>
+
+<footer>
+  All directions: WCAG 2.2 AA contrast computed for every text pair; reduced-motion versions are designed, not removed; self-hosted OFL fonts; no text inside images. Images: FLUX 3 Klein via local ComfyUI (FLUX Kommunity licence; allowed under the Gate 1 answer). The double diamond is the Design Council's, CC BY 4.0, adapted.
+</footer>
+</div>
+</body>
+</html>

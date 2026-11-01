@@ -1,0 +1,213 @@
+{
+ "workflow": "WEB2 Klein - Style Match and Edit",
+ "workflow_file": "artgen/user/default/workflows/WEB2 Klein - Style Match and Edit.json",
+ "api_file": "artgen/api/WEB2 Klein - Style Match and Edit.json",
+ "seed": 5401,
+ "prompt": "Keep the composition, camera, the rack, every knob, jack and switch, the glowing amber cable and the lighting of <ref_image_0> exactly the same. Remove every small printed marking, label, icon and symbol from the module faceplates so they are completely blank matte black. Keep the left half of the frame in deep empty shadow. No text, no letters, no symbols.",
+ "model": "flux3_image_klein_sd_int8_convrot.safetensors",
+ "steps": 16,
+ "cfg": 1.0,
+ "sampler": "euler",
+ "scheduler": "simple",
+ "denoise": 1.0,
+ "image": "artgen/output/how-it-works/b/b_hero_00001_.png",
+ "source_provenance": {
+  "workflow": "WEB1 Klein - Hero and Key Art",
+  "workflow_file": "artgen/user/default/workflows/WEB1 Klein - Hero and Key Art.json",
+  "api_file": "artgen/api/WEB1 Klein - Hero and Key Art.json",
+  "seed": 2101,
+  "prompt": "A modular hardware instrument made of six slim vertical modules mounted side by side in a dark rack on the right half of the frame, each module with a different arrangement of round knobs, small toggle switches and patch jacks. A single patch cable glows with warm amber light, entering at the top and weaving through every module. The left half of the frame is deep, empty shadow for a headline. Moody product photograph in a dark studio, matte black anodized aluminium and dark graphite surfaces, soft warm amber light glowing from small indicator lamps, faint cool rim light, precise minimal industrial design, shallow depth of field, 90 mm lens, deep velvety shadows, premium hardware catalogue look. Completely blank unlabelled panels: no text, no letters, no numbers, no symbols, no logos.",
+  "negative": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+  "model": "flux3_image_klein_int8_convrot.safetensors",
+  "steps": 30,
+  "cfg": 3.5,
+  "sampler": "euler",
+  "scheduler": "simple",
+  "denoise": 1.0,
+  "aspect": "16:9 (Widescreen)",
+  "megapixels": 2.0,
+  "size": [
+   1936,
+   1088
+  ],
+  "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+  "created": "2026-11-01T17:12:40+00:00",
+  "elapsed_s": 58.7,
+  "comfyui_version": "0.41.0",
+  "prompt_id": "342f9a38-e669-4487-89e4-b7008434f72a",
+  "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/b/b_hero_00001_.json"
+ },
+ "refs": [],
+ "size": [
+  1664,
+  928
+ ],
+ "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+ "created": "2026-11-01T17:38:01+00:00",
+ "elapsed_s": 34.7,
+ "comfyui_version": "0.41.0",
+ "prompt_id": "da87a7ec-8167-44af-9a57-0fb78664e4e5",
+ "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/b/b_hero_clean_00001_.json",
+ "api_prompt": {
+  "2": {
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "flux3_image_klein_sd_int8_convrot.safetensors",
+    "weight_dtype": "default"
+   },
+   "_meta": {
+    "title": "Load Diffusion Model"
+   }
+  },
+  "3": {
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
+    "type": "flux3",
+    "device": "default"
+   },
+   "_meta": {
+    "title": "Load CLIP"
+   }
+  },
+  "4": {
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "flux2-vae.safetensors"
+   },
+   "_meta": {
+    "title": "Load VAE"
+   }
+  },
+  "5": {
+   "class_type": "LoadImage",
+   "inputs": {
+    "image": "_generate/b_hero_00001__50fa0f8a1475.png"
+   },
+   "_meta": {
+    "title": "Image 1 = <ref_image_0>"
+   }
+  },
+  "8": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "Keep the composition, camera, the rack, every knob, jack and switch, the glowing amber cable and the lighting of <ref_image_0> exactly the same. Remove every small printed marking, label, icon and symbol from the module faceplates so they are completely blank matte black. Keep the left half of the frame in deep empty shadow. No text, no letters, no symbols.",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Prompt"
+   }
+  },
+  "9": {
+   "class_type": "ConditioningZeroOut",
+   "inputs": {
+    "conditioning": [
+     "8",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Conditioning Zero Out"
+   }
+  },
+  "10": {
+   "class_type": "ReferenceMultiLatent",
+   "inputs": {
+    "resolution": "resize",
+    "resolution.megapixels": 1.5,
+    "positive": [
+     "8",
+     0
+    ],
+    "negative": [
+     "9",
+     0
+    ],
+    "vae": [
+     "4",
+     0
+    ],
+    "images.image0": [
+     "5",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Set Reference Multi Latent"
+   }
+  },
+  "11": {
+   "class_type": "KSampler",
+   "inputs": {
+    "seed": 5401,
+    "steps": 16,
+    "cfg": 1.0,
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "model": [
+     "2",
+     0
+    ],
+    "positive": [
+     "10",
+     0
+    ],
+    "negative": [
+     "10",
+     1
+    ],
+    "latent_image": [
+     "10",
+     2
+    ]
+   },
+   "_meta": {
+    "title": "KSampler"
+   }
+  },
+  "12": {
+   "class_type": "VAEDecode",
+   "inputs": {
+    "samples": [
+     "11",
+     0
+    ],
+    "vae": [
+     "4",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "VAE Decode"
+   }
+  },
+  "14": {
+   "class_type": "SaveImage",
+   "inputs": {
+    "filename_prefix": "how-it-works/b/b_hero_clean",
+    "images": [
+     "12",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Save Image"
+   }
+  }
+ },
+ "export": {
+  "source": "artgen/output/how-it-works/b/b_hero_clean_00001_.png",
+  "file": "b-hero.webp",
+  "size": [
+   1600,
+   892
+  ],
+  "format": "webp q82",
+  "role": "Key art (hero); WEB2 clean-up of a WEB1 render"
+ },
+ "alt": "A dark modular hardware rack of slim black modules with knobs and jacks; a single glowing amber patch cable loops through them. The left half of the frame is deep shadow."
+}

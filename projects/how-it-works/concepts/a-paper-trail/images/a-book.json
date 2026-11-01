@@ -1,0 +1,182 @@
+{
+ "workflow": "WEB1 Klein - Hero and Key Art",
+ "workflow_file": "artgen/user/default/workflows/WEB1 Klein - Hero and Key Art.json",
+ "api_file": "artgen/api/WEB1 Klein - Hero and Key Art.json",
+ "seed": 1404,
+ "prompt": "A finished hand-bound book with a plain cream cloth cover and a vermilion ribbon bookmark lies closed on the green blotter, a few loose sheets of tracing paper squared up beside it, the rubber stamp and the brass loupe resting nearby. A quiet sense of completion. Overhead flat-lay photograph, shot from directly above, on a deep forest-green leather desk blotter, soft north-window daylight from the upper left, gentle long shadows, cream paper, graphite grey, brass and a single vermilion red accent, 50 mm lens, crisp focus, subtle film grain, calm orderly composition with generous empty space. No text, no letters, no handwriting, no numbers, no ruler markings, no logos.",
+ "negative": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+ "model": "flux3_image_klein_int8_convrot.safetensors",
+ "steps": 30,
+ "cfg": 3.5,
+ "sampler": "euler",
+ "scheduler": "simple",
+ "denoise": 1.0,
+ "aspect": "3:2 (Photo)",
+ "megapixels": 1.5,
+ "size": [
+  1536,
+  1024
+ ],
+ "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+ "created": "2026-11-01T17:32:50+00:00",
+ "elapsed_s": 42.4,
+ "comfyui_version": "0.41.0",
+ "prompt_id": "b9abb809-cffa-469e-bc1c-d3a8485c7b2d",
+ "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/a/a_book_green_00001_.json",
+ "api_prompt": {
+  "2": {
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "flux3_image_klein_int8_convrot.safetensors",
+    "weight_dtype": "default"
+   },
+   "_meta": {
+    "title": "Load Diffusion Model"
+   }
+  },
+  "3": {
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
+    "type": "flux3",
+    "device": "default"
+   },
+   "_meta": {
+    "title": "Load CLIP"
+   }
+  },
+  "4": {
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "flux2-vae.safetensors"
+   },
+   "_meta": {
+    "title": "Load VAE"
+   }
+  },
+  "5": {
+   "class_type": "ResolutionSelector",
+   "inputs": {
+    "aspect_ratio": "3:2 (Photo)",
+    "megapixels": 1.5,
+    "multiple": 16
+   },
+   "_meta": {
+    "title": "Resolution Selector"
+   }
+  },
+  "6": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "A finished hand-bound book with a plain cream cloth cover and a vermilion ribbon bookmark lies closed on the green blotter, a few loose sheets of tracing paper squared up beside it, the rubber stamp and the brass loupe resting nearby. A quiet sense of completion. Overhead flat-lay photograph, shot from directly above, on a deep forest-green leather desk blotter, soft north-window daylight from the upper left, gentle long shadows, cream paper, graphite grey, brass and a single vermilion red accent, 50 mm lens, crisp focus, subtle film grain, calm orderly composition with generous empty space. No text, no letters, no handwriting, no numbers, no ruler markings, no logos.",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Prompt"
+   }
+  },
+  "7": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Negative (used when CFG > 1)"
+   }
+  },
+  "8": {
+   "class_type": "EmptyFlux2LatentImage",
+   "inputs": {
+    "batch_size": 1,
+    "width": [
+     "5",
+     0
+    ],
+    "height": [
+     "5",
+     1
+    ]
+   },
+   "_meta": {
+    "title": "Empty Flux 2 Latent"
+   }
+  },
+  "9": {
+   "class_type": "KSampler",
+   "inputs": {
+    "seed": 1404,
+    "steps": 30,
+    "cfg": 3.5,
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "model": [
+     "2",
+     0
+    ],
+    "positive": [
+     "6",
+     0
+    ],
+    "negative": [
+     "7",
+     0
+    ],
+    "latent_image": [
+     "8",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "KSampler"
+   }
+  },
+  "10": {
+   "class_type": "VAEDecode",
+   "inputs": {
+    "samples": [
+     "9",
+     0
+    ],
+    "vae": [
+     "4",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "VAE Decode"
+   }
+  },
+  "11": {
+   "class_type": "SaveImage",
+   "inputs": {
+    "filename_prefix": "how-it-works/a/a_book_green",
+    "images": [
+     "10",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Save Image"
+   }
+  }
+ },
+ "export": {
+  "source": "artgen/output/how-it-works/a/a_book_green_00001_.png",
+  "file": "a-book.webp",
+  "size": [
+   1536,
+   1024
+  ],
+  "format": "webp q82",
+  "role": "Finale: the bound book"
+ },
+ "alt": "A closed hand-bound book with a cream cloth cover and a red ribbon on green leather, tracing paper and a rubber stamp beside it."
+}

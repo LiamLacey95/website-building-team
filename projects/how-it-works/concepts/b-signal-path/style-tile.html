@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Style tile B: Signal Path · Website Building Team</title>
+<link rel="stylesheet" href="../_fonts/fonts.css">
+<style>
+:root{
+  --panel:#0D0E0C; --panel-2:#181A17; --rule:#2C2F2A; --silk:#ECE8DC; --label:#9A9C93; --amber:#FFB224; --go:#6BD38A; --guard:#FF5A47;
+  --sans:'Archivo', 'Helvetica Neue', Arial, sans-serif; --mono:'Martian Mono', ui-monospace, monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+img{max-width:100%;height:auto}
+body{margin:0;background:var(--panel);color:var(--silk);font:400 17px/1.6 var(--sans);font-stretch:100%}
+.wrap{max-width:1240px;margin:0 auto;padding:36px clamp(18px,4vw,56px) 80px}
+a{color:var(--amber);text-underline-offset:4px}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+h1,h2,h3{margin:0;font-family:var(--sans);font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:.01em}
+h2{font-size:40px;line-height:1.05;margin:88px 0 12px}
+.lede{color:var(--label);max-width:58ch;margin:0}
+.mono{font-family:var(--mono)}
+.lab{font:500 12.5px/1.35 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--label)}
+.module{background:var(--panel-2);border:1px solid var(--rule);border-radius:6px;position:relative}
+.module::before,.module::after{content:"";position:absolute;width:7px;height:7px;border-radius:50%;background:var(--panel);box-shadow:inset 0 0 0 1px var(--rule);top:10px}
+.module::before{left:10px}.module::after{right:10px}
+/* header */
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid var(--rule)}
+.wm{font:800 26px/0.95 var(--sans);font-stretch:125%;text-transform:uppercase;letter-spacing:.02em}
+.wm .jack{display:inline-block;width:.42em;height:.42em;border-radius:50%;background:var(--amber);box-shadow:inset 0 0 0 .1em #7a5200;margin-left:.12em;vertical-align:baseline}
+.serial{display:block;font:500 12.5px var(--mono);letter-spacing:.05em;color:var(--label);margin-top:10px}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:36px;margin-top:44px;align-items:center}
+.hero h1{font-size:clamp(36px,4.4vw,58px);line-height:1.02}
+.hero h1 span{color:var(--amber)}
+.inslot{margin-top:30px;padding:22px 22px 20px}
+.inslot label{display:block;margin-bottom:10px}
+.inrow{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap}
+.inrow input{flex:1 1 280px;min-width:0;background:#060706;border:1px solid var(--rule);border-radius:3px;color:var(--amber);font:500 15px/1 var(--mono);padding:14px 14px}
+.inrow input:focus{outline:2px solid var(--amber);outline-offset:2px}
+.push{font:600 12.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;background:var(--silk);color:var(--panel);border:0;border-radius:3px;padding:0 18px;cursor:pointer;box-shadow:inset 0 -3px 0 #b9b4a6;transition:transform .08s var(--ease)}
+.push:active{transform:translateY(2px);box-shadow:inset 0 -1px 0 #b9b4a6}
+.lamp{display:inline-block;width:12px;height:12px;border-radius:50%;background:#3a3a33;box-shadow:inset 0 0 0 1px #000;vertical-align:middle;position:relative}
+.lamp.on{background:var(--amber)} .lamp.go{background:var(--go)} .lamp.on::after,.lamp.go::after{content:"";position:absolute;top:2px;left:3px;width:4px;height:3px;border-radius:50%;background:rgb(255 255 255 / .75)}
+.hint{margin-top:14px;color:var(--label);font-size:14px}
+.hero img{width:100%;display:block;border-radius:6px;border:1px solid var(--rule)}
+.cap{margin-top:8px}
+/* swatches */
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:24px}
+.sw div{padding:0 0 12px}
+.sw b{display:block;height:78px;border-radius:6px 6px 0 0;border-bottom:1px solid var(--rule)}
+.sw span{display:block;padding:10px 12px 0;font:500 12.5px/1.55 var(--mono)}
+/* type */
+.spec{margin-top:24px;padding:30px 30px 20px;display:grid;gap:14px}
+.spec .r{display:grid;grid-template-columns:150px minmax(0,1fr);overflow-wrap:anywhere;gap:18px;align-items:baseline;padding-bottom:12px;border-bottom:1px solid var(--rule)}
+.spec .r:last-child{border:0}
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:24px}
+.btn{font:600 13px var(--mono);letter-spacing:.05em;text-transform:uppercase;border-radius:3px;padding:14px 20px;cursor:pointer;border:1px solid transparent;transition:transform .08s var(--ease)}
+.btn:active{transform:translateY(2px)}
+.btn-amber{background:var(--amber);color:var(--panel)}
+.btn-line{background:transparent;color:var(--silk);border-color:var(--label)}
+/* modules row */
+.rack{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:26px}
+.rack .module{padding:30px 16px 18px;min-height:260px;display:flex;flex-direction:column;gap:12px}
+.rack h3{font-size:16px;line-height:1.1}
+.screen{background:#060706;border:1px solid var(--rule);border-radius:3px;padding:10px;font:500 12.5px/1.55 var(--mono);color:var(--amber);min-height:64px}
+.knob{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3b3d37,#141512 70%);box-shadow:inset 0 0 0 1px #000;position:relative;margin-top:auto}
+.knob::after{content:"";position:absolute;left:50%;top:5px;width:2px;height:12px;background:var(--silk);transform:translateX(-50%)}
+.jacks{display:flex;gap:8px;margin-top:auto}
+.jacks i{width:16px;height:16px;border-radius:50%;background:#050505;box-shadow:inset 0 0 0 3px #4a4c45}
+.role{font:500 12.5px/1.4 var(--mono);color:var(--label)}
+/* gate */
+.gaterow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;margin-top:26px}
+.gate{padding:34px 26px 26px;display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+.switch{position:relative;width:96px;height:150px;flex:none}
+.base{position:absolute;inset:34px 18px 0;background:#0a0b09;border:1px solid var(--rule);border-radius:6px}
+.lever{position:absolute;left:50%;top:52px;width:12px;height:66px;margin-left:-6px;background:linear-gradient(90deg,#9c9a91,#e9e6dc 45%,#7d7b73);border-radius:6px;transform-origin:50% 100%;transform:rotate(-28deg);transition:transform .18s var(--ease)}
+.cover{position:absolute;left:12px;right:12px;top:30px;height:96px;background:rgb(255 90 71 / .92);border-radius:6px 6px 4px 4px;transform-origin:50% 0;transform:perspective(300px) rotateX(0deg);transition:transform .25s var(--ease);box-shadow:inset 0 0 0 1px rgb(0 0 0 / .35)}
+.gate:focus-within .cover,.gate:hover .cover,.gate.thrown .cover{transform:perspective(300px) rotateX(-160deg)}
+.gate.thrown .lever{transform:rotate(28deg)}
+.gate .info{flex:1 1 240px}
+.gate h3{font-size:22px;margin-bottom:8px}
+.gate p{margin:0 0 14px;color:var(--label)}
+.state{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.decision{color:var(--silk)}
+/* scope */
+.scope{margin-top:26px;padding:26px}
+.scope svg{width:100%;height:auto;display:block;background:#060706;border-radius:3px;border:1px solid var(--rule)}
+.grid line{stroke:#1d211c;stroke-width:1}
+.trace{fill:none;stroke:var(--amber);stroke-width:2;stroke-dasharray:1600;stroke-dashoffset:1600}
+.scope.play .trace{animation:trace 3.6s var(--ease) forwards}
+@keyframes trace{to{stroke-dashoffset:0}}
+.gm{fill:var(--panel);stroke:var(--silk);stroke-width:2}
+.gl{font:500 13px var(--mono);fill:var(--silk)}
+.loop{fill:none;stroke:var(--guard);stroke-width:1.5;stroke-dasharray:4 5}
+.scope-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;margin-top:14px}
+/* unplug */
+.unplug{margin-top:26px;padding:26px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px}
+.out{background:#060706;border:1px solid var(--rule);border-radius:3px;padding:16px;font:500 13px/1.7 var(--mono)}
+.out .ok{color:var(--go)} .out .bad{color:var(--guard)}
+.unplug:not(.pulled) .when-pulled{display:none} .unplug.pulled .when-in{display:none}
+.cable{fill:none;stroke:var(--amber);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .4s var(--ease)}
+.unplug.pulled .cable{stroke-dasharray:60 400;stroke-dashoffset:-70}
+.plates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:26px}
+.plates figure{margin:0}
+.plates img{width:100%;display:block;border-radius:6px;border:1px solid var(--rule)}
+.plates figcaption{margin-top:8px}
+footer{margin-top:88px;color:var(--label);font:500 12.5px/1.8 var(--mono);max-width:100ch}
+@media (max-width:860px){.hero,.gaterow,.unplug{grid-template-columns:1fr}}
+@media (max-width:600px){.spec{padding:24px 18px}.spec .r{grid-template-columns:1fr;gap:4px}.spec .r span[style*="58px"]{font-size:38px!important}h2{font-size:30px}}
+@media (prefers-reduced-motion:reduce){
+  .trace{stroke-dashoffset:0!important;animation:none!important}
+  .cover,.lever,.cable,.push,.btn{transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <div class="wm">Website<br>Building<br>Team<span class="jack" aria-hidden="true"></span></div>
+    <span class="serial">6 modules · 4 gates · 1 signal</span>
+  </div>
+  <div class="lab" style="text-align:right">Gate 2 · Direction B · Signal Path<br>style tile, not a layout</div>
+</header>
+
+<section class="hero" aria-labelledby="h1">
+  <div>
+    <h1 id="h1">Input: one sentence. Output: this website. <span>Follow the signal.</span></h1>
+    <div class="module inslot">
+      <label class="lab" for="in"><span class="lamp on" aria-hidden="true"></span>&nbsp; Input · paste this into your coding agent, or type your own idea</label>
+      <div class="inrow">
+        <input id="in" type="text" value="Set up the website building team from BOOTSTRAP.md." spellcheck="false">
+        <button class="push" type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('in').value)">Copy</button>
+      </div>
+      <p class="hint">That thread becomes your project manager, sets up the tools and five agent threads, and asks for your first website idea.</p>
+    </div>
+  </div>
+  <figure style="margin:0">
+    <img src="images/b-hero.webp" alt="A dark modular hardware rack of six slim modules with knobs and jacks; a single glowing amber patch cable weaves through them." width="1600" height="900">
+    <figcaption class="lab cap">Key art · FLUX 3 Klein (WEB1) · mood image</figcaption>
+  </figure>
+</section>
+
+<h2>Colour</h2>
+<p class="lede">Black panel, silkscreen white, one signal colour. Green and red only ever appear beside a word that says what they mean.</p>
+<div class="sw">
+  <div class="module"><b style="background:var(--panel)"></b><span>panel #0D0E0C<br>silk on it 15.80</span></div>
+  <div class="module"><b style="background:var(--panel-2)"></b><span>panel-2 #181A17<br>silk 14.30 · label 6.30</span></div>
+  <div class="module"><b style="background:var(--silk)"></b><span>silk #ECE8DC<br>text</span></div>
+  <div class="module"><b style="background:var(--label)"></b><span>label #9A9C93<br>on panel 6.96</span></div>
+  <div class="module"><b style="background:var(--amber)"></b><span>amber #FFB224<br>on panel 10.73</span></div>
+  <div class="module"><b style="background:var(--go)"></b><span>go #6BD38A<br>on panel 10.42</span></div>
+  <div class="module"><b style="background:var(--guard)"></b><span>guard #FF5A47<br>on panel 6.27</span></div>
+  <div class="module"><b style="background:var(--rule)"></b><span>rule #2C2F2A<br>hairlines only</span></div>
+</div>
+
+<h2>Type</h2>
+<p class="lede">Archivo at full width for faceplate headings, normal width for reading. Martian Mono labels the parts.</p>
+<div class="module spec">
+  <div class="r"><span class="lab">58 Archivo 125/800</span><span style="font:800 58px/1 var(--sans);font-stretch:125%;text-transform:uppercase">Six modules</span></div>
+  <div class="r"><span class="lab">40 Archivo 125/800</span><span style="font:800 40px/1.05 var(--sans);font-stretch:125%;text-transform:uppercase">Gate 2: creative direction</span></div>
+  <div class="r"><span class="lab">23 Archivo 100/600</span><span style="font:600 23px/1.3 var(--sans)">Concept made three directions on a local GPU</span></div>
+  <div class="r"><span class="lab">17 Archivo 100/400</span><span>Every image keeps its prompt, seed and model in a sidecar file, so the picture on this panel can be made again from the file beside it.</span></div>
+  <div class="r"><span class="lab">13 Martian Mono</span><span class="mono" style="font-size:13px;color:var(--amber)">projects/how-it-works/concepts/b-signal-path/direction.md</span></div>
+</div>
+
+<h2>Controls</h2>
+<div class="controls">
+  <button class="btn btn-amber" type="button">Throw the switch</button>
+  <button class="btn btn-line" type="button">Patch it back · revise</button>
+  <a href="#scope">Read the brief Research received</a>
+  <span class="lab"><span class="lamp on" aria-hidden="true"></span>&nbsp; hold</span>
+  <span class="lab"><span class="lamp go" aria-hidden="true"></span>&nbsp; approved</span>
+</div>
+
+<h2>The rack</h2>
+<p class="lede">Each agent is a module: a faceplate, a small screen for its real artefact, and jacks for briefs in and reports out.</p>
+<div class="rack">
+  <div class="module"><h3>Sequencer</h3><span class="role">PM · sends briefs on the beat</span><div class="screen">05-concept-directions.md → Concept</div><div class="jacks"><i></i><i></i><i></i><i></i></div></div>
+  <div class="module"><h3>Analyser</h3><span class="role">Research · listens first</span><div class="screen">8 sites · 3 personas · 20 refs</div><div class="knob" aria-hidden="true"></div></div>
+  <div class="module"><h3>Oscillator</h3><span class="role">Concept · makes three waves</span><div class="screen">A · B · C directions</div><div class="knob" aria-hidden="true"></div></div>
+  <div class="module"><h3>Filter</h3><span class="role">Front-end · shapes and cuts</span><div class="screen">3 worktrees · 4 widths</div><div class="jacks"><i></i><i></i></div></div>
+  <div class="module"><h3>Patch bay</h3><span class="role">Backend · routes and connects</span><div class="screen">contract.md · build</div><div class="jacks"><i></i><i></i><i></i><i></i><i></i></div></div>
+  <div class="module"><h3>Limiter</h3><span class="role">Review · nothing passes above the line</span><div class="screen">WCAG · Lighthouse · detector</div><div class="knob" aria-hidden="true"></div></div>
+</div>
+
+<h2>A gate</h2>
+<div class="gaterow">
+  <div class="module gate" id="gate">
+    <div class="switch" aria-hidden="true"><div class="base"></div><div class="lever"></div><div class="cover"></div></div>
+    <div class="info">
+      <h3>Gate 2: creative direction</h3>
+      <div class="state"><span class="lamp on" id="glamp" aria-hidden="true"></span><span class="lab" id="gstate">hold · waiting for a human</span></div>
+      <p>The signal stops here until a person decides. Lift the cover, throw the switch.</p>
+      <button class="btn btn-amber" type="button" aria-pressed="false" onclick="var g=document.getElementById('gate');var on=g.classList.toggle('thrown');this.setAttribute('aria-pressed',on);document.getElementById('glamp').className='lamp '+(on?'go':'on');document.getElementById('gstate').textContent=on?'approved · signal continues':'hold · waiting for a human';document.getElementById('gdec').hidden=!on">Throw: approve</button>
+      <p class="decision" id="gdec" hidden style="margin-top:14px">Decision (tile placeholder): direction B. On the site this is set from DECISIONS.md.</p>
+    </div>
+  </div>
+  <div class="module" style="padding:30px 26px">
+    <h3 style="font-size:22px;margin-bottom:10px">What the human saw</h3>
+    <p style="color:var(--label);margin:0 0 14px">Three directions side by side: key art, a style frame, palette, type and the set piece in two sentences.</p>
+    <div class="screen" style="min-height:0">gates/G2-creative-direction/contact-sheet.html</div>
+  </div>
+</div>
+
+<h2 id="scope">The set piece, sketched</h2>
+<p class="lede">The oscilloscope draws the double diamond as the signal's envelope: one line widens into many ideas and narrows to one decision, twice. Four gate marks; dashed red loops for “revise”.</p>
+<div class="module scope" id="scopebox">
+  <svg viewBox="0 0 1100 300" role="img" aria-label="Sketch: an amber oscilloscope trace forming two diamond-shaped envelopes, with four gate markers and dashed loop-back arcs.">
+    <g class="grid"><line x1="0" y1="150" x2="1100" y2="150"/><line x1="275" y1="0" x2="275" y2="300"/><line x1="550" y1="0" x2="550" y2="300"/><line x1="825" y1="0" x2="825" y2="300"/><line x1="0" y1="75" x2="1100" y2="75"/><line x1="0" y1="225" x2="1100" y2="225"/></g>
+    <path class="loop" d="M300 150 C 260 60, 120 60, 70 140"/>
+    <path class="loop" d="M1030 150 C 980 250, 760 250, 690 160"/>
+    <path class="trace" d="M20 150 L60 150 L80 135 L95 168 L110 118 L125 184 L140 102 L155 198 L170 92 L185 206 L200 96 L215 200 L230 112 L245 186 L262 130 L280 166 L300 150 L560 150 L580 130 L600 172 L620 110 L640 190 L660 92 L680 208 L700 78 L720 220 L740 70 L760 226 L780 66 L800 230 L820 72 L840 222 L860 86 L880 208 L900 102 L920 194 L940 118 L960 180 L980 134 L1000 164 L1015 146 L1030 150 L1080 150"/>
+    <circle class="gm" cx="300" cy="150" r="9"/><text class="gl" x="285" y="186">G1</text>
+    <circle class="gm" cx="690" cy="88" r="9"/><text class="gl" x="675" y="64">G2</text>
+    <circle class="gm" cx="880" cy="212" r="9"/><text class="gl" x="865" y="248">G3</text>
+    <circle class="gm" cx="1030" cy="150" r="9"/><text class="gl" x="1015" y="186">G4</text>
+  </svg>
+  <div class="scope-foot">
+    <span class="lab">Double Diamond by the Design Council, CC BY 4.0, adapted</span>
+    <button class="btn btn-line" type="button" onclick="var s=document.getElementById('scopebox');s.classList.remove('play');void s.offsetWidth;s.classList.add('play')">Trace again</button>
+  </div>
+</div>
+
+<h2>Pull a cable</h2>
+<p class="lede">The explaining device: unplug Review and see what would have shipped.</p>
+<div class="module unplug" id="unplug">
+  <div>
+    <svg viewBox="0 0 300 120" width="100%" aria-hidden="true"><circle cx="40" cy="60" r="16" fill="#050505" stroke="#4a4c45" stroke-width="5"/><circle cx="260" cy="60" r="16" fill="#050505" stroke="#4a4c45" stroke-width="5"/><path class="cable" d="M40 60 C 100 0, 200 120, 260 60"/></svg>
+    <button class="btn btn-amber" type="button" aria-pressed="false" onclick="var u=document.getElementById('unplug');var on=u.classList.toggle('pulled');this.setAttribute('aria-pressed',on);this.textContent=on?'Plug Review back in':'Unplug Review'">Unplug Review</button>
+  </div>
+  <div class="out" aria-live="polite">
+    <div class="when-in"><span class="ok">Review in circuit.</span> Output: release candidate, all checks passed.</div>
+    <div class="when-pulled"><span class="bad">Review bypassed.</span> Would have shipped (examples for the tile):<br>· body text at 3.9:1 contrast on one card<br>· hero image without alt text<br>· a broken link in the footer</div>
+  </div>
+</div>
+
+<h2>Plates</h2>
+<div class="plates">
+  <figure><img src="images/b-modules.webp" alt="Six slim black hardware modules standing in a row, each with a different control: big knob, small amber screen, many jacks, buttons, a fader, a guarded switch." loading="lazy"><figcaption class="lab">The team, as modules</figcaption></figure>
+  <figure><img src="images/b-gate.webp" alt="Macro of a heavy toggle switch under a flipped-up red safety cover beside a small amber lamp." loading="lazy"><figcaption class="lab">The gate</figcaption></figure>
+  <figure><img src="images/b-scope.webp" alt="A small round oscilloscope screen glowing amber with a waveform forming two diamond shapes." loading="lazy"><figcaption class="lab">The scope</figcaption></figure>
+</div>
+
+<footer>
+  Fonts: Archivo, Martian Mono (SIL OFL 1.1, self-hosted: ../_fonts/FONTS-LICENCE.md). Images: FLUX 3 Klein via ComfyUI (FLUX Kommunity licence); provenance sidecars in images/.
+  No glow anywhere: lit lamps are solid colour with a specular dot. Under prefers-reduced-motion the trace is drawn and nothing animates; the switch and the cable still work as instant toggles.
+</footer>
+</div>
+<script>
+  var sc = document.getElementById('scopebox');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es, o) { es.forEach(function (e) { if (e.isIntersecting) { sc.classList.add('play'); o.disconnect(); } }); }, {threshold: .5}).observe(sc);
+  } else { sc.classList.add('play'); }
+</script>
+</body>
+</html>

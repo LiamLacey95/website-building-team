@@ -1,0 +1,182 @@
+{
+ "workflow": "WEB4 Klein - Style Frame",
+ "workflow_file": "artgen/user/default/workflows/WEB4 Klein - Style Frame.json",
+ "api_file": "artgen/api/WEB4 Klein - Style Frame.json",
+ "seed": 1301,
+ "prompt": "A flat, straight-on screenshot of a complete website home page, full length as one tall scrolling page. The whole page background is a deep forest-green leather desk blotter, and the content sits on cream paper sheets laid on it with soft contact shadows. Top: a slim header with a small bold serif wordmark. Hero: a cream sheet with a large bold serif headline and a small lined index card with typewriter text, beside an overhead photograph of studio tools on a desk. Then a long sheet of translucent tracing paper spanning the width with a pencil-drawn double diamond diagram and four small vermilion circular stamp marks on it. Then a tan manila folder with a round vermilion rubber-stamp impression. Then three photographic prints fanned out with a brass loupe. Footer: a closed cream cloth-bound book with a vermilion ribbon. Square paper corners, generous margins, warm daylight. All text is shown only as soft grey placeholder lines, no readable words, no logos.",
+ "negative": "readable text, letters, words, gibberish lettering, watermark, logo, device frame, laptop, phone, hands, perspective, tilted, blurry, lowres, cluttered",
+ "model": "flux3_image_klein_int8_convrot.safetensors",
+ "steps": 30,
+ "cfg": 3.5,
+ "sampler": "euler",
+ "scheduler": "simple",
+ "denoise": 1.0,
+ "aspect": "9:16 (Portrait Widescreen)",
+ "megapixels": 1.5,
+ "size": [
+  944,
+  1680
+ ],
+ "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+ "created": "2026-11-01T17:21:30+00:00",
+ "elapsed_s": 31.6,
+ "comfyui_version": "0.41.0",
+ "prompt_id": "b0176be5-11b0-4ddb-b29e-8bd570af0c48",
+ "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/a/a_frame_home_00001_.json",
+ "api_prompt": {
+  "2": {
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "flux3_image_klein_int8_convrot.safetensors",
+    "weight_dtype": "default"
+   },
+   "_meta": {
+    "title": "Load Diffusion Model"
+   }
+  },
+  "3": {
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
+    "type": "flux3",
+    "device": "default"
+   },
+   "_meta": {
+    "title": "Load CLIP"
+   }
+  },
+  "4": {
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "flux2-vae.safetensors"
+   },
+   "_meta": {
+    "title": "Load VAE"
+   }
+  },
+  "5": {
+   "class_type": "ResolutionSelector",
+   "inputs": {
+    "aspect_ratio": "9:16 (Portrait Widescreen)",
+    "megapixels": 1.5,
+    "multiple": 16
+   },
+   "_meta": {
+    "title": "Resolution Selector"
+   }
+  },
+  "6": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "A flat, straight-on screenshot of a complete website home page, full length as one tall scrolling page. The whole page background is a deep forest-green leather desk blotter, and the content sits on cream paper sheets laid on it with soft contact shadows. Top: a slim header with a small bold serif wordmark. Hero: a cream sheet with a large bold serif headline and a small lined index card with typewriter text, beside an overhead photograph of studio tools on a desk. Then a long sheet of translucent tracing paper spanning the width with a pencil-drawn double diamond diagram and four small vermilion circular stamp marks on it. Then a tan manila folder with a round vermilion rubber-stamp impression. Then three photographic prints fanned out with a brass loupe. Footer: a closed cream cloth-bound book with a vermilion ribbon. Square paper corners, generous margins, warm daylight. All text is shown only as soft grey placeholder lines, no readable words, no logos.",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Prompt"
+   }
+  },
+  "7": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "readable text, letters, words, gibberish lettering, watermark, logo, device frame, laptop, phone, hands, perspective, tilted, blurry, lowres, cluttered",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Negative (used when CFG > 1)"
+   }
+  },
+  "8": {
+   "class_type": "EmptyFlux2LatentImage",
+   "inputs": {
+    "batch_size": 1,
+    "width": [
+     "5",
+     0
+    ],
+    "height": [
+     "5",
+     1
+    ]
+   },
+   "_meta": {
+    "title": "Empty Flux 2 Latent"
+   }
+  },
+  "9": {
+   "class_type": "KSampler",
+   "inputs": {
+    "seed": 1301,
+    "steps": 30,
+    "cfg": 3.5,
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "model": [
+     "2",
+     0
+    ],
+    "positive": [
+     "6",
+     0
+    ],
+    "negative": [
+     "7",
+     0
+    ],
+    "latent_image": [
+     "8",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "KSampler"
+   }
+  },
+  "10": {
+   "class_type": "VAEDecode",
+   "inputs": {
+    "samples": [
+     "9",
+     0
+    ],
+    "vae": [
+     "4",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "VAE Decode"
+   }
+  },
+  "11": {
+   "class_type": "SaveImage",
+   "inputs": {
+    "filename_prefix": "how-it-works/a/a_frame_home",
+    "images": [
+     "10",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Save Image"
+   }
+  }
+ },
+ "export": {
+  "source": "artgen/output/how-it-works/a/a_frame_home_00001_.png",
+  "file": "a-frame-home.webp",
+  "size": [
+   944,
+   1680
+  ],
+  "format": "webp q82",
+  "role": "Style frame, home page (mood image; lettering is fake)"
+ },
+ "alt": "Mood image of a full home page on a green leather blotter: a paper hero, a tracing-paper diamond with red stamps, a stamped folder, fanned photos and a bound book."
+}

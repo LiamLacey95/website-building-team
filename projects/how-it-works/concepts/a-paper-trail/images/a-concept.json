@@ -1,0 +1,182 @@
+{
+ "workflow": "WEB1 Klein - Hero and Key Art",
+ "workflow_file": "artgen/user/default/workflows/WEB1 Klein - Hero and Key Art.json",
+ "api_file": "artgen/api/WEB1 Klein - Hero and Key Art.json",
+ "seed": 1403,
+ "prompt": "Three small photographic proof prints with white borders fanned out on the green blotter under a brass loupe: one print shows a warm sunlit paper still life, one a dark moody amber-lit object, one a bright playful clay toy scene. A vermilion grease-pencil circle is drawn around one of the three prints. Overhead flat-lay photograph, shot from directly above, on a deep forest-green leather desk blotter, soft north-window daylight from the upper left, gentle long shadows, cream paper, graphite grey, brass and a single vermilion red accent, 50 mm lens, crisp focus, subtle film grain, calm orderly composition with generous empty space. No text, no letters, no handwriting, no numbers, no ruler markings, no logos.",
+ "negative": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+ "model": "flux3_image_klein_int8_convrot.safetensors",
+ "steps": 30,
+ "cfg": 3.5,
+ "sampler": "euler",
+ "scheduler": "simple",
+ "denoise": 1.0,
+ "aspect": "3:2 (Photo)",
+ "megapixels": 1.5,
+ "size": [
+  1536,
+  1024
+ ],
+ "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+ "created": "2026-11-01T17:32:08+00:00",
+ "elapsed_s": 45.6,
+ "comfyui_version": "0.41.0",
+ "prompt_id": "2a395522-8ae8-4832-8c53-8b87816a5543",
+ "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/a/a_concept_green_00001_.json",
+ "api_prompt": {
+  "2": {
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "flux3_image_klein_int8_convrot.safetensors",
+    "weight_dtype": "default"
+   },
+   "_meta": {
+    "title": "Load Diffusion Model"
+   }
+  },
+  "3": {
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
+    "type": "flux3",
+    "device": "default"
+   },
+   "_meta": {
+    "title": "Load CLIP"
+   }
+  },
+  "4": {
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "flux2-vae.safetensors"
+   },
+   "_meta": {
+    "title": "Load VAE"
+   }
+  },
+  "5": {
+   "class_type": "ResolutionSelector",
+   "inputs": {
+    "aspect_ratio": "3:2 (Photo)",
+    "megapixels": 1.5,
+    "multiple": 16
+   },
+   "_meta": {
+    "title": "Resolution Selector"
+   }
+  },
+  "6": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "Three small photographic proof prints with white borders fanned out on the green blotter under a brass loupe: one print shows a warm sunlit paper still life, one a dark moody amber-lit object, one a bright playful clay toy scene. A vermilion grease-pencil circle is drawn around one of the three prints. Overhead flat-lay photograph, shot from directly above, on a deep forest-green leather desk blotter, soft north-window daylight from the upper left, gentle long shadows, cream paper, graphite grey, brass and a single vermilion red accent, 50 mm lens, crisp focus, subtle film grain, calm orderly composition with generous empty space. No text, no letters, no handwriting, no numbers, no ruler markings, no logos.",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Prompt"
+   }
+  },
+  "7": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Negative (used when CFG > 1)"
+   }
+  },
+  "8": {
+   "class_type": "EmptyFlux2LatentImage",
+   "inputs": {
+    "batch_size": 1,
+    "width": [
+     "5",
+     0
+    ],
+    "height": [
+     "5",
+     1
+    ]
+   },
+   "_meta": {
+    "title": "Empty Flux 2 Latent"
+   }
+  },
+  "9": {
+   "class_type": "KSampler",
+   "inputs": {
+    "seed": 1403,
+    "steps": 30,
+    "cfg": 3.5,
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "model": [
+     "2",
+     0
+    ],
+    "positive": [
+     "6",
+     0
+    ],
+    "negative": [
+     "7",
+     0
+    ],
+    "latent_image": [
+     "8",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "KSampler"
+   }
+  },
+  "10": {
+   "class_type": "VAEDecode",
+   "inputs": {
+    "samples": [
+     "9",
+     0
+    ],
+    "vae": [
+     "4",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "VAE Decode"
+   }
+  },
+  "11": {
+   "class_type": "SaveImage",
+   "inputs": {
+    "filename_prefix": "how-it-works/a/a_concept_green",
+    "images": [
+     "10",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Save Image"
+   }
+  }
+ },
+ "export": {
+  "source": "artgen/output/how-it-works/a/a_concept_green_00001_.png",
+  "file": "a-concept.webp",
+  "size": [
+   1536,
+   1024
+  ],
+  "format": "webp q82",
+  "role": "Chapter: Concept (three directions)"
+ },
+ "alt": "Three photographic proof prints fanned on green leather beside a brass loupe: a warm paper still life, a dark amber object and a bright clay toy scene, one circled in red pencil."
+}

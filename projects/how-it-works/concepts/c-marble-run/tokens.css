@@ -1,0 +1,96 @@
+/* Direction C · Marble Run: base design tokens.
+   Shared schema with A and B (same names), so a theme switch is one attribute (data-theme).
+   Fonts: ../_fonts/fonts.css (self-hosted OFL). Contrast pairs: direction.md. */
+:root[data-theme="marble-run"], [data-theme="marble-run"] {
+  color-scheme: light;
+
+  /* Colour: surfaces */
+  --c-bg: #FFC53D;            /* sunflower wall: page */
+  --c-bg-2: #BFE3F2;          /* sky: secondary surfaces (bin, table) */
+  --c-surface: #FFFFFF;       /* tickets and cards: all long reading sits on white */
+  --c-surface-2: #FFFFFF;     /* gate card */
+  --c-surface-3: #FFFFFF;
+  /* Colour: text */
+  --c-on-bg: #1C2147;         /* navy on sun: 9.80:1 */
+  --c-on-bg-muted: #1C2147;   /* no muted grey on yellow; use size and weight instead */
+  --c-text: #1C2147;          /* navy on white: 15.47:1 */
+  --c-text-muted: #3A3F63;    /* on white: 10.14:1 */
+  /* Colour: accents */
+  --c-accent: #E8492C;        /* tomato: shapes, barriers, large text only (3.99:1 with navy) */
+  --c-accent-on-folder: #B7321A;
+  --c-on-accent: #FFFFFF;     /* on --c-accent-ink buttons: 6.03:1 */
+  --c-accent-ink: #B7321A;    /* tomato for small text and button fills: 6.03:1 on white */
+  --c-accent-bg: #1C2147;     /* the strong button on the yellow wall */
+  --c-on-accent-bg: #FFC53D;  /* sun on navy: 9.80:1 */
+  --c-link: #1C2147;          /* navy, underlined */
+  --c-link-on-bg: #1C2147;
+  --c-highlight: #BFE3F2;
+  --c-gate: #E8492C;          /* barrier */
+  --c-go: #4DBF95;            /* mint track, "go" (always with a word): navy on it 6.78:1 */
+  --c-hold: #E8492C;
+  --c-rule: #1C2147;
+  --c-focus: #1C2147;         /* 3 px navy, with a white offset ring */
+  --c-focus-on-bg: #1C2147;
+  --c-wood: #D8A46A;          /* track (decorative) */
+
+  /* Type */
+  --font-display: 'Bricolage Grotesque', 'Arial Rounded MT Bold', sans-serif;
+  --font-text: 'Atkinson Hyperlegible Next', Verdana, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  --display-weight: 800;
+  --display-case: none;
+  --display-tracking: -0.01em;
+  --display-variation: 'opsz' 96, 'wdth' 85;
+  --display-stretch: 100%;    /* width comes from the wdth axis above */
+  --text-weight: 400;
+  --label-case: none;
+  --label-tracking: 0;
+  /* scale: 1.25 ratio, 18 px base */
+  --fs-xs: 13px;
+  --fs-sm: 15px;
+  --fs-0: 18px;
+  --fs-1: 22.5px;
+  --fs-2: 28px;
+  --fs-3: 35px;
+  --fs-4: 44px;
+  --fs-5: 55px;
+  --fs-6: 64px;   /* hero (short, two lines) */
+  --lh-text: 1.6;
+  --lh-display: 0.98;
+  --measure: 60ch;
+
+  /* Shape: soft and toy-like */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+  --border-w: 2.5px;
+  --border: 2.5px solid #1C2147;
+  --rule: 2px dashed rgb(28 33 71 / .2);
+  --shadow-rest: 4px 5px 0 #1C2147;   /* hard offset: deliberate toy depth */
+  --shadow-lift: 6px 8px 0 #1C2147;
+  --shadow-press: 0 0 0 #1C2147;      /* pressed: the offset disappears */
+  --tilt-max: 0deg;
+
+  /* Space: 4 px base, airy */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 14px;
+  --space-4: 18px;
+  --space-5: 28px;
+  --space-6: 40px;
+  --space-7: 64px;
+  --space-8: 96px;
+  --gutter: clamp(18px, 4vw, 56px);
+
+  /* Motion: gravity, not springs */
+  --ease-out: cubic-bezier(.25, 1, .5, 1);    /* rolling, decelerating */
+  --ease-in: cubic-bezier(.55, 0, 1, .45);    /* dropping, accelerating */
+  --dur-short: 100ms;
+  --dur-med: 450ms;
+  --dur-long: 1100ms;
+
+  /* Texture */
+  --texture: url("images/c-texture.webp");
+  --texture-size: 768px;
+}

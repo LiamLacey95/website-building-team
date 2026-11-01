@@ -442,7 +442,10 @@ def submit(api, client_id):
 def wait_for(prompt_id, timeout):
     t0 = time.time()
     while time.time() - t0 < timeout:
-        hist = http("GET", f"/history/{prompt_id}")
+        try:
+            hist = http("GET", f"/history/{prompt_id}")
+        except (urllib.error.URLError, ConnectionError, OSError):
+            sys.exit(f"ComfyUI stopped responding while generating (was its process stopped?). Log: {rel(LOG_FILE)}")
         if prompt_id in hist:
             h = hist[prompt_id]
             st = h.get("status", {})

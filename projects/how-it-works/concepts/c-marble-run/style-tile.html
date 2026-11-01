@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Style tile C: Marble Run · Website Building Team</title>
+<link rel="stylesheet" href="../_fonts/fonts.css">
+<style>
+:root{
+  --sun:#FFC53D; --white:#FFFFFF; --navy:#1C2147; --tomato:#E8492C; --tomato-ink:#B7321A; --mint:#4DBF95; --sky:#BFE3F2; --wood:#D8A46A;
+  --display:'Bricolage Grotesque', 'Arial Rounded MT Bold', sans-serif; --text:'Atkinson Hyperlegible Next', Verdana, sans-serif;
+  --mono:ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  --toy:4px 5px 0 var(--navy);
+  --fall:cubic-bezier(.55,0,1,.45); --roll:cubic-bezier(.25,1,.5,1);
+}
+*{box-sizing:border-box}
+img{max-width:100%;height:auto}
+body{margin:0;background:var(--sun);color:var(--navy);font:400 18px/1.6 var(--text)}
+.wrap{max-width:1240px;margin:0 auto;padding:36px clamp(18px,4vw,56px) 80px}
+a{color:var(--navy);text-decoration-thickness:2px;text-underline-offset:4px}
+:focus-visible{outline:3px solid var(--navy);outline-offset:3px;box-shadow:0 0 0 3px var(--white)}
+h1,h2,h3{font-family:var(--display);font-weight:800;margin:0;font-variation-settings:'opsz' 96,'wdth' 85;letter-spacing:-.01em}
+h2{font-size:55px;line-height:1;margin:96px 0 12px}
+.lede{font-size:22.5px;line-height:1.45;max-width:44ch;margin:0}
+.card{background:var(--white);border:2.5px solid var(--navy);border-radius:18px;box-shadow:var(--toy)}
+/* header */
+header{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.wm{font:800 30px/1 var(--display);font-variation-settings:'opsz' 96,'wdth' 85;position:relative;display:inline-flex;align-items:baseline;gap:.25em}
+.marble{display:inline-block;width:.62em;height:.62em;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff 0 12%,#dff3ff 22%,#7fb9d9 62%,#2f5e86 100%);box-shadow:inset -2px -3px 0 rgb(28 33 71 / .25)}
+.meta{font:700 14px/1.45 var(--text);text-align:right}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:36px;align-items:center;margin-top:40px}
+.hero h1{font-size:clamp(44px,5vw,64px);line-height:.98}
+.hero h1 span{color:var(--navy);text-decoration:underline;text-decoration-color:var(--tomato);text-decoration-thickness:.12em;text-underline-offset:.12em}
+.ticket{margin-top:30px;padding:16px 16px 16px 24px;border-radius:999px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.ticket code{font:600 15px var(--mono);flex:1 1 260px}
+.btn{font:800 16px var(--display);font-variation-settings:'opsz' 24,'wdth' 90;border:2.5px solid var(--navy);border-radius:999px;padding:12px 22px;cursor:pointer;box-shadow:var(--toy);transition:transform .1s var(--roll),box-shadow .1s var(--roll);color:var(--navy)}
+.btn:active,.btn[aria-pressed="true"]{transform:translate(4px,5px);box-shadow:0 0 0 var(--navy)}
+.btn-sun{background:var(--sun)} .btn-white{background:var(--white)} .btn-tomato{background:var(--tomato-ink);color:var(--white)} .btn-navy{background:var(--navy);color:var(--sun)}
+.hero p.after{margin:22px 0 0;max-width:44ch}
+.hero figure{margin:0}
+.hero img{width:100%;display:block;border-radius:18px;border:2.5px solid var(--navy);box-shadow:var(--toy)}
+.cap{font:700 13px var(--text);margin-top:10px}
+/* swatches */
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px;margin-top:24px}
+.sw .card{overflow:hidden}
+.sw b{display:block;height:80px;border-bottom:2.5px solid var(--navy)}
+.sw span{display:block;padding:10px 14px 12px;font:700 13px/1.5 var(--text)}
+/* type */
+.spec{margin-top:24px;padding:30px 32px;display:grid;gap:14px}
+.spec .r{display:grid;grid-template-columns:150px minmax(0,1fr);overflow-wrap:anywhere;gap:18px;align-items:baseline;padding-bottom:12px;border-bottom:2px dashed rgb(28 33 71 / .2)}
+.spec .r:last-child{border:0}
+.k{font:700 13px var(--text);opacity:.8}
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-top:24px}
+/* station card */
+.station{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:30px;align-items:center;margin-top:28px}
+.station .card{padding:28px 30px}
+.station h3{font-size:35px;line-height:1.05;margin-bottom:10px}
+.station .tag{display:inline-block;background:var(--mint);border:2.5px solid var(--navy);border-radius:999px;padding:3px 14px;font:800 14px var(--display);margin-left:10px;vertical-align:middle}
+.station img{width:100%;display:block;border-radius:18px;border:2.5px solid var(--navy);box-shadow:var(--toy)}
+/* level crossing */
+.crossing{margin-top:28px;padding:30px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:28px;align-items:center}
+.scene{position:relative;height:200px;background:var(--sky);border:2.5px solid var(--navy);border-radius:14px;overflow:hidden}
+.rail{position:absolute;left:0;right:0;bottom:46px;height:14px;background:var(--wood);border-top:2.5px solid var(--navy);border-bottom:2.5px solid var(--navy)}
+.post{position:absolute;left:58%;bottom:60px;width:16px;height:90px;background:var(--white);border:2.5px solid var(--navy);border-radius:4px}
+.arm{position:absolute;left:calc(58% + 8px);bottom:140px;width:150px;height:18px;margin-left:-75px;border:2.5px solid var(--navy);border-radius:9px;
+  background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='18'%3E%3Cg fill='%23E8492C'%3E%3Crect x='0' width='22' height='18'/%3E%3Crect x='44' width='22' height='18'/%3E%3Crect x='88' width='22' height='18'/%3E%3Crect x='132' width='18' height='18'/%3E%3C/g%3E%3C/svg%3E") no-repeat;transform-origin:75px 50%;transform:translateY(64px);transition:transform .45s var(--roll)}
+.scene.open .arm{transform:translateY(64px) rotate(-78deg)}
+.ball{position:absolute;bottom:60px;left:calc(58% - 46px);width:30px;height:30px;border-radius:50%;
+  background:radial-gradient(circle at 32% 30%,#fff 0 12%,#dff3ff 22%,#7fb9d9 62%,#2f5e86 100%);border:2px solid var(--navy);transition:left 1.1s var(--roll)}
+.scene.open .ball{left:calc(100% - 50px)}
+.crossing h3{font-size:28px;margin-bottom:8px}
+.crossing p{margin:0 0 16px}
+/* run sketch */
+.run{margin-top:28px;padding:22px}
+.run svg{width:100%;height:auto;display:block}
+.track{fill:none;stroke:var(--wood);stroke-width:14;stroke-linecap:round;stroke-linejoin:round}
+.track-edge{fill:none;stroke:var(--navy);stroke-width:19;stroke-linecap:round;stroke-linejoin:round}
+.gatebar{stroke:var(--tomato);stroke-width:7;stroke-linecap:round}
+.glab{font:800 15px var(--display);fill:var(--navy)}
+.rolling{offset-path:path('M40 60 L210 60 L300 150 L560 150 L760 40 L1040 150');offset-distance:0%;offset-rotate:0deg}
+.run.play .rolling{animation:roll 6s var(--roll) forwards}
+@keyframes roll{to{offset-distance:100%}}
+.run-foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center;margin-top:14px;font:700 14px var(--text)}
+/* without humans */
+.nohumans{margin-top:28px;padding:28px 30px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:26px;align-items:center}
+.bin{background:var(--sky);border:2.5px solid var(--navy);border-radius:14px;padding:18px 20px}
+.nohumans:not(.on) .bin{display:none}
+.nohumans.on .calm{display:none}
+.plates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:28px}
+.plates figure{margin:0}
+.plates img{width:100%;display:block;border-radius:18px;border:2.5px solid var(--navy);box-shadow:var(--toy)}
+footer{margin-top:96px;font:700 13px/1.7 var(--text);max-width:96ch}
+@media (max-width:860px){.hero,.station,.crossing,.nohumans{grid-template-columns:1fr}h2{font-size:40px}}
+@media (max-width:600px){.spec{padding:24px 20px}.spec .r{grid-template-columns:1fr;gap:4px}}
+@media (prefers-reduced-motion:reduce){
+  .btn,.arm,.ball{transition:none!important}
+  .run .rolling{animation:none!important;offset-distance:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="wm">Website Building Team <span class="marble" aria-hidden="true"></span></div>
+  <div class="meta">Gate 2 · Direction C · Marble Run<br>style tile, not a layout</div>
+</header>
+
+<section class="hero" aria-labelledby="h1">
+  <div>
+    <h1 id="h1">We dropped one sentence in at the top. <span>Watch where it rolls.</span></h1>
+    <div class="card ticket">
+      <code>Set up the website building team from BOOTSTRAP.md.</code>
+      <button class="btn btn-sun" type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText('Set up the website building team from BOOTSTRAP.md.')">Copy</button>
+    </div>
+    <p class="after">Paste it into your coding agent. That thread becomes your project manager, builds the team and asks what website you want.</p>
+  </div>
+  <figure>
+    <img src="images/c-hero.webp" alt="A handmade wooden marble run zig-zags down against a yellow wall; a glass marble waits at the top while tiny clay figures watch from stations along the track." width="1600" height="900">
+    <figcaption class="cap">Key art · FLUX 3 Klein (WEB1) · mood image</figcaption>
+  </figure>
+</section>
+
+<h2>Colour</h2>
+<p class="lede">A yellow wall, navy outlines, white tickets for reading. Tomato is for barriers and big shapes.</p>
+<div class="sw">
+  <div class="card"><b style="background:var(--sun)"></b><span>sun #FFC53D<br>navy on it 9.80</span></div>
+  <div class="card"><b style="background:var(--white)"></b><span>white #FFFFFF<br>navy on it 15.47</span></div>
+  <div class="card"><b style="background:var(--navy)"></b><span>navy #1C2147<br>text, outlines</span></div>
+  <div class="card"><b style="background:var(--tomato)"></b><span>tomato #E8492C<br>shapes, large text</span></div>
+  <div class="card"><b style="background:var(--tomato-ink)"></b><span>tomato-ink #B7321A<br>on white 6.03</span></div>
+  <div class="card"><b style="background:var(--mint)"></b><span>mint #4DBF95<br>navy on it 6.78</span></div>
+  <div class="card"><b style="background:var(--sky)"></b><span>sky #BFE3F2<br>navy on it 11.40</span></div>
+  <div class="card"><b style="background:var(--wood)"></b><span>wood #D8A46A<br>track · decorative</span></div>
+</div>
+
+<h2>Type</h2>
+<p class="lede">Bricolage Grotesque, slightly condensed, for the loud bits. Atkinson Hyperlegible Next for everything you read.</p>
+<div class="card spec">
+  <div class="r"><span class="k">64 Bricolage 800</span><span style="font:800 64px/.98 var(--display);font-variation-settings:'opsz' 96,'wdth' 85">Watch it roll</span></div>
+  <div class="r"><span class="k">44 Bricolage 800</span><span style="font:800 44px/1.02 var(--display);font-variation-settings:'opsz' 96,'wdth' 85">Gate 2: creative direction</span></div>
+  <div class="r"><span class="k">28 Bricolage 700</span><span style="font:700 28px/1.15 var(--display);font-variation-settings:'opsz' 48,'wdth' 90">Concept made three worlds on a local GPU</span></div>
+  <div class="r"><span class="k">18 Atkinson 400</span><span>Every image keeps its prompt, seed and model in a sidecar file, so the picture on this page can be made again from the file beside it.</span></div>
+  <div class="r"><span class="k">15 mono</span><span style="font:600 15px var(--mono)">projects/how-it-works/concepts/c-marble-run/direction.md</span></div>
+</div>
+
+<h2>Buttons</h2>
+<div class="controls">
+  <button class="btn btn-sun" type="button">Lift the barrier</button>
+  <button class="btn btn-white" type="button">Send it back</button>
+  <button class="btn btn-tomato" type="button">Run it without humans</button>
+  <button class="btn btn-navy" type="button">Drop your own sentence</button>
+  <a href="#run">Read the brief Research received</a>
+</div>
+
+<h2>A station</h2>
+<div class="station">
+  <div class="card">
+    <h3>Discover <span class="tag">Research</span></h3>
+    <p style="margin:0 0 12px">The mint figure read eight sites, wrote three personas and pinned twenty references before anything was drawn.</p>
+    <code style="font:600 14px var(--mono);color:var(--tomato-ink)">research/SUMMARY.md</code>
+  </div>
+  <img src="images/c-research.webp" alt="A tiny mint clay figure with a magnifying glass inspects a glass marble beside a wooden marble run." loading="lazy">
+</div>
+
+<h2>A gate</h2>
+<div class="card crossing">
+  <div class="scene" id="scene" aria-hidden="true"><div class="rail"></div><div class="post"></div><div class="arm"></div><div class="ball"></div></div>
+  <div>
+    <h3>Gate 2: creative direction</h3>
+    <p>The marble waits at the barrier until a human decides. Agents are clay; the hand that lifts it is yours.</p>
+    <button class="btn btn-sun" type="button" aria-pressed="false" onclick="var s=document.getElementById('scene');var on=s.classList.toggle('open');this.setAttribute('aria-pressed',on);this.textContent=on?'Lower it again':'Lift the barrier';document.getElementById('dec').hidden=!on">Lift the barrier</button>
+    <p id="dec" hidden style="margin:14px 0 0;font-weight:700">Decision (tile placeholder): direction C. On the site, set from DECISIONS.md.</p>
+  </div>
+</div>
+
+<h2 id="run">The set piece, sketched</h2>
+<p class="lede">The run is the double diamond: lanes split and funnel, twice, with four level crossings. The marble follows the track as you scroll.</p>
+<div class="card run" id="runbox">
+  <div class="stage">
+    <svg viewBox="0 0 1100 300" role="img" aria-label="Sketch: a marble track shaped like two diamonds side by side, with four red gate bars.">
+      <path class="track-edge" d="M40 60 L210 60 L300 150 L210 240 L40 240 M210 60 L210 240 M300 150 L560 150 L760 40 L1040 150 L760 260 L560 150 M760 40 L760 260"/>
+      <path class="track" d="M40 60 L210 60 L300 150 L210 240 L40 240 M210 60 L210 240 M300 150 L560 150 L760 40 L1040 150 L760 260 L560 150 M760 40 L760 260"/>
+      <line class="gatebar" x1="300" y1="122" x2="300" y2="178"/><text class="glab" x="286" y="112">G1</text>
+      <line class="gatebar" x1="690" y1="52" x2="706" y2="104"/><text class="glab" x="668" y="40">G2</text>
+      <line class="gatebar" x1="870" y1="190" x2="888" y2="248"/><text class="glab" x="854" y="282">G3</text>
+      <line class="gatebar" x1="1040" y1="122" x2="1040" y2="178"/><text class="glab" x="1026" y="112">G4</text>
+      <defs><radialGradient id="glass" cx="32%" cy="30%" r="75%"><stop offset="0" stop-color="#fff"/><stop offset=".22" stop-color="#dff3ff"/><stop offset=".62" stop-color="#7fb9d9"/><stop offset="1" stop-color="#2f5e86"/></radialGradient></defs>
+      <circle class="rolling" r="13" cx="0" cy="0" fill="url(#glass)" stroke="#1C2147" stroke-width="2.5"/>
+    </svg>
+  </div>
+  <div class="run-foot">
+    <span>Double Diamond by the Design Council, CC BY 4.0, adapted</span>
+    <button class="btn btn-white" type="button" onclick="var r=document.getElementById('runbox');r.classList.remove('play');void r.offsetWidth;r.classList.add('play')">Roll it again</button>
+  </div>
+</div>
+
+<h2>Run it without humans</h2>
+<p class="lede">The explaining device: take the barriers away and see what you lose.</p>
+<div class="card nohumans" id="nh">
+  <div>
+    <button class="btn btn-tomato" type="button" aria-pressed="false" onclick="var n=document.getElementById('nh');var on=n.classList.toggle('on');this.setAttribute('aria-pressed',on);this.textContent=on?'Put the barriers back':'Run it without humans'">Run it without humans</button>
+  </div>
+  <div aria-live="polite">
+    <p class="calm" style="margin:0">Four barriers in place. The marble stops at each one until someone decides.</p>
+    <div class="bin"><strong>The marble flew off the table.</strong> That run skipped: choosing the strategy (G1), choosing a creative direction (G2), choosing a design (G3), and signing off the release (G4).</div>
+  </div>
+</div>
+
+<h2>Plates</h2>
+<div class="plates">
+  <figure><img src="images/c-cast.webp" alt="Six small clay figures in a row, each a different colour holding one prop: clipboard, magnifying glass, paintbrush, hammer, wrench, red flag." loading="lazy"></figure>
+  <figure><img src="images/c-hand.webp" alt="A real human hand reaches into a clay diorama and lifts a tiny red-and-white barrier; a glass marble waits on the track." loading="lazy"></figure>
+  <figure><img src="images/c-diverge.webp" alt="A wooden marble track splitting into three painted lanes with three glass marbles." loading="lazy"></figure>
+</div>
+
+<footer>
+  Fonts: Bricolage Grotesque, Atkinson Hyperlegible Next (SIL OFL 1.1, self-hosted: ../_fonts/FONTS-LICENCE.md). Images: FLUX 3 Klein via ComfyUI (FLUX Kommunity licence); provenance sidecars in images/.
+  Easing follows gravity: drops accelerate, rolls decelerate; no elastic curves. Under prefers-reduced-motion the marble rests at the end of the run and the barrier and switches change instantly.
+</footer>
+</div>
+<script>
+  var rb = document.getElementById('runbox');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es, o) { es.forEach(function (e) { if (e.isIntersecting) { rb.classList.add('play'); o.disconnect(); } }); }, {threshold: .5}).observe(rb);
+  } else { rb.classList.add('play'); }
+</script>
+</body>
+</html>

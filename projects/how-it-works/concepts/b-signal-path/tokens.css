@@ -1,0 +1,96 @@
+/* Direction B · Signal Path: base design tokens.
+   Shared schema with A and C (same names), so a theme switch is one attribute (data-theme).
+   Fonts: ../_fonts/fonts.css (self-hosted OFL). Contrast pairs: direction.md. No glow anywhere. */
+:root[data-theme="signal-path"], [data-theme="signal-path"] {
+  color-scheme: dark;
+
+  /* Colour: surfaces */
+  --c-bg: #0D0E0C;            /* panel: page */
+  --c-bg-2: #131512;
+  --c-surface: #181A17;       /* module faceplate: reading surfaces */
+  --c-surface-2: #181A17;     /* gate card */
+  --c-surface-3: #060706;     /* small screens, input slot */
+  /* Colour: text */
+  --c-on-bg: #ECE8DC;         /* silk on panel: 15.80:1 */
+  --c-on-bg-muted: #9A9C93;   /* label grey: 6.96:1 */
+  --c-text: #ECE8DC;          /* silk on module: 14.30:1 */
+  --c-text-muted: #9A9C93;    /* 6.30:1 on module */
+  /* Colour: accents */
+  --c-accent: #FFB224;        /* signal amber: 10.73:1 on panel */
+  --c-accent-on-folder: #FFB224;
+  --c-on-accent: #0D0E0C;     /* label on an amber button: 10.73:1 */
+  --c-accent-bg: #FFB224;
+  --c-on-accent-bg: #0D0E0C;
+  --c-accent-ink: #FFB224;
+  --c-link: #FFB224;
+  --c-link-on-bg: #FFB224;
+  --c-highlight: #3A2A06;     /* dim amber wash behind silk text */
+  --c-gate: #FF5A47;          /* guard red: 6.27:1 */
+  --c-go: #6BD38A;            /* lamp after approval: 10.42:1 (always with a word) */
+  --c-hold: #FFB224;          /* lamp while waiting (always with a word) */
+  --c-rule: #2C2F2A;
+  --c-focus: #FFB224;
+  --c-focus-on-bg: #FFB224;
+  --c-wood: #2C2F2A;          /* machined edge: decorative material */
+
+  /* Type */
+  --font-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-text: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Martian Mono', ui-monospace, monospace;
+  --display-weight: 800;
+  --display-case: uppercase;
+  --display-tracking: 0.01em;
+  --display-variation: normal;
+  --display-stretch: 125%;    /* Archivo width axis: expanded faceplate caps */
+  --text-weight: 400;
+  --label-case: uppercase;
+  --label-tracking: 0.05em;
+  /* scale: 1.333 ratio, 17 px base */
+  --fs-xs: 12.5px;
+  --fs-sm: 14px;
+  --fs-0: 17px;
+  --fs-1: 22.6px;
+  --fs-2: 30px;
+  --fs-3: 40px;
+  --fs-4: 53px;
+  --fs-5: 58px;   /* full-sentence hero (expanded caps run wide) */
+  --fs-6: 71px;   /* short display only */
+  --lh-text: 1.6;
+  --lh-display: 1.02;
+  --measure: 62ch;
+
+  /* Shape: machined */
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-pill: 999px;      /* knobs, jacks, lamps */
+  --border-w: 1px;
+  --border: 1px solid var(--c-rule);
+  --rule: 1px solid var(--c-rule);
+  --shadow-rest: none;       /* light comes from the parts, never from glow */
+  --shadow-lift: none;
+  --shadow-press: inset 0 -1px 0 rgb(0 0 0 / .4);
+  --tilt-max: 0deg;
+
+  /* Space: 4 px base, tighter */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 22px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 88px;
+  --gutter: clamp(18px, 4vw, 56px);
+
+  /* Motion: plug in, light up, trace, hold, throw; fast in, firm stop */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);    /* ease-out-expo */
+  --ease-in: cubic-bezier(.7, 0, .84, 0);
+  --dur-short: 80ms;
+  --dur-med: 250ms;
+  --dur-long: 500ms;
+
+  /* Texture */
+  --texture: url("images/b-texture.webp");
+  --texture-size: 512px;
+}

@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Style tile A: Paper Trail · Website Building Team</title>
+<link rel="stylesheet" href="../_fonts/fonts.css">
+<style>
+:root{
+  --blotter:#24412F; --blotter-2:#2F5240; --sheet:#F7F2E7; --ink:#1F1C17; --graphite:#5B564C; --carbon:#2C4A75;
+  --vermilion:#B8321B; --vermilion-deep:#8F2412; --brass:#E0B04A; --pale:#CFDCCB; --tracing:#F3D77A; --manila:#E2C98F;
+  --display:'Young Serif', Georgia, serif; --text:'Newsreader', Georgia, serif; --typed:'Courier Prime', ui-monospace, monospace;
+  --rest:0 1px 0 rgb(0 0 0 / .18), 0 10px 22px -12px rgb(0 0 0 / .55);
+  --ease:cubic-bezier(.25,1,.5,1);
+}
+*{box-sizing:border-box}
+img{max-width:100%;height:auto}
+body{margin:0;color:var(--sheet);font:400 18px/1.55 var(--text);background:var(--blotter) url(images/a-texture.webp) repeat;background-size:640px;}
+.wrap{max-width:1240px;margin:0 auto;padding:40px clamp(18px,4vw,56px) 80px}
+a{color:var(--brass);text-underline-offset:4px;text-decoration-thickness:1px}
+:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+.sheet :focus-visible{outline-color:var(--vermilion)}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;letter-spacing:-.005em}
+h2{font-size:44px;line-height:1.1;margin:88px 0 10px}
+.lede{color:var(--pale);font-size:22.5px;line-height:1.45;max-width:46ch;margin:0}
+.typed{font-family:var(--typed)}
+/* sheets */
+.sheet{background:var(--sheet);color:var(--ink);box-shadow:var(--rest)}
+.sheet p{color:var(--graphite)}
+.sheet a{color:var(--carbon)}
+/* header */
+header{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.wordmark{font:400 30px/1 var(--display)}
+.wordmark .no{font:400 14px var(--typed);color:var(--brass);margin-left:.5em;vertical-align:super}
+.meta{font:400 14px/1.5 var(--typed);color:var(--pale);text-align:right}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:36px;align-items:start;margin-top:40px}
+.hero .sheet{padding:44px 40px 36px;display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+.hero h1{font-size:55px;line-height:1.06;color:var(--ink)}
+.hero h1 span{color:var(--vermilion)}
+.index{background:#FFFDF8;padding:16px 18px 12px 46px;position:relative;box-shadow:var(--rest);
+  background-image:linear-gradient(transparent 31px, rgb(44 74 117 / .2) 32px);background-size:100% 32px;background-position:0 10px}
+.index::before{content:"";position:absolute;inset:0 auto 0 34px;border-left:1px solid rgb(184 50 27 / .4)}
+.index p{font:400 17px/32px var(--typed);color:var(--ink);margin:0}
+.index .tab{position:absolute;right:-1px;bottom:-34px;background:var(--ink);color:var(--sheet);font:700 12px var(--typed);letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border:0;cursor:pointer}
+.hero figure{margin:0;position:relative}
+.hero img{width:100%;height:auto;display:block;box-shadow:var(--rest)}
+.credit{font:400 13px/1.4 var(--typed);color:var(--pale);margin-top:8px}
+/* swatches */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:18px;margin-top:24px}
+.sw{background:var(--sheet);color:var(--ink);box-shadow:var(--rest)}
+.sw b{display:block;height:80px}
+.sw div{padding:10px 12px;font:400 13px/1.5 var(--typed)}
+/* type specimen */
+.specimen{padding:36px 40px;margin-top:24px;display:grid;gap:14px}
+.specimen .row{display:grid;grid-template-columns:120px minmax(0,1fr);overflow-wrap:anywhere;gap:20px;align-items:baseline;padding-bottom:12px;background:linear-gradient(rgb(91 86 76 / .25),rgb(91 86 76 / .25)) bottom/100% 1px no-repeat}
+.specimen .row:last-child{background:none}
+.specimen .k{font:400 13px var(--typed);color:var(--graphite)}
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:24px}
+.btn{font:700 15px var(--typed);letter-spacing:.06em;text-transform:uppercase;padding:14px 22px;border:0;cursor:pointer;transition:transform .12s var(--ease),box-shadow .12s var(--ease)}
+.btn-stamp{background:var(--vermilion);color:var(--sheet);box-shadow:0 3px 0 #6e1e10}
+.btn-stamp:active{transform:translateY(3px);box-shadow:0 0 0 #6e1e10}
+.btn-brass{background:var(--brass);color:var(--blotter);box-shadow:0 3px 0 #8f6b1c}
+.btn-brass:active{transform:translateY(3px);box-shadow:0 0 0 #8f6b1c}
+.btn-sheet{background:var(--sheet);color:var(--ink);box-shadow:var(--rest)}
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px;margin-top:30px;align-items:start}
+.brief{padding:30px 30px 26px;position:relative;transform:rotate(-.6deg)}
+.brief .clip{position:absolute;top:-16px;left:30px;width:48px;height:30px;border:3px solid #B08A3A;border-bottom:0;border-radius:9px 9px 0 0}
+.brief h3{font-size:28px;line-height:1.15;margin:0 0 10px}
+.brief .from{font:400 13px var(--typed);color:var(--graphite);display:block;margin-bottom:4px}
+.brief code{font:400 14px var(--typed);color:var(--carbon)}
+.folder{position:relative;background:var(--manila);color:var(--ink);padding:32px 30px 28px;box-shadow:var(--rest);margin-top:24px}
+.folder::before{content:"";position:absolute;top:-24px;left:0;width:44%;height:24px;background:var(--manila);border-radius:5px 5px 0 0}
+.folder .tab{position:absolute;top:-19px;left:14px;font:700 12px var(--typed);letter-spacing:.08em;text-transform:uppercase}
+.folder h3{font-size:28px;margin:0 0 6px}
+.folder p{margin:0;color:#4a4335}
+.opts{list-style:none;padding:0;margin:12px 0 16px;font:400 15px/1.95 var(--typed)}
+.opts li::before{content:"[ ] "}
+.opts li.on::before{content:"[x] ";color:var(--vermilion-deep);font-weight:700}
+.stamp-zone{display:flex;align-items:center;gap:22px;min-height:118px;flex-wrap:wrap}
+.impression{width:108px;height:108px;border-radius:50%;border:4px solid var(--vermilion-deep);color:var(--vermilion-deep);display:grid;place-items:center;text-align:center;
+  font:700 12.5px/1.2 var(--typed);text-transform:uppercase;letter-spacing:.06em;transform:rotate(-12deg);
+  box-shadow:inset 0 0 0 5px var(--manila),inset 0 0 0 7px var(--vermilion-deep)}
+.folder:not(.stamped) .impression{opacity:0;transform:rotate(-12deg) scale(1.5)}
+.folder.stamped .impression{animation:thump .16s cubic-bezier(.5,0,.75,0) both}
+@keyframes thump{from{opacity:0;transform:rotate(-12deg) scale(1.5)}to{opacity:1;transform:rotate(-12deg) scale(1)}}
+.note{font:italic 400 16px/1.45 var(--text);color:#4a4335;padding-left:12px;border-left:2px solid var(--vermilion-deep);margin-top:14px!important}
+/* lift-to-compare */
+.lift{position:relative;margin-top:30px;max-width:760px}
+.lift .under,.lift .over{padding:28px 30px}
+.lift .over{position:absolute;inset:0;background:rgb(255 255 255 / .82);color:var(--ink);box-shadow:var(--rest);transform-origin:top center;transition:transform .5s var(--ease),opacity .5s var(--ease)}
+.lift.lifted .over{transform:translateY(-62%) rotate(-2deg);opacity:.95}
+.lift h3{font-size:22.5px;margin-bottom:6px}
+/* set piece */
+.desk{margin-top:28px;padding:22px;background:var(--blotter-2);box-shadow:inset 0 0 0 1px rgb(0 0 0 / .25)}
+.desk svg{width:100%;height:auto;display:block}
+.tracing{fill:rgb(255 255 255 / .72)}
+.pencil{fill:none;stroke:#4e4a42;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1500;stroke-dashoffset:1500}
+.desk.play .pencil{animation:draw 4.2s var(--ease) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.loop{fill:none;stroke:var(--vermilion);stroke-width:1.6;stroke-dasharray:5 6}
+.gate{fill:var(--sheet);stroke:var(--vermilion);stroke-width:3}
+.gl{font:700 13px var(--typed);fill:var(--vermilion)}
+.sheet-g{transform:translateX(0)}
+.desk.play .sheet-g{animation:travel 4.2s var(--ease) forwards}
+@keyframes travel{to{transform:translateX(990px)}}
+.desk-foot{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;margin-top:14px;color:var(--pale);font:400 13px var(--typed)}
+/* plates */
+.plates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:26px;margin-top:28px}
+.plates figure{margin:0;background:var(--sheet);padding:10px 10px 12px;box-shadow:var(--rest)}
+.plates img{width:100%;display:block}
+.plates figcaption{font:400 13px var(--typed);color:var(--graphite);margin-top:8px}
+.plates figure:nth-child(2){transform:rotate(1deg)} .plates figure:nth-child(3){transform:rotate(-1.2deg)}
+footer{margin-top:88px;color:var(--pale);font:400 13px/1.7 var(--typed);max-width:90ch}
+@media (max-width:860px){.hero{grid-template-columns:1fr}.hero h1{font-size:40px}}
+@media (max-width:600px){.specimen{padding:24px 20px}.specimen .row{grid-template-columns:1fr;gap:4px}.specimen .row span[style*="55px"]{font-size:40px!important}}
+@media (prefers-reduced-motion:reduce){
+  .pencil{stroke-dashoffset:0!important;animation:none!important}
+  .desk .sheet-g{animation:none!important;transform:translateX(990px)}
+  .folder .impression{animation:none!important;opacity:1!important;transform:rotate(-12deg)!important}
+  .btn,.lift .over{transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="wordmark">Website Building Team<span class="no">No.&nbsp;1</span></div>
+  <div class="meta">Gate 2 · Direction A · Paper Trail<br>style tile, not a layout</div>
+</header>
+
+<section class="hero" aria-labelledby="hero-h">
+  <div class="sheet">
+    <h1 id="hero-h">One sentence went in. A website came out. <span>This is the paper trail.</span></h1>
+    <div class="index">
+      <p>Set up the website building team from BOOTSTRAP.md.</p>
+      <button class="tab" type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText('Set up the website building team from BOOTSTRAP.md.')">Copy</button>
+    </div>
+    <p style="margin:26px 0 0">Paste it into Claude Code or T3 Code. That thread becomes your project manager, sets up the tools and five agent threads, and asks for your first website idea.</p>
+  </div>
+  <figure>
+    <img src="images/a-hero.webp" alt="Overhead photograph of a deep green leather desk blotter: a blank cream sheet on the left; a rubber stamp, red ink pad, brass loupe, pencil, brass straightedge, clipped index cards and tracing paper with two pencil diamonds on the right." width="1600" height="900">
+    <figcaption class="credit">Key art, generated with FLUX 3 Klein (WEB1). Mood image.</figcaption>
+  </figure>
+</section>
+
+<h2>Colour</h2>
+<p class="lede">A green desk, cream paper, one red stamp. Vermilion lives only on paper; brass carries the accent on the green.</p>
+<div class="swatches">
+  <div class="sw"><b style="background:var(--blotter)"></b><div><strong>blotter</strong> #24412F<br>sheet on it 10.05</div></div>
+  <div class="sw"><b style="background:var(--blotter-2)"></b><div><strong>blotter-2</strong> #2F5240<br>sheet on it 7.83</div></div>
+  <div class="sw"><b style="background:var(--sheet)"></b><div><strong>sheet</strong> #F7F2E7<br>ink on it 15.21</div></div>
+  <div class="sw"><b style="background:var(--ink)"></b><div><strong>ink</strong> #1F1C17<br>text on paper</div></div>
+  <div class="sw"><b style="background:var(--graphite)"></b><div><strong>graphite</strong> #5B564C<br>on sheet 6.53</div></div>
+  <div class="sw"><b style="background:var(--carbon)"></b><div><strong>carbon</strong> #2C4A75<br>on sheet 8.03</div></div>
+  <div class="sw"><b style="background:var(--vermilion)"></b><div><strong>vermilion</strong> #B8321B<br>on sheet 5.36 · never on green</div></div>
+  <div class="sw"><b style="background:var(--brass)"></b><div><strong>brass</strong> #E0B04A<br>on blotter 5.60</div></div>
+  <div class="sw"><b style="background:var(--pale)"></b><div><strong>pale</strong> #CFDCCB<br>on blotter 7.88</div></div>
+  <div class="sw"><b style="background:var(--tracing)"></b><div><strong>tracing</strong> #F3D77A<br>highlight · ink 11.98</div></div>
+</div>
+
+<h2>Type</h2>
+<p class="lede">Young Serif speaks, Newsreader reads, Courier Prime types. Display is always roman.</p>
+<div class="sheet specimen">
+  <div class="row"><span class="k">55 Young Serif</span><span style="font:400 55px/1.05 var(--display)">Three directions, one desk</span></div>
+  <div class="row"><span class="k">44 Young Serif</span><span style="font:400 44px/1.1 var(--display)">Gate 2: creative direction</span></div>
+  <div class="row"><span class="k">28 Young Serif</span><span style="font:400 28px/1.2 var(--display)">Concept made three worlds on a local GPU</span></div>
+  <div class="row"><span class="k">18 Newsreader</span><span>Every image keeps its prompt and model in a sidecar file, so the picture on this page can be made again from the file beside it. <em>Italic lives inside sentences only.</em></span></div>
+  <div class="row"><span class="k">15 Courier Prime</span><span class="typed" style="font-size:15px;color:var(--carbon)">projects/how-it-works/concepts/a-paper-trail/direction.md</span></div>
+</div>
+
+<h2>Buttons, links, the copy tab</h2>
+<div class="controls">
+  <button class="btn btn-stamp" type="button">Approve</button>
+  <button class="btn btn-sheet" type="button">Revise</button>
+  <button class="btn btn-brass" type="button">Lift the tracing</button>
+  <a href="#lift">Read the brief Research received</a>
+</div>
+
+<h2>A brief, and a gate</h2>
+<div class="cards">
+  <article class="sheet brief">
+    <span class="clip" aria-hidden="true"></span>
+    <h3>Three genuinely different directions</h3>
+    <span class="from">from PM · to Concept · brief 05</span>
+    <p>Each one a world, a metaphor and a way of telling the story, with one set piece people will remember.</p>
+    <code>briefs/05-concept-directions.md</code>
+  </article>
+  <article class="folder" id="g2">
+    <span class="tab">Gate 2</span>
+    <h3>Creative direction</h3>
+    <p>The human saw three directions side by side and chose.</p>
+    <ul class="opts"><li>A · Paper Trail</li><li class="on">B · Signal Path</li><li>C · Marble Run</li><li>revise: …</li></ul>
+    <div class="stamp-zone">
+      <button class="btn btn-stamp" type="button" onclick="this.closest('.folder').classList.add('stamped')">Stamp the decision</button>
+      <div class="impression" aria-hidden="true">Gate 2<br>approved</div>
+    </div>
+    <p class="note">What changed: a placeholder for the tile. On the site, this is set from DECISIONS.md.</p>
+  </article>
+</div>
+
+<h2 id="lift">Lift the tracing paper</h2>
+<p class="lede">The explaining device: the brief an agent received lies under a sheet showing what it delivered.</p>
+<div class="lift" id="liftbox">
+  <div class="sheet under">
+    <h3>What Research was asked</h3>
+    <p>Read the market, write personas, gather twenty references in four candidate directions, and cite every claim.</p>
+  </div>
+  <div class="over" aria-hidden="true">
+    <h3>What came back</h3>
+    <p style="color:var(--graphite)">Eight competitor teardowns, three personas, a reference board of twenty, a constraints file, and three insights that shape the design.</p>
+  </div>
+</div>
+<div class="controls"><button class="btn btn-brass" type="button" aria-controls="liftbox" aria-pressed="false" onclick="var l=document.getElementById('liftbox');var on=l.classList.toggle('lifted');this.setAttribute('aria-pressed',on);this.textContent=on?'Lay it back down':'Lift the tracing'">Lift the tracing</button></div>
+
+<h2>The set piece, sketched</h2>
+<p class="lede">The sheet crosses the desk while a pencil draws the double diamond on tracing paper. Four red gates; dashed arcs for “revise”.</p>
+<div class="desk" id="desk">
+  <svg viewBox="0 0 1100 300" role="img" aria-label="Sketch: the double diamond drawn in pencil on tracing paper, with four gates and dashed loop-back arcs.">
+    <rect class="tracing" x="10" y="10" width="1080" height="280"/>
+    <path class="loop" d="M300 150 C 260 60, 120 60, 70 140"/>
+    <path class="loop" d="M1030 150 C 980 250, 760 250, 690 160"/>
+    <path class="pencil" d="M60 150 L180 50 L300 150 L180 250 Z M300 150 L560 150 M560 150 L790 40 L1030 150 L790 260 Z"/>
+    <g class="sheet-g"><rect x="22" y="128" width="34" height="44" fill="#FFFDF8" stroke="#8a8478"/></g>
+    <circle class="gate" cx="300" cy="150" r="10"/><text class="gl" x="280" y="186">G1</text>
+    <circle class="gate" cx="690" cy="88" r="10"/><text class="gl" x="670" y="70">G2</text>
+    <circle class="gate" cx="880" cy="212" r="10"/><text class="gl" x="860" y="248">G3</text>
+    <circle class="gate" cx="1030" cy="150" r="10"/><text class="gl" x="1010" y="186">G4</text>
+  </svg>
+  <div class="desk-foot">
+    <span>Double Diamond by the Design Council, CC BY 4.0, adapted</span>
+    <button class="btn btn-brass" type="button" onclick="var d=document.getElementById('desk');d.classList.remove('play');void d.offsetWidth;d.classList.add('play')">Draw it again</button>
+  </div>
+</div>
+
+<h2>Plates</h2>
+<p class="lede">Generated plates lie flat on the blotter; small ones may tilt a degree.</p>
+<div class="plates">
+  <figure><img src="images/a-tools.webp" alt="Six studio tools laid out in a grid on green leather: rubber stamp, brass loupe, brush, straightedge with knife, bulldog clip, red pencil." loading="lazy"><figcaption>The team, as tools</figcaption></figure>
+  <figure><img src="images/a-gate.webp" alt="A wooden rubber stamp lifting off cream paper, leaving a round vermilion ring impression." loading="lazy"><figcaption>The gate</figcaption></figure>
+  <figure><img src="images/a-concept.webp" alt="Three photographic proof prints fanned under a brass loupe on green leather, one circled in red." loading="lazy"><figcaption>Concept: three proofs</figcaption></figure>
+</div>
+
+<footer>
+  Fonts: Young Serif, Newsreader, Courier Prime (SIL OFL 1.1, self-hosted: ../_fonts/FONTS-LICENCE.md).
+  Images: FLUX 3 Klein via ComfyUI (FLUX Kommunity licence), one provenance sidecar per image in images/.
+  Contrast ratios computed for WCAG 2.2 AA. Under prefers-reduced-motion the diamond is drawn, the stamp is pressed and nothing slides.
+</footer>
+</div>
+<script>
+  var desk = document.getElementById('desk');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es, o) { es.forEach(function (e) { if (e.isIntersecting) { desk.classList.add('play'); o.disconnect(); } }); }, {threshold: .5}).observe(desk);
+  } else { desk.classList.add('play'); }
+</script>
+</body>
+</html>
