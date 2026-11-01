@@ -35,3 +35,9 @@ Recommendations for G1: keep the name "Website Building Team"; GitHub Pages via 
 WebSearch, web-fetch, research subagents (general-purpose, foreground), Playwright 1.58 (via `tools/node_modules`) for viewport screenshots, Pillow for WebP conversion. Some sites showed cookie banners in the captures (Claude Code, Cursor, Pentagram, Kurzgesagt, Works in Progress); I left them as they are.
 
 Time: one session, as budgeted.
+
+## Git hazard found (kit issue for the PM)
+
+The playbook says `git add <your paths>` then `git commit`. But all agents share one index, so a bare `git commit` also commits whatever another agent has staged. My first commit swept in 141 staged files belonging to Backend and Front-end (Impeccable skills, bootstrap and tools). I undid it at once with `git reset --soft HEAD~1`, which left their staged state exactly as it was, and recommitted only my paths as 7ae9124. Suggested playbook fix: **commit with a pathspec**, `git commit -m "..." -- <your paths>`, which commits only those paths whatever else is staged.
+
+Note: `refs/board/` also holds `a4-pentagram` and `b5-rauno` screenshots that didn't make the final 19 on the board. Kept for context.
