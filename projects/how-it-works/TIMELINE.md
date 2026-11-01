@@ -8,4 +8,5 @@ Elapsed time per phase, kept by the PM from git commit times and thread messages
 | Kit packaging (one-off) | 12:41 | in progress | | Portable kit, Impeccable, bootstrap, ComfyUI installer |
 | 0 Intake | 12:41 | 12:41 | | BRIEF.md |
 | 1 Discover | 12:41 | 13:01 | 20 min | Research: 8 teardowns, 46 screenshots |
-| 2 Define | 13:03 | in progress | | Research define done 13:07; stack proposal pending |
+| 2 Define | 13:03 | 13:50 (approx.) | about 47 min | Research define done 13:07; stack proposal waited for Backend's kit work |
+| G1 packet | 13:50 | | | Waiting for Review, then the human |
