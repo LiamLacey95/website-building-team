@@ -162,8 +162,8 @@ function spawnArgs(cmd, args, opts) {
 }
 
 /** Run and capture output. Never throws; returns { ok, code, out, err }. */
-function capture(cmd, args = [], { cwd = REPO, timeout = 60_000 } = {}) {
-  const r = spawnSync(...spawnArgs(cmd, args, { cwd, timeout, encoding: 'utf8', windowsHide: true }));
+function capture(cmd, args = [], { cwd = REPO, timeout = 60_000, env = process.env } = {}) {
+  const r = spawnSync(...spawnArgs(cmd, args, { cwd, timeout, env, encoding: 'utf8', windowsHide: true }));
   return { ok: r.status === 0 && !r.error, code: r.status, out: (r.stdout || '').trim(), err: (r.stderr || r.error?.message || '').trim() };
 }
 
@@ -460,11 +460,17 @@ function installImpeccable(cfg, opts) {
     ok = stream('npx', ['--yes', `impeccable@${impeccableVersion()}`, 'install', '--scope=project',
       `--providers=${providers.join(',')}`, '--no-hooks', '-y', ...(opts.reinstall ? ['--force'] : [])]);
   }
+  if (!exists(rel(IMPECCABLE_LAUNCHER))) return ok;
   // Warm the engine: a checksum-verified binary cached in ~/.impeccable (network needed once).
-  const launcher = IS_WIN ? rel(`${IMPECCABLE_LAUNCHER}.cmd`) : 'sh';
-  const args = IS_WIN ? ['--version'] : [rel(IMPECCABLE_LAUNCHER), '--version'];
-  if (exists(rel(IMPECCABLE_LAUNCHER))) ok = stream(launcher, args) && ok;
+  ok = stream(...impeccable('--version')) && ok;
+  // Kit policy: telemetry off, persisted per machine in ~/.impeccable/config.json (idempotent).
+  ok = stream(...impeccable('telemetry', 'off')) && ok;
   return ok;
+}
+
+/** The committed skill launcher, as [cmd, args]. */
+function impeccable(...args) {
+  return IS_WIN ? [rel(`${IMPECCABLE_LAUNCHER}.cmd`), args] : ['sh', [rel(IMPECCABLE_LAUNCHER), ...args]];
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -628,6 +634,14 @@ async function healthCheck(opts) {
     tools.push(!v.ok
       ? result('Impeccable CLI', 'red', 'npx impeccable --version failed in tools/', 'Run bootstrap to install tools/ packages')
       : result('Impeccable CLI', got.includes(want) ? 'green' : 'amber', got, `Expected ${want}; re-run bootstrap with --reinstall`));
+  }
+  if (exists(rel(IMPECCABLE_LAUNCHER))) {
+    // Without our env override, so this reports the persistent per-machine setting.
+    const { IMPECCABLE_NO_TELEMETRY, ...env } = process.env;
+    const t = capture(...impeccable('telemetry', 'status'), { env, timeout: 120_000 });
+    const off = t.ok && /^telemetry: off/m.test(t.out);
+    tools.push(result('Impeccable telemetry', off ? 'green' : 'amber', off ? 'off (machine setting)' : (t.out.split(/\r?\n/)[0] || 'status failed'),
+      'Run bootstrap, or: .claude/skills/impeccable/scripts/impeccable telemetry off'));
   }
   groups.push(['Tooling', tools]);
 

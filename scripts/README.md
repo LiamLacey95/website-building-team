@@ -34,7 +34,7 @@ Other flags: `--yes` (non-interactive; implied when stdin is not a terminal), `-
 
 The health check runs the fast forms: `install_comfyui.py --verify <dir> --quick --json` (sizes only, about 1 s) and `configure.py --check`.
 
-**Telemetry.** Bootstrap sets `IMPECCABLE_NO_TELEMETRY=1` for everything it runs (installs, engine warm-up, health check, self-tests) unless the variable is already set. Agent sessions get the same setting from the committed `.claude/settings.json`.
+**Telemetry.** Bootstrap runs `impeccable telemetry off`, which writes `"telemetry": false` to `~/.impeccable/config.json` for the machine, so it also covers plain terminals. It also sets `IMPECCABLE_NO_TELEMETRY=1` for everything it runs unless the variable is already set. The health check reports the machine setting. Agent sessions get the same setting from the committed `.claude/settings.json`.
 
 Value precedence: **flag**, then the **existing `team.config.json`**, then an **interactive answer**, then the **default**. Unknown keys already in `team.config.json` are kept, so other tools can add their own.
 
