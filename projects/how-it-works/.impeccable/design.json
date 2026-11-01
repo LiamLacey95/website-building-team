@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-01T18:06:31.884Z",
+  "title": "Design System: Website Building Team (how-it-works)",
+  "extensions": {
+    "colorMeta": {
+      "sunflower-wall": {
+        "role": "primary",
+        "displayName": "Sunflower Wall"
+      },
+      "deep-navy": {
+        "role": "primary",
+        "displayName": "Deep Navy"
+      },
+      "tomato": {
+        "role": "secondary",
+        "displayName": "Tomato (shapes only)"
+      },
+      "tomato-ink": {
+        "role": "secondary",
+        "displayName": "Tomato Ink (small text on white)"
+      },
+      "mint-track": {
+        "role": "tertiary",
+        "displayName": "Mint Track"
+      },
+      "birch-wood": {
+        "role": "tertiary",
+        "displayName": "Birch Wood"
+      },
+      "ticket-white": {
+        "role": "neutral",
+        "displayName": "Ticket White"
+      },
+      "sky-table": {
+        "role": "neutral",
+        "displayName": "Sky Table"
+      },
+      "navy-muted": {
+        "role": "neutral",
+        "displayName": "Navy Muted (on white only)"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The hero line only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Chapter and page titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Gate names, card titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All reading, on white, 60ch measure."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, tags, station tickets."
+      }
+    },
+    "shadows": [
+      {
+        "name": "rest",
+        "value": "4px 5px 0 #1C2147",
+        "purpose": "Toy depth on outlined cards, tickets, buttons, photos."
+      },
+      {
+        "name": "lift",
+        "value": "6px 8px 0 #1C2147",
+        "purpose": "Button hover."
+      },
+      {
+        "name": "press",
+        "value": "0 0 0 #1C2147",
+        "purpose": "Pressed or aria-pressed: the offset disappears (with translate 4px 5px)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-in (drop)",
+        "value": "cubic-bezier(.55, 0, 1, .45)",
+        "purpose": "Things falling: accelerating."
+      },
+      {
+        "name": "ease-out (roll)",
+        "value": "cubic-bezier(.25, 1, .5, 1)",
+        "purpose": "Things rolling: decelerating."
+      },
+      {
+        "name": "dur-short",
+        "value": "100ms",
+        "purpose": "Press feedback."
+      },
+      {
+        "name": "dur-med",
+        "value": "450ms",
+        "purpose": "Barrier lift, small moves."
+      },
+      {
+        "name": "dur-long",
+        "value": "1100ms",
+        "purpose": "The marble rolling on."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "narrow",
+        "value": "40rem"
+      },
+      {
+        "name": "stack",
+        "value": "60rem"
+      }
+    ],
+    "northStar": "The Tabletop Marble Run",
+    "rules": [
+      "The No Grey On Yellow Rule",
+      "The Tomato Is A Shape Rule",
+      "The Ticket Not Kicker Rule",
+      "The Earned Hard Shadow Rule"
+    ]
+  },
+  "components": [
+    {
+      "name": "Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Default pill toy.",
+      "html": "<button class=\"ds-btn\">Send it back</button>",
+      "css": ".ds-btn{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-variation-settings:'opsz' 24,'wdth' 90;font-size:18px;line-height:1;min-height:44px;padding:14px 28px;border:2.5px solid #1C2147;border-radius:999px;background:#fff;color:#1C2147;box-shadow:4px 5px 0 #1C2147;cursor:pointer;transition:transform .1s cubic-bezier(.25,1,.5,1),box-shadow .1s cubic-bezier(.25,1,.5,1)}.ds-btn:hover{box-shadow:6px 8px 0 #1C2147;transform:translate(-1px,-2px)}.ds-btn:active{box-shadow:0 0 0 #1C2147;transform:translate(4px,5px)}.ds-btn:focus-visible{outline:3px solid #1C2147;outline-offset:3px;box-shadow:0 0 0 3px #fff}"
+    },
+    {
+      "name": "Strong Button",
+      "kind": "button",
+      "refersTo": "button-strong",
+      "description": "Main action on the wall.",
+      "html": "<button class=\"ds-btn-strong\">Copy</button>",
+      "css": ".ds-btn-strong{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-variation-settings:'opsz' 24,'wdth' 90;font-size:18px;line-height:1;min-height:44px;padding:14px 28px;border:2.5px solid #1C2147;border-radius:999px;background:#1C2147;color:#FFC53D;box-shadow:4px 5px 0 #1C2147;cursor:pointer;transition:transform .1s cubic-bezier(.25,1,.5,1),box-shadow .1s cubic-bezier(.25,1,.5,1)}.ds-btn-strong:hover{box-shadow:6px 8px 0 #1C2147;transform:translate(-1px,-2px)}.ds-btn-strong:active{box-shadow:0 0 0 #1C2147;transform:translate(4px,5px)}.ds-btn-strong:focus-visible{outline:3px solid #1C2147;outline-offset:3px;box-shadow:0 0 0 3px #fff}"
+    },
+    {
+      "name": "Go Button",
+      "kind": "button",
+      "refersTo": "button-go",
+      "description": "Lift a barrier.",
+      "html": "<button class=\"ds-btn-go\">Lift the barrier</button>",
+      "css": ".ds-btn-go{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-variation-settings:'opsz' 24,'wdth' 90;font-size:18px;line-height:1;min-height:44px;padding:14px 28px;border:2.5px solid #1C2147;border-radius:999px;background:#4DBF95;color:#1C2147;box-shadow:4px 5px 0 #1C2147;cursor:pointer;transition:transform .1s cubic-bezier(.25,1,.5,1),box-shadow .1s cubic-bezier(.25,1,.5,1)}.ds-btn-go:hover{box-shadow:6px 8px 0 #1C2147;transform:translate(-1px,-2px)}.ds-btn-go:active{box-shadow:0 0 0 #1C2147;transform:translate(4px,5px)}.ds-btn-go:focus-visible{outline:3px solid #1C2147;outline-offset:3px;box-shadow:0 0 0 3px #fff}"
+    },
+    {
+      "name": "Ticket",
+      "kind": "custom",
+      "refersTo": "ticket",
+      "description": "The setup sentence on the marble's label.",
+      "html": "<div class=\"ds-ticket\"><span class=\"ds-marble\"></span><code>Set up the website building team from BOOTSTRAP.md.</code><button class=\"ds-btn-strong\">Copy</button></div>",
+      "css": ".ds-ticket{display:flex;gap:14px;align-items:center;padding:14px 14px 14px 18px;background:#fff;color:#1C2147;border:2.5px solid #1C2147;border-radius:999px;box-shadow:4px 5px 0 #1C2147}.ds-ticket code{flex:1;font:600 15px ui-monospace,monospace}.ds-marble{width:24px;height:24px;border-radius:50%;border:2px solid #1C2147;background:radial-gradient(circle at 32% 30%,#fff 0 12%,#dff3ff 22%,#7fb9d9 62%,#2f5e86 100%)}.ds-btn-strong{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-variation-settings:'opsz' 24,'wdth' 90;font-size:18px;line-height:1;min-height:44px;padding:14px 28px;border:2.5px solid #1C2147;border-radius:999px;background:#1C2147;color:#FFC53D;box-shadow:4px 5px 0 #1C2147;cursor:pointer;transition:transform .1s cubic-bezier(.25,1,.5,1),box-shadow .1s cubic-bezier(.25,1,.5,1)}.ds-btn-strong:hover{box-shadow:6px 8px 0 #1C2147;transform:translate(-1px,-2px)}.ds-btn-strong:active{box-shadow:0 0 0 #1C2147;transform:translate(4px,5px)}.ds-btn-strong:focus-visible{outline:3px solid #1C2147;outline-offset:3px;box-shadow:0 0 0 3px #fff}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Every long reading surface.",
+      "html": "<article class=\"ds-card\"><h3>The studio</h3><p>Six long-lived threads, each owning its own folders.</p></article>",
+      "css": ".ds-card{padding:40px;background:#fff;color:#1C2147;border:2.5px solid #1C2147;border-radius:18px;box-shadow:4px 5px 0 #1C2147;font:400 18px/1.6 'Atkinson Hyperlegible Next',Verdana,sans-serif}.ds-card h3{margin:0 0 14px;font:800 35px/1.05 'Bricolage Grotesque',sans-serif;font-variation-settings:'opsz' 96,'wdth' 85}"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Station or gate label beside a heading.",
+      "html": "<span class=\"ds-tag\">Gate 2</span>",
+      "css": ".ds-tag{display:inline-block;padding:2px 14px;border:2.5px solid #1C2147;border-radius:999px;background:#4DBF95;color:#1C2147;font:800 15px/1.4 'Bricolage Grotesque',sans-serif}"
+    }
+  ]
+}
