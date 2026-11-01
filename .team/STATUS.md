@@ -49,6 +49,7 @@ Setup history: `.team/history/2026-11-01-initial-setup/`.
 - PM: Q10 history rewrite with all agents paused; re-sync worktrees and clones.
 - Backend: rerun `sync-kit-facts` after the rewrite; release build with `STRICT_SLOTS=1`.
 - Credits: add GSAP to `credits.json` if Front-end uses it.
+- Human: set the Vercel project's Node.js version to 24.x in Project Settings (can't be pinned in `vercel.json`).
 
 ## Gates (how-it-works)
 
