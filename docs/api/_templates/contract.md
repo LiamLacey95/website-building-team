@@ -1,8 +1,8 @@
 # API and content contract: <project name>
 
 Owner: Backend. Consumers: Front-end. Status: <draft | published | frozen>. Version: <0.1.0>.
-Machine-readable source of truth: `server/contracts/` (<TypeScript types + Zod schemas | OpenAPI 3.1 YAML>). If this doc and the code disagree, the code wins and this doc is a bug.
-Changes: see `docs/api/CHANGELOG.md`. Breaking changes are announced to Front-end directly before merging.
+Lives at `projects/<slug>/api/contract.md`. Machine-readable source of truth: `projects/<slug>/server/contracts/` (<TypeScript types + Zod schemas | OpenAPI 3.1 YAML>). If this doc and the code disagree, the code wins and this doc is a bug.
+Changes: see `projects/<slug>/api/CHANGELOG.md`. Breaking changes are announced to Front-end directly before merging.
 
 ## Conventions
 
@@ -45,7 +45,7 @@ Content read at build time (static), not over runtime APIs, unless marked **runt
 | `title` | string | yes | max 80 chars |
 | | | | |
 
-Where it comes from: <CMS document type / content collection path>. Fixture: `server/contracts/fixtures/<type>.json`.
+Where it comes from: <CMS document type / content collection path>. Fixture: `projects/<slug>/server/contracts/fixtures/<type>.json`.
 
 ## Endpoints
 
@@ -69,8 +69,8 @@ Errors: `VALIDATION_FAILED`, `SPAM_SUSPECTED`, `RATE_LIMITED`.
 
 ## Mocks and fixtures
 
-- Fixtures: `server/contracts/fixtures/*.json`, realistic copy, no lorem ipsum.
-- Mock mode: <e.g. `PUBLIC_API_MOCK=1` makes the front end read fixtures; or MSW handlers in `server/contracts/mocks/`>.
+- Fixtures: `projects/<slug>/server/contracts/fixtures/*.json`, realistic copy, no lorem ipsum.
+- Mock mode: <e.g. `PUBLIC_API_MOCK=1` makes the front end read fixtures; or MSW handlers in `projects/<slug>/server/contracts/mocks/`>.
 
 ## SEO and plumbing owned by Backend
 

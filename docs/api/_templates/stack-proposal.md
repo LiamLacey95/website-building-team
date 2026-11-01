@@ -1,7 +1,7 @@
 # Stack proposal: <project name>
 
 Owner: Backend (with Front-end). Phase: Define. Feeds: **Gate 1**.
-Date: <YYYY-MM-DD>. Brief: `.team/briefs/<id>.md`. Site type (see `docs/api/stack-playbook.md`): <1 Brochure | 2 Small business | 3 Content | 4 E-commerce lite | 5 Web app>.
+Date: <YYYY-MM-DD>. Brief: `projects/<slug>/briefs/<id>.md`. Lives at `projects/<slug>/api/stack-proposal.md`. Site type (see `docs/api/stack-playbook.md`): <1 Brochure | 2 Small business | 3 Content | 4 E-commerce lite | 5 Web app>.
 
 ## Requirements that drive the stack
 

@@ -1,6 +1,6 @@
 # Deployment notes: <project name>
 
-Owner: Backend. Feeds: **Gate 4**. Last verified deploy: <YYYY-MM-DD, commit SHA>.
+Lives at `projects/<slug>/api/deploy.md`. Owner: Backend. Feeds: **Gate 4**. Last verified deploy: <YYYY-MM-DD, commit SHA>.
 
 ## Overview
 
@@ -11,7 +11,7 @@ Owner: Backend. Feeds: **Gate 4**. Last verified deploy: <YYYY-MM-DD, commit SHA
 | Preview URLs | <per-branch pattern> |
 | Repo / branch that deploys | `master` → production; other branches → preview |
 | Build command | `<pnpm build>` |
-| Output dir | `<web/dist>` |
+| Output dir | `<projects/<slug>/web/dist>` |
 | Node version | <24.x>, pinned via `<.nvmrc / engines>` |
 
 ## Accounts (owned by the client unless noted)

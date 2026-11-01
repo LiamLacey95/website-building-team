@@ -13,7 +13,7 @@
  * 5 ComfyUI (connect or install, then configure), 6 worktrees folder, 7 health check.
  * Config keys are documented in scripts/README.md.
  */
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import net from 'node:net';
 import os from 'node:os';
@@ -603,6 +603,55 @@ async function comfyBasics(cfg) {
   return out;
 }
 
+const isMissingModel = (it) => ['fail', 'error'].includes(String(it.status).toLowerCase())
+  && /^model /.test(it.item ?? '') && /missing/i.test(it.detail ?? '');
+// RealESRGAN lives in the repo's git-ignored artgen/models/, so every fresh clone starts without it.
+const isProjectModel = (it) => /artgen[\\/]+models/i.test(it.detail ?? '');
+
+/**
+ * install_comfyui.py --verify <dir> --json, rendered by bootstrap rather than streamed: its own "[FAIL] ... RED"
+ * lines would be misleading when the only problem is a missing model we are about to fetch. Hashing progress
+ * (stderr) is still shown live. Falls back to plain streaming if the JSON is unusable.
+ */
+function verifyForConnect(sysPy, dir) {
+  return new Promise((resolve) => {
+    const child = spawn(sysPy, [rel(COMFY_INSTALLER), '--verify', dir, '--json'], { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'] });
+    let out = '';
+    let err = '';
+    let partial = '';
+    child.stdout.on('data', (d) => { out += d; });
+    child.stderr.on('data', (d) => {
+      err += d;
+      const lines = (partial + d).split(/\r?\n|\r/);
+      partial = lines.pop();
+      for (const l of lines) if (/^\s*hashing /.test(l)) note(paint(2, l.trim()));
+    });
+    child.on('error', (e) => resolve({ code: -1, items: null, err: e.message }));
+    child.on('close', (code) => {
+      let j = null;
+      try { j = JSON.parse(out); } catch { /* not JSON */ }
+      const items = Array.isArray(j?.items) ? j.items : Array.isArray(j?.checks) ? j.checks : null;
+      if (!items) process.stderr.write(err);
+      const bad = (items ?? []).filter((it) => ['fail', 'error'].includes(String(it.status).toLowerCase()));
+      resolve({ code, items, onlyMissing: bad.length > 0 && bad.every(isMissingModel) });
+    });
+  });
+}
+
+function printVerify(v, interactive) {
+  const rows = v.items.map((it) => {
+    if (v.onlyMissing && isMissingModel(it)) {
+      const why = isProjectModel(it) ? 'project model missing; expected in a fresh clone' : 'missing';
+      return result(it.item, 'info', `${why}; ${interactive ? 'offering to fetch it' : 'fetching it now'}`);
+    }
+    return result(it.item, ITEM_STATUS[String(it.status).toLowerCase()] ?? 'amber', it.detail ?? '', it.fix ?? '');
+  });
+  printResults(rows);
+  const missing = v.items.filter(isMissingModel).length;
+  if (v.onlyMissing) note(`Install verified; ${missing} model file${missing === 1 ? '' : 's'} to fetch.`);
+  else if (v.code === 0) note(paint(32, 'Install and models verified (green).'));
+}
+
 async function setupComfy(mode, cfg, opts, sysPy, interactive) {
   if (mode === 'skip') { note('Skipped. Image generation stays unavailable until you re-run with --comfyui-path or --install-comfyui.'); return true; }
   const dir = cfg.comfyui.path;
@@ -627,13 +676,20 @@ async function setupComfy(mode, cfg, opts, sysPy, interactive) {
       if (DRY) note(paint(36, `[dry-run] ${display(sysPy, args)}`));
       else {
         note(paint(2, `$ ${display(sysPy, args)}`));
-        const code = verifyCode = spawnSync(sysPy, args, { cwd: REPO, stdio: 'inherit' }).status;
-        if (code === 1 || code === 3) {
-          note(paint(code === 1 ? 31 : 33, code === 1 ? 'Verification failed (red).' : 'Verified with warnings (amber).'));
-          if (interactive) wantModels = await confirm('Check for missing models and download them now?', code === 1);
-          else { wantModels = true; maxBytes = AUTO_MODELS_MAX_BYTES; note('Checking for missing models (small downloads are fetched automatically with --yes).'); }
-          if (!wantModels && code === 1) return false;
-        } else if (code !== 0) { note(paint(31, `Verification could not run (exit ${code}).`)); return false; }
+        const v = await verifyForConnect(sysPy, dir);
+        verifyCode = v.code;
+        if (v.items) printVerify(v, interactive);
+        if (v.code === 1 && v.onlyMissing) {
+          // Missing models only (always the case in a fresh clone, which lacks the project-local RealESRGAN): fix, don't fail.
+          if (interactive) wantModels = await confirm('Download the missing models now?', true);
+          else { wantModels = true; maxBytes = AUTO_MODELS_MAX_BYTES; }
+          if (!wantModels) return false;
+        } else if (v.code === 1 || v.code === 3) {
+          note(paint(v.code === 1 ? 31 : 33, v.code === 1 ? 'Verification failed (red).' : 'Verified with warnings (amber).'));
+          if (interactive) wantModels = await confirm('Check for missing models and download them now?', v.code === 1);
+          else if (v.code === 3) { wantModels = true; maxBytes = AUTO_MODELS_MAX_BYTES; }
+          if (!wantModels && v.code === 1) return false;
+        } else if (v.code !== 0) { note(paint(31, `Verification could not run (exit ${v.code}).`)); return false; }
       }
     }
     if (wantModels) {
