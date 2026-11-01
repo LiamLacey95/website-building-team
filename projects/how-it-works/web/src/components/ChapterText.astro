@@ -11,15 +11,17 @@ interface Props {
   entry: CollectionEntry<'chapters'>;
   /** Show artefacts and scenes (default) or only the text. */
   full?: boolean;
+  /** Render the title and dek (default). Off when the host already shows them (e.g. a station shot). */
+  head?: boolean;
 }
-const { entry, full = true } = Astro.props;
+const { entry, full = true, head = true } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
 ---
-<article class="chapter-text" aria-labelledby={`${d.slug}-title`}>
+<article class="chapter-text" aria-labelledby={head ? `${d.slug}-title` : undefined} aria-label={head ? undefined : d.title}>
   <div class="chapter-text__card card">
-    <h2 id={`${d.slug}-title`}>{d.title}</h2>
-    <p class="chapter-text__dek">{d.dek}</p>
+    {head && <h2 id={`${d.slug}-title`}>{d.title}</h2>}
+    {head && <p class="chapter-text__dek">{d.dek}</p>}
     <div class="chapter-text__body"><Content /></div>
   </div>
   {full && d.scenes.map((id) => <Scene id={id} />)}
