@@ -27,7 +27,7 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | how-it-works/04-define-alignment | Research, Backend | done (9c48e5c, d5f0dbc) |
 | how-it-works/05-concept-directions | Concept | in progress (critical path to G2) |
 | how-it-works/05-frontend-product-and-scaffold | Front-end | done (624e028) |
-| how-it-works/05-backend-contract-vercel | Backend | in progress |
+| how-it-works/05-backend-contract-vercel | Backend | done (118bc48, b806124) |
 | how-it-works/05-review-creativity-rubric | Review | done (6b2d024) |
 | how-it-works/05-research-creative-benchmark | Research | done (bfdc459) |
 | 05-frontend-telemetry-off | Front-end | done (945a8b7) |
@@ -41,6 +41,14 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 Note: before Phase 4, confirm the Impeccable hook fires in the Front-end thread (it was added mid-session); if it doesn't, start a fresh Front-end thread.
 
 Setup history: `.team/history/2026-11-01-initial-setup/`.
+
+## Gate 4 checklist (collected along the way)
+
+- Human: Vercel plan. Hobby is non-commercial only (a free kit's showcase probably fits; inferred); Pro is $20/seat/month.
+- Human: Vercel account; create the project with `vercel link` (no deploy) or only after the Q10 history rewrite, because a new project's first deploy is production. Deployment Protection "All Deployments" until go-live, then "Standard" (Hobby has no required reviewers).
+- PM: Q10 history rewrite with all agents paused; re-sync worktrees and clones.
+- Backend: rerun `sync-kit-facts` after the rewrite; release build with `STRICT_SLOTS=1`.
+- Credits: add GSAP to `credits.json` if Front-end uses it.
 
 ## Gates (how-it-works)
 

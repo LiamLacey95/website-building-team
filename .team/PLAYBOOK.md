@@ -12,7 +12,7 @@ The single source of truth for how this team works. Every agent reads this first
 | Research | `Team · Research` | `docs/research/` (templates, method) | `research/` | `roles/research.md` |
 | Concept creator | `Team · Concept (ComfyUI)` | `artgen/` | `concepts/`, `web/public/assets/generated/` (final picks only) | `roles/concept.md` |
 | Front-end design | `Team · Front-end Design` | `tools/`, Impeccable install and config: `.claude/skills/`, `.claude/agents/`, `.claude/settings.json`, `.agents/`, `.codex/`, `.impeccable/` | `web/`, `variants/`, `screenshots/`, `PRODUCT.md`, `DESIGN.md`, variant worktrees | `roles/frontend.md` |
-| Backend developer | `Team · Backend` | `scripts/`, `docs/api/` (templates, stack playbook), `team.config.example.json` | `server/`, `api/` | `roles/backend.md` |
+| Backend developer | `Team · Backend` | `scripts/`, `docs/api/` (templates, stack playbook), `team.config.example.json` | `server/`, `api/`, `vercel.json` (deploy config) | `roles/backend.md` |
 | Review | `Team · Review` | `docs/review/` (checklists, tools) | `review/` (read-only everywhere else) | `roles/review.md` |
 
 | All agents | | their own report `<brief id>-<role>.md` in `.team/reports/` (kit work) | their own report in `projects/<slug>/reports/` | n/a |
