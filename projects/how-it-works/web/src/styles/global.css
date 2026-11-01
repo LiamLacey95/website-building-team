@@ -37,10 +37,12 @@ h2 { font-size: clamp(var(--fs-3), 3vw + 1rem, var(--fs-5)); }
 h3 { font-size: clamp(var(--fs-1), 1.5vw + 1rem, var(--fs-3)); line-height: 1.05; }
 h4 { font-size: var(--fs-1); line-height: 1.15; }
 
-p { margin: 0; max-width: var(--measure); text-wrap: pretty; }
+/* Measure: --measure is in ch (width of "0"); Atkinson averages far narrower, so 60ch would run ~85 characters.
+   The 34em cap keeps running text near 75 characters whatever the theme. */
+p { margin: 0; max-width: min(var(--measure), 34em); text-wrap: pretty; }
 /* Running text outside <p> gets the same measure and wrapping (no stragglers, lines under ~80 characters). */
 li, dd, dt, figcaption, summary, td, th, blockquote { text-wrap: pretty; }
-li, dd, blockquote { max-width: var(--measure); }
+li, dd, blockquote { max-width: min(var(--measure), 34em); }
 
 a { color: var(--c-link-on-bg); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 a:hover { text-decoration-thickness: 3px; }
