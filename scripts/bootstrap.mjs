@@ -458,7 +458,7 @@ function installImpeccable(cfg, opts) {
   if (!missing.length && !opts.reinstall) note(`Impeccable skills present for ${providers.join(', ')} (committed).`);
   else {
     ok = stream('npx', ['--yes', `impeccable@${impeccableVersion()}`, 'install', '--scope=project',
-      `--providers=${providers.join(',')}`, '--no-hooks', '-y', '--force']);
+      `--providers=${providers.join(',')}`, '--no-hooks', '-y', ...(opts.reinstall ? ['--force'] : [])]);
   }
   // Warm the engine: a checksum-verified binary cached in ~/.impeccable (network needed once).
   const launcher = IS_WIN ? rel(`${IMPECCABLE_LAUNCHER}.cmd`) : 'sh';
