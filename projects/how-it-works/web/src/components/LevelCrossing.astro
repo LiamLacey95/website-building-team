@@ -13,8 +13,10 @@ interface Props {
   gate: 'G1' | 'G2' | 'G3' | 'G4';
   /** Heading level inside the host page (default h3). */
   level?: 'h2' | 'h3';
+  /** Draw the built-in barrier scene (default). A variation whose own track runs through the gate turns it off. */
+  scene?: boolean;
 }
-const { gate, level = 'h3' } = Astro.props;
+const { gate, level = 'h3', scene = true } = Astro.props;
 const entry = await getEntry('gates', gate);
 if (!entry) throw new Error(`gates: no entry ${gate}`);
 const g = entry.data;
@@ -22,13 +24,15 @@ const id = `crossing-${gate.toLowerCase()}`;
 const H = level;
 ---
 <div class="crossing-wrap">
-<section class="crossing card" id={id} data-crossing={gate} aria-labelledby={`${id}-title`}>
-  <div class="crossing__scene" aria-hidden="true">
-    <span class="crossing__rail"></span>
-    <span class="crossing__post"></span>
-    <span class="crossing__arm"></span>
-    <span class="marble crossing__ball"></span>
-  </div>
+<section class:list={['crossing card', { 'crossing--bare': !scene }]} id={id} data-crossing={gate} aria-labelledby={`${id}-title`}>
+  {scene && (
+    <div class="crossing__scene" aria-hidden="true">
+      <span class="crossing__rail"></span>
+      <span class="crossing__post"></span>
+      <span class="crossing__arm"></span>
+      <span class="marble crossing__ball"></span>
+    </div>
+  )}
 
   <div class="crossing__copy">
     <div class="crossing__head">
@@ -81,6 +85,7 @@ const H = level;
     display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-6);
     align-items: start; padding: var(--space-6);
   }
+  .crossing--bare { grid-template-columns: 1fr; }
   .crossing__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
   .crossing__copy { display: grid; gap: var(--space-4); }
   .crossing__question { font-size: var(--fs-1); line-height: 1.4; }
