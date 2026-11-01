@@ -1,0 +1,23 @@
+{
+ "note": "Position of the glass marble in each hero file, as fractions: x and y of the centre (of width and height), r = radius as a fraction of width. Use it to sit the DOM marble exactly over the photo before it drops.",
+ "c-hero": {
+  "x": 0.729,
+  "y": 0.081,
+  "r": 0.024
+ },
+ "c-hero-2x": {
+  "x": 0.729,
+  "y": 0.081,
+  "r": 0.024
+ },
+ "c-hero-tablet": {
+  "x": 0.638,
+  "y": 0.081,
+  "r": 0.033
+ },
+ "c-hero-mobile": {
+  "x": 0.554,
+  "y": 0.323,
+  "r": 0.038
+ }
+}

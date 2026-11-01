@@ -1,0 +1,164 @@
+{
+ "workflow": "WEB1 Klein - Hero and Key Art",
+ "workflow_file": "artgen/user/default/workflows/WEB1 Klein - Hero and Key Art.json",
+ "api_file": "artgen/api/WEB1 Klein - Hero and Key Art.json",
+ "seed": 8401,
+ "prompt": "A single clear glass marble resting on a flat, smooth sunflower-yellow painted surface, centred in the frame, seen slightly from above, soft diffused studio light, a soft round shadow and a warm caustic glow under it, macro photograph, nothing else in the frame. No text.",
+ "negative": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+ "model": "flux3_image_klein_sd_int8_convrot.safetensors",
+ "steps": 12,
+ "cfg": 1.0,
+ "sampler": "euler",
+ "scheduler": "simple",
+ "denoise": 1.0,
+ "size": [
+  1024,
+  1024
+ ],
+ "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+ "created": "2026-11-01T18:08:00+00:00",
+ "elapsed_s": 6.6,
+ "comfyui_version": "0.41.0",
+ "prompt_id": "a045586d-34df-4916-bf9f-f92a36b6bd67",
+ "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/c7/misc/marble-ref_00001_.json",
+ "api_prompt": {
+  "2": {
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "flux3_image_klein_sd_int8_convrot.safetensors",
+    "weight_dtype": "default"
+   },
+   "_meta": {
+    "title": "Load Diffusion Model"
+   }
+  },
+  "3": {
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
+    "type": "flux3",
+    "device": "default"
+   },
+   "_meta": {
+    "title": "Load CLIP"
+   }
+  },
+  "4": {
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "flux2-vae.safetensors"
+   },
+   "_meta": {
+    "title": "Load VAE"
+   }
+  },
+  "6": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "A single clear glass marble resting on a flat, smooth sunflower-yellow painted surface, centred in the frame, seen slightly from above, soft diffused studio light, a soft round shadow and a warm caustic glow under it, macro photograph, nothing else in the frame. No text.",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Prompt"
+   }
+  },
+  "7": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Negative (used when CFG > 1)"
+   }
+  },
+  "8": {
+   "class_type": "EmptyFlux2LatentImage",
+   "inputs": {
+    "batch_size": 1,
+    "width": 1024,
+    "height": 1024
+   },
+   "_meta": {
+    "title": "Empty Flux 2 Latent"
+   }
+  },
+  "9": {
+   "class_type": "KSampler",
+   "inputs": {
+    "seed": 8401,
+    "steps": 12,
+    "cfg": 1.0,
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "model": [
+     "2",
+     0
+    ],
+    "positive": [
+     "6",
+     0
+    ],
+    "negative": [
+     "7",
+     0
+    ],
+    "latent_image": [
+     "8",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "KSampler"
+   }
+  },
+  "10": {
+   "class_type": "VAEDecode",
+   "inputs": {
+    "samples": [
+     "9",
+     0
+    ],
+    "vae": [
+     "4",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "VAE Decode"
+   }
+  },
+  "11": {
+   "class_type": "SaveImage",
+   "inputs": {
+    "filename_prefix": "how-it-works/c7/misc/marble-ref",
+    "images": [
+     "10",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Save Image"
+   }
+  }
+ },
+ "export": {
+  "source": "artgen/output/how-it-works/c7/misc/marble-ref_00001_.png",
+  "file": "c-marble.webp",
+  "size": [
+   1024,
+   1024
+  ],
+  "format": "webp q84",
+  "role": "Glass marble reference (texture for the CSS marble)",
+  "crop": null
+ },
+ "alt": ""
+}

@@ -1,0 +1,194 @@
+{
+ "workflow": "WEB6b Upscale 2x (commercial)",
+ "workflow_file": "artgen/user/default/workflows/WEB6b Upscale 2x (commercial).json",
+ "api_file": "artgen/api/WEB6b Upscale 2x (commercial).json",
+ "image": "artgen/output/how-it-works/c7/hero/hero16x9_00004_.png",
+ "source_provenance": {
+  "workflow": "WEB2 Klein - Style Match and Edit",
+  "workflow_file": "artgen/user/default/workflows/WEB2 Klein - Style Match and Edit.json",
+  "api_file": "artgen/api/WEB2 Klein - Style Match and Edit.json",
+  "seed": 7204,
+  "prompt": "A new photograph using exactly the six plasticine figures from <ref_image_0>, the same chunky rounded style, colours, faces and props, and no other figures. A tall handmade wooden marble run zig-zags down the right half of the frame, its painted tracks of tomato red, mint and white splitting into three lanes and funnelling back together, with small red-and-white level-crossing barriers along the way. A single clear glass marble shines at the very top, about to roll. The six figures stand one at each little station along the track, watching the marble: navy with clipboard at the top funnel, mint with magnifying glass, yellow with paintbrush, orange with hammer, white in navy overalls with wrench, red with pennant near the bottom. Exactly six figures in total. The left half of the frame is the clean, empty sunflower-yellow painted wall, space for a headline. Handmade claymation diorama photograph, soft diffused studio light, gentle shadows, tilt-shift miniature look, shallow depth of field. No text, no letters, no numbers, no logos.",
+  "model": "flux3_image_klein_sd_int8_convrot.safetensors",
+  "steps": 16,
+  "cfg": 1.0,
+  "sampler": "euler",
+  "scheduler": "simple",
+  "denoise": 1.0,
+  "image": "artgen/output/how-it-works/c7/cast/cast_v2_00001_.png",
+  "source_provenance": {
+   "workflow": "WEB2 Klein - Style Match and Edit",
+   "workflow_file": "artgen/user/default/workflows/WEB2 Klein - Style Match and Edit.json",
+   "api_file": "artgen/api/WEB2 Klein - Style Match and Edit.json",
+   "seed": 7101,
+   "prompt": "Keep <ref_image_0> exactly the same: the same six plasticine figures in the same row, same chunky rounded style, same dot eyes and small smiles, same poses, same props, the same yellow wall and white table. Change only two figures: make the fourth figure, holding the hammer, a bright orange-tomato colour, clearly more orange than the red figure on the far right; and give the fifth figure, the white one holding the wrench, navy-blue overalls with two straps and navy boots. The far-right figure stays a deep crimson red with its plain red pennant. No text, no letters.",
+   "model": "flux3_image_klein_sd_int8_convrot.safetensors",
+   "steps": 16,
+   "cfg": 1.0,
+   "sampler": "euler",
+   "scheduler": "simple",
+   "denoise": 1.0,
+   "image": "artgen/output/how-it-works/c/c_cast_clean_00001_.png",
+   "source_provenance": {
+    "workflow": "WEB2 Klein - Style Match and Edit",
+    "workflow_file": "artgen/user/default/workflows/WEB2 Klein - Style Match and Edit.json",
+    "api_file": "artgen/api/WEB2 Klein - Style Match and Edit.json",
+    "seed": 5501,
+    "prompt": "Keep <ref_image_0> exactly the same: the six plasticine figures, their colours, faces, poses, props, the yellow wall and the white table. Change only the flag held by the red figure on the far right into a plain solid tomato-red triangular pennant on a wooden stick, with no stripes and no pattern. No text, no letters.",
+    "model": "flux3_image_klein_sd_int8_convrot.safetensors",
+    "steps": 16,
+    "cfg": 1.0,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "image": "artgen/output/how-it-works/c/c_cast_yellow_00001_.png",
+    "source_provenance": {
+     "workflow": "WEB1 Klein - Hero and Key Art",
+     "workflow_file": "artgen/user/default/workflows/WEB1 Klein - Hero and Key Art.json",
+     "api_file": "artgen/api/WEB1 Klein - Hero and Key Art.json",
+     "seed": 3202,
+     "prompt": "Six small plasticine figurines standing in a neat row on a white table, all in exactly the same chunky rounded style with simple black dot eyes and no mouths, each a different solid colour and holding one prop: a navy figure with a clipboard, a mint figure with a magnifying glass, a yellow figure with a paintbrush, a tomato red figure with a tiny hammer, a white figure with a wrench, and a red figure with a small flag. Front view, even spacing. Handmade claymation diorama photograph, matte plasticine figures and painted birch-wood parts, rounded soft shapes, set against a smooth sunflower-yellow painted backdrop, cheerful palette of sunflower yellow, tomato red, mint green, white and deep navy, soft diffused studio light, gentle shadows, tilt-shift miniature look, shallow depth of field, 100 mm macro lens. No text, no letters, no numbers, no logos.",
+     "negative": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+     "model": "flux3_image_klein_int8_convrot.safetensors",
+     "steps": 30,
+     "cfg": 3.5,
+     "sampler": "euler",
+     "scheduler": "simple",
+     "denoise": 1.0,
+     "aspect": "3:2 (Photo)",
+     "megapixels": 1.5,
+     "size": [
+      1536,
+      1024
+     ],
+     "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+     "created": "2026-11-01T17:19:15+00:00",
+     "elapsed_s": 39.3,
+     "comfyui_version": "0.41.0",
+     "prompt_id": "0bb8cf61-0d10-4b94-8264-5daa34bbeb94",
+     "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/c/c_cast_yellow_00001_.json"
+    },
+    "refs": [],
+    "size": [
+     1536,
+     1024
+    ],
+    "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+    "created": "2026-11-01T17:39:02+00:00",
+    "elapsed_s": 20.8,
+    "comfyui_version": "0.41.0",
+    "prompt_id": "10727575-14dd-4748-b5a1-60904232be11",
+    "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/c/c_cast_clean_00001_.json"
+   },
+   "refs": [],
+   "size": [
+    1536,
+    1024
+   ],
+   "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+   "created": "2026-11-01T17:51:43+00:00",
+   "elapsed_s": 18.3,
+   "comfyui_version": "0.41.0",
+   "prompt_id": "933c12d4-43a3-4815-9c85-c50a60010d88",
+   "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/c7/cast/cast_v2_00001_.json"
+  },
+  "refs": [],
+  "size": [
+   2048,
+   1152
+  ],
+  "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+  "created": "2026-11-01T17:54:15+00:00",
+  "elapsed_s": 22.5,
+  "comfyui_version": "0.41.0",
+  "prompt_id": "d590bcc1-a5a9-47c9-9ff8-7a6edbd8749c",
+  "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/c7/hero/hero16x9_00004_.json"
+ },
+ "upscale_model": "RealESRGAN_x4plus.pth",
+ "scale_after_4x": 0.5,
+ "size": [
+  4096,
+  2304
+ ],
+ "licence": "BSD-3-Clause (commercial use OK)",
+ "created": "2026-11-01T17:59:44+00:00",
+ "elapsed_s": 23.9,
+ "comfyui_version": "0.41.0",
+ "prompt_id": "988c8c3e-bbb3-4343-83d4-8a61963304af",
+ "regenerate": "python artgen/generate.py --replay artgen/output/how-it-works/c7/ship/hero16x9-2x_00001_.json",
+ "api_prompt": {
+  "2": {
+   "class_type": "LoadImage",
+   "inputs": {
+    "image": "_generate/hero16x9_00004__72e24219f61c.png"
+   },
+   "_meta": {
+    "title": "Load Image"
+   }
+  },
+  "3": {
+   "class_type": "UpscaleModelLoader",
+   "inputs": {
+    "model_name": "RealESRGAN_x4plus.pth"
+   },
+   "_meta": {
+    "title": "Load Upscale Model"
+   }
+  },
+  "4": {
+   "class_type": "ImageUpscaleWithModel",
+   "inputs": {
+    "upscale_model": [
+     "3",
+     0
+    ],
+    "image": [
+     "2",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Upscale Image (using Model)"
+   }
+  },
+  "5": {
+   "class_type": "ImageScaleBy",
+   "inputs": {
+    "upscale_method": "lanczos",
+    "scale_by": 0.5,
+    "image": [
+     "4",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Upscale Image By"
+   }
+  },
+  "6": {
+   "class_type": "SaveImage",
+   "inputs": {
+    "filename_prefix": "how-it-works/c7/ship/hero16x9-2x",
+    "images": [
+     "5",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Save Image"
+   }
+  }
+ },
+ "export": {
+  "source": "artgen/output/how-it-works/c7/ship/hero16x9-2x_00001_.png",
+  "file": "c-hero-2x.webp",
+  "size": [
+   3200,
+   1800
+  ],
+  "format": "webp q84",
+  "role": "Hero 16:9, 2x",
+  "crop": null
+ },
+ "alt": "A handmade wooden marble run zig-zags down the right side against a sunflower-yellow wall; a clear glass marble waits at the top, and six small clay figures stand at stations along the track: navy with a clipboard, mint with a magnifier, yellow with a brush, orange with a hammer, white in navy overalls with a wrench, and crimson with a red pennant."
+}

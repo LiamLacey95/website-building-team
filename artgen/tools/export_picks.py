@@ -6,6 +6,8 @@ Run with the ComfyUI venv python (needs Pillow):
 picks.json:
   {"dest": "projects/<slug>/concepts/a-name/images", "max_width": 1600, "quality": 82, "title": "Direction A images",
    "picks": [{"src": "artgen/output/.../a_hero_00001_.png", "name": "a-hero", "role": "Key art", "alt": "…"}]}
+Optional per pick: "crop": [x0, y0, x1, y1] as fractions of the source (applied before resizing), and "width" (exact output
+width, overriding max_width). Optional per spec: "readme": false, for folders that are published as-is (web/public/).
 
 For each pick it writes <dest>/<name>.webp and <dest>/<name>.json. The JSON is the generation sidecar plus an "export"
 block (source file, size, format) and the alt text. It then writes <dest>/README.md, a table of every pick with its
@@ -38,17 +40,24 @@ def main():
         with open(side_src, encoding="utf-8") as f:
             side = json.load(f)
         im = Image.open(src).convert("RGB")
-        if im.width > max_w:
-            im = im.resize((max_w, round(im.height * max_w / im.width)), Image.LANCZOS)
+        if p.get("crop"):
+            x0, y0, x1, y1 = p["crop"]
+            im = im.crop((round(x0 * im.width), round(y0 * im.height), round(x1 * im.width), round(y1 * im.height)))
+        target = p.get("width", max_w)
+        if im.width > target or p.get("width"):
+            im = im.resize((target, round(im.height * target / im.width)), Image.LANCZOS)
         out = os.path.join(dest, p["name"] + ".webp")
         im.save(out, "WEBP", quality=quality, method=6)
         side["export"] = {"source": rel(src), "file": os.path.basename(out), "size": [im.width, im.height],
-                          "format": f"webp q{quality}", "role": p.get("role", "")}
+                          "format": f"webp q{quality}", "role": p.get("role", ""),
+                          "crop": p.get("crop")}
         side["alt"] = p.get("alt", "")
         with open(os.path.join(dest, p["name"] + ".json"), "w", encoding="utf-8") as f:
             json.dump(side, f, indent=1)
         rows.append((p, side, os.path.getsize(out)))
         print(f"{p['name']}.webp {im.width}x{im.height} {os.path.getsize(out) // 1024} KB")
+    if spec.get("readme") is False:
+        return
     lines = [f"# {spec.get('title', 'Images')}", "",
              "Exported by `artgen/tools/export_picks.py`. Each `.webp` has a `.json` sidecar beside it with the full generation record "
              "(workflow, prompt, negative, seed, model, steps, CFG, size and the exact API graph). The record can be replayed "
