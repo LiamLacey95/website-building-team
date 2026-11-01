@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.astro/
+.next/
+.vercel/
+.env
+.env.*
+!.env.example
+*.log
+artgen/output/
+artgen/temp/
+artgen/user/__manager/
+artgen/user/comfyui_*.log
+__pycache__/
+.playwright/
+test-results/
+playwright-report/
