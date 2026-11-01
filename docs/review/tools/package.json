@@ -1,0 +1,21 @@
+{
+  "name": "review-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Review agent checks: contrast, axe accessibility, Lighthouse mobile.",
+  "scripts": {
+    "contrast": "node contrast.mjs",
+    "a11y": "node a11y.mjs",
+    "lighthouse": "node lighthouse.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "chrome-launcher": "^1.2.2",
+    "lighthouse": "^13.6.0",
+    "playwright": "^1.64.1"
+  }
+}

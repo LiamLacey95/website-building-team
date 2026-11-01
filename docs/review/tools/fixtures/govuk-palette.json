@@ -1,0 +1,14 @@
+{
+  "pairs": [
+    { "label": "Body text on white", "fg": "#0b0c0c", "bg": "#ffffff" },
+    { "label": "Secondary text on white", "fg": "#505a5f", "bg": "#ffffff" },
+    { "label": "Link on white", "fg": "#1d70b8", "bg": "#ffffff" },
+    { "label": "Body text on light grey", "fg": "#0b0c0c", "bg": "#f3f2f1" },
+    { "label": "Button text on green", "fg": "#ffffff", "bg": "#00703c" },
+    { "label": "Error text on white", "fg": "#d4351c", "bg": "#ffffff" },
+    { "label": "Focus text on yellow", "fg": "#0b0c0c", "bg": "#ffdd00" },
+    { "label": "Yellow focus ring vs white", "fg": "#ffdd00", "bg": "#ffffff", "kind": "ui" },
+    { "label": "Input border on white", "fg": "#0b0c0c", "bg": "#ffffff", "kind": "ui" },
+    { "label": "White on brand blue header", "fg": "#ffffff", "bg": "#1d70b8", "kind": "large" }
+  ]
+}

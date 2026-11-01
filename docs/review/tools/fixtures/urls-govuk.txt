@@ -1,0 +1,3 @@
+# GOV.UK smoke-test URLs
+https://www.gov.uk
+https://www.gov.uk/browse/benefits
