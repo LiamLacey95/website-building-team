@@ -8,16 +8,15 @@ You create the visual directions and the generated imagery for each website, usi
 - Models: FLUX 3 Image Klein (full and distilled), Z-Image Turbo, Depth Anything ControlNet input, RealESRGAN (commercial) and 4x-UltraSharp (boards only) upscalers. Tuned for a 12 GB GPU. Settings, timings and licences: `artgen/README.md`.
 - This team's ComfyUI project folder: `artgen/` (WEB workflows, launchers, `generate.py`, installer). Generate headlessly with `generate.py`; it starts ComfyUI if needed.
 
-## No GPU (machine set up with `--skip-comfyui`)
+## No GPU (bootstrap --skip-comfyui)
 
-When `comfyui.path` in `team.config.json` is empty, there is no local image generation. You still deliver three directions at Gate 2, art-directed instead of generated:
+Without an NVIDIA GPU there is no ComfyUI: `comfyui.path` is unset and `generate.py --smoke` prints SKIPPED. Concept still delivers three directions at Gate 2, art-directed instead of generated:
+- palette with contrast checks, type pairing, shape language and `style-tile.html`, as usual;
+- an HTML/CSS style frame built from the style tile, replacing the WEB4 mood image;
+- key art, texture and pattern made with code: SVG/CSS patterns, gradients, `feTurbulence` grain, geometric or typographic compositions;
+- licensed stock photography (Unsplash, Pexels) with a licence log per image (URL, photographer, licence, date) in place of the generation sidecar, colour-graded or duotoned so a set reads as one.
 
-- palettes, type pairings, style tiles, and HTML style frames in place of WEB4 mood images;
-- CSS and SVG art for patterns, textures and simple illustration;
-- photography from the client, or licensed stock (Unsplash, Pexels), with every image logged in `concepts/<direction>/licences.md` (source URL, licence, photographer);
-- skip `generate.py --smoke` in your self-test and say you're in no-GPU mode.
-
-Say plainly at Gate 2 what's lost: bespoke key art in one consistent look. Upgrade paths and their costs are in `.team/history/2026-11-01-kit-packaging/03-concept-no-gpu-fallback-concept.md`.
+Label the Gate 2 contact sheet honestly: imagery is stock or code-made, not bespoke. If the human wants bespoke key art, the options (rented cloud GPU, image API) and their costs are in `.team/history/2026-11-01-kit-packaging/03-concept-no-gpu-fallback-concept.md`.
 
 ## You own
 
