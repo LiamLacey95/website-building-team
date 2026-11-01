@@ -14,13 +14,15 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 
 ## Active project
 
-`how-it-works`: a creative website that explains how this team works (`projects/how-it-works/BRIEF.md`). Phase 1 Discover.
+`how-it-works`: a creative website that explains how this team works (`projects/how-it-works/BRIEF.md`). Phase 2 Define (Discover done: `research/SUMMARY.md`).
 
 ## Briefs in flight
 
 | Brief | Owner | State |
 |---|---|---|
-| how-it-works/01-research-discover | Research | in progress |
+| how-it-works/01-research-discover | Research | done (7ae9124, 32f3abc) |
+| how-it-works/02-research-define | Research | in progress |
+| how-it-works/02-backend-stack-proposal | Backend + Front-end | queued after 03-backend-bootstrap |
 | 03-frontend-impeccable-and-portability | Front-end | in progress |
 | 03-concept-comfyui-installer | Concept | in progress |
 | 03-backend-bootstrap | Backend | in progress |
