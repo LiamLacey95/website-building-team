@@ -55,7 +55,7 @@ node tools/screenshot.mjs --base http://127.0.0.1:4322 --routes home --label var
 
 | Flag | Default | Meaning |
 |---|---|---|
-| `--base` | required | Base URL of the running site |
+| `--base` | required | Base URL of the running site. Its path is kept, so with an Astro `base` pass e.g. `http://127.0.0.1:4321/website-building-team` |
 | `--routes` | `/` | Comma-separated. The leading slash is optional; `home` means `/` |
 | `--out` | `projects/<slug>/screenshots/<YYYY-MM-DD>/` | Output folder |
 | `--project` | `activeProject` | Project used for the default `--out` |
@@ -123,6 +123,7 @@ node tools/variants.mjs remove a --keep-branch
 node tools/variants.mjs create a <name>; node tools/variants.mjs create b <name>; node tools/variants.mjs create c <name>
 # build each variant in its worktree (projects/<slug>/web), with Impeccable: shape -> build -> critique -> detect; commit there
 node tools/variants.mjs dev all                                                    # background
+# how-it-works uses Astro base '/website-building-team': add it to every --base below, e.g. http://127.0.0.1:4321/website-building-team
 node tools/screenshot.mjs --base http://127.0.0.1:4321 --routes home,<interior> --label variant/<slug>-g3-a-<name> --out projects/<slug>/screenshots/g3
 node tools/screenshot.mjs --base http://127.0.0.1:4322 --routes home,<interior> --label variant/<slug>-g3-b-<name> --out projects/<slug>/screenshots/g3
 node tools/screenshot.mjs --base http://127.0.0.1:4323 --routes home,<interior> --label variant/<slug>-g3-c-<name> --out projects/<slug>/screenshots/g3

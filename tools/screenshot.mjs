@@ -8,7 +8,8 @@
  *   node tools/screenshot.mjs --base http://127.0.0.1:4321 --routes home --project how-it-works --widths 1440,390
  *
  * Flags:
- *   --base <url>       Base URL of the running site (required).
+ *   --base <url>       Base URL of the running site (required). A path is kept: with
+ *                      --base http://127.0.0.1:4321/website-building-team, route "about" -> .../website-building-team/about
  *   --routes <list>    Comma-separated routes, leading slash optional; "home" means "/". Default "/".
  *                      From Git Bash prefer "home,about" (Bash rewrites a bare "/" into a Windows path).
  *   --out <dir>        Output folder (relative paths resolve against the main repo root).
@@ -56,6 +57,8 @@ const widths = String(args.widths ?? '390,768,1440,1920').split(',').map(Number)
 const label = slug(args.label ?? currentBranch());
 const outDir = path.resolve(root, args.out ?? path.join('projects', projectSlug(args, loadConfig(root)), 'screenshots', date));
 const timeout = Number(args.timeout ?? 45000);
+// Routes resolve under the base URL's path, so a base like http://127.0.0.1:4321/website-building-team keeps its prefix.
+const baseUrl = String(args.base).endsWith('/') ? String(args.base) : `${args.base}/`;
 await fs.mkdir(outDir, { recursive: true });
 
 async function settle(page) {
@@ -95,7 +98,7 @@ try {
     });
     const page = await context.newPage();
     for (const route of routes) {
-      const url = new URL(route, args.base).href;
+      const url = new URL(route.replace(/^\/+/, ''), baseUrl).href;
       const file = `${hhmm}-${label}-${slug(route)}-${width}.png`;
       try {
         const res = await page.goto(url, { waitUntil: 'networkidle', timeout });
