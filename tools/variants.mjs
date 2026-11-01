@@ -8,7 +8,7 @@
  * "variantBasePort" in team.config.json, default 4321).
  *
  * Usage:
- *   node tools/variants.mjs create a bold-grid [--project <slug>] [--gate g3] [--from <ref>] [--no-doc]
+ *   node tools/variants.mjs create a bold-grid [--project <slug>] [--gate g3] [--from <ref>] [--no-doc|--no-commit]
  *   node tools/variants.mjs list [--project <slug>]
  *   node tools/variants.mjs dev a              # one variant on its port (foreground; Ctrl+C stops)
  *   node tools/variants.mjs dev all            # every variant of the project and gate, each on its own port
@@ -20,8 +20,10 @@
  * --project defaults to "activeProject" in team.config.json; --gate defaults to g3. A variant is addressed
  * by its letter (within project and gate) or by its full folder name or branch.
  *
- * create: branches from --from (default HEAD of the main checkout, i.e. the shared base on master) and
- * writes a hypothesis stub at <worktree>/projects/<project>/variants/<letter>-<name>.md unless --no-doc.
+ * create: branches from --from (default HEAD of the main checkout, i.e. the shared base on master). Unless --no-doc,
+ * it then writes the hypothesis stub projects/<project>/variants/<letter>-<name>.md in the MAIN checkout and
+ * commits it there with a pathspec (--no-commit to only write it), so every variant's hypothesis survives on
+ * master after losing branches are removed. Edit it in the main checkout, not in the worktree.
  *
  * dev: serves <worktree>/projects/<project>/web. If its package.json has a "dev" script, runs
  * `npm run dev -- --port <port> --host 127.0.0.1` there (Astro, Vite and Next accept these flags).
@@ -93,8 +95,13 @@ function create() {
   const dir = path.join(cfg.worktreesDir, folder);
   fs.mkdirSync(cfg.worktreesDir, { recursive: true });
   git(['worktree', 'add', dir, '-b', branch, String(args.from ?? 'HEAD')], root);
+  let docNote = '';
   if (!args['no-doc']) {
-    const doc = path.join(dir, 'projects', slug, 'variants', `${letter}-${nameArg}.md`);
+    // The hypothesis file lives on the main checkout's branch (master), not on the variant branch: losing
+    // variants' branches are deleted after Gate 4, and G3 review needs all of them. Created after the worktree,
+    // so the variant branch never carries it and merging the winner cannot conflict on it.
+    const rel = path.join('projects', slug, 'variants', `${letter}-${nameArg}.md`);
+    const doc = path.join(root, rel);
     if (!fs.existsSync(doc)) {
       fs.mkdirSync(path.dirname(doc), { recursive: true });
       fs.writeFileSync(doc, [
@@ -109,10 +116,22 @@ function create() {
         '- commands run:',
         '- critique (top issues and what changed):',
         '- detect: clean, or each remaining finding with its justification', '',
+        `Lives on the main branch (edit it in the main checkout, not in the worktree), so it survives when \`${branch}\` is removed.`, '',
       ].join('\n'));
     }
+    if (args['no-commit']) {
+      docNote = `\n  doc:  ${doc} (not committed: --no-commit)`;
+    } else {
+      // Pathspec commit: the index is shared, so never sweep in other agents' staged files.
+      const relPosix = rel.split(path.sep).join('/');
+      git(['add', '--', relPosix], root);
+      if (git(['diff', '--cached', '--name-only', '--', relPosix], root)) {
+        git(['commit', '-q', '-m', `frontend: ${slug} variant ${letter.toUpperCase()} hypothesis stub (${branch})`, '--', relPosix], root);
+      }
+      docNote = `\n  doc:  ${doc} (committed on ${git(['rev-parse', '--abbrev-ref', 'HEAD'], root)})`;
+    }
   }
-  console.log(`created ${branch}\n  path: ${dir}\n  web:  ${path.join(dir, 'projects', slug, 'web')}\n  port: ${portFor(letter)}`);
+  console.log(`created ${branch}\n  path: ${dir}\n  web:  ${path.join(dir, 'projects', slug, 'web')}\n  port: ${portFor(letter)}${docNote}`);
 }
 
 function list() {

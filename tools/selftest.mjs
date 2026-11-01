@@ -10,7 +10,8 @@
  *   2. a throwaway static page in its projects/kit-selftest/web/, served by `variants.mjs dev`
  *   3. screenshot.mjs at 390/768/1440/1920 into a temp folder; four non-empty PNGs plus manifest
  *   4. contact-sheet.mjs over those shots; every <img> it references exists
- *   5. Impeccable: `npx impeccable detect` (pinned in tools/) is clean on the page and finds the planted
+ *   5. Impeccable: the CLI run from tools/ is the pinned version; licence files are present; `npx impeccable detect`
+ *      (from tools/) is clean on the page and finds the planted
  *      anti-patterns in a bad fixture; the skill launcher answers; the team hook gate forwards a site
  *      edit and stays silent on a non-site edit
  *   6. cleanup: stop the server, remove the worktree and branch, delete temp files (unless --keep)
@@ -163,6 +164,23 @@ async function main() {
   });
 
   if (!args['skip-impeccable']) {
+    step('impeccable CLI is the pinned one (run from tools/)', () => {
+      // A bare `npx impeccable` at the repo root can resolve a stale global install; this run uses tools/.
+      const pin = JSON.parse(fs.readFileSync(path.join(here, 'package.json'), 'utf8')).devDependencies.impeccable.replace(/^[\^~=v]+/, '');
+      const r = npx(['impeccable', '--version']);
+      const got = (r.stdout ?? '').trim().split(/\r?\n/).pop();
+      check(got === pin, `tools/ resolves impeccable ${got || '(nothing)'}, pinned ${pin}: run npm ci in tools/`);
+      return `${got}, cwd tools/`;
+    });
+    step('impeccable licence files present', () => {
+      const need = ['LICENSE', 'NOTICE.md', 'THIRD-PARTY.md', 'LICENSE-platform-design-skills', 'scripts/LICENSE-modern-screenshot'];
+      const missing = ['.claude/skills/impeccable', '.agents/skills/impeccable']
+        .flatMap((d) => need.map((f) => `${d}/${f}`))
+        .concat('.claude/agents/IMPECCABLE-NOTICE.txt')
+        .filter((f) => !fs.existsSync(path.join(root, f)));
+      check(!missing.length, `missing (restore with git checkout): ${missing.join(', ')}`);
+      return 'Apache-2.0 LICENSE, NOTICE and MIT texts in both skill folders';
+    });
     step('impeccable detect: selftest page is clean', () => {
       const r = npx(['impeccable', 'detect', '--json', path.join(web, 'index.html')]);
       check(!r.error, `npx impeccable failed to start: ${r.error?.message}`);

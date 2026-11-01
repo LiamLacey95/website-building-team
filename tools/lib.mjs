@@ -59,7 +59,7 @@ export function currentBranch(cwd = process.cwd()) {
   try { return git(['rev-parse', '--abbrev-ref', 'HEAD'], cwd); } catch { return 'nobranch'; }
 }
 
-/** Filesystem-safe slug: "variant/g3-a-bold" -> "variant-g3-a-bold", "/" -> "home". */
+/** Filesystem-safe slug: "variant/how-it-works-g3-a-bold-grid" -> "variant-how-it-works-g3-a-bold-grid", "/" -> "home". */
 export function slug(s) {
   const v = String(s).replace(/^\/+|\/+$/g, '').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/-+/g, '-');
   return v || 'home';

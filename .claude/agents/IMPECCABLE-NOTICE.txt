@@ -1,0 +1,10 @@
+The impeccable-*.md agent definitions in this folder are part of Impeccable 4.8.0
+(https://impeccable.style, https://github.com/pbakaus/impeccable, tag skill-v4.8.0),
+Copyright 2025 Paul Bakaus, licensed under the Apache License, Version 2.0.
+They are redistributed unmodified.
+
+Full licence text: ../skills/impeccable/LICENSE
+Upstream notices:  ../skills/impeccable/NOTICE.md
+
+(This notice is a .txt file on purpose: Claude Code loads every .md file in this
+folder as an agent definition.)

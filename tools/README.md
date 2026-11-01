@@ -30,7 +30,9 @@ One command that proves the tooling works on this machine. It runs these steps:
 3. Takes 4-width screenshots into the OS temp folder.
 4. Builds a contact sheet and checks that every image link resolves.
 5. Checks Impeccable:
-   - `npx impeccable detect` is clean on the page and catches a planted bad fixture.
+   - The CLI run from `tools/` is the version pinned in `tools/package.json`.
+   - The licence files are present in both skill folders (see [Licences](#licences)).
+   - `npx impeccable detect` (from `tools/`) is clean on the page and catches a planted bad fixture.
    - The skill launcher answers.
    - The hook gate flags a site edit and stays silent on other edits.
 6. Removes the worktree, the branch and the temp files.
@@ -97,9 +99,11 @@ Design-variant worktrees, following the playbook naming:
 - **Ports:** A 4321, B 4322, C 4323
 
 ```bash
-node tools/variants.mjs create a bold-grid         # from HEAD of the main checkout (the shared base); writes
-                                                   # projects/<slug>/variants/a-bold-grid.md stub in the worktree
-node tools/variants.mjs create b editorial --from <commit> --no-doc
+node tools/variants.mjs create a bold-grid         # worktree from HEAD of the main checkout (the shared base), then
+                                                   # writes projects/<slug>/variants/a-bold-grid.md in the MAIN checkout
+                                                   # and commits it there (pathspec commit)
+node tools/variants.mjs create b editorial --from <commit> --no-commit   # write the stub, don't commit it
+node tools/variants.mjs create c spare --no-doc    # no stub at all
 node tools/variants.mjs list [--project <slug>]
 node tools/variants.mjs dev a                      # foreground; Ctrl+C stops
 node tools/variants.mjs dev all                    # every variant of the project and gate, logs prefixed [g3-a]
@@ -122,6 +126,8 @@ node tools/variants.mjs remove a --keep-branch
 ```bash
 node tools/variants.mjs create a <name>; node tools/variants.mjs create b <name>; node tools/variants.mjs create c <name>
 # build each variant in its worktree (projects/<slug>/web), with Impeccable: shape -> build -> critique -> detect; commit there
+# keep each hypothesis file up to date in the MAIN checkout (projects/<slug>/variants/), committed on master:
+# losing variants' branches are removed after Gate 4, but their hypotheses must survive for review
 node tools/variants.mjs dev all                                                    # background
 # how-it-works uses Astro base '/website-building-team': add it to every --base below, e.g. http://127.0.0.1:4321/website-building-team
 node tools/screenshot.mjs --base http://127.0.0.1:4321 --routes home,<interior> --label variant/<slug>-g3-a-<name> --out projects/<slug>/screenshots/g3
@@ -139,6 +145,7 @@ node tools/contact-sheet.mjs --in projects/<slug>/screenshots/g3 --title "Gate 3
 | `.claude/skills/impeccable/` | Skill for Claude Code (`/impeccable <command>`) |
 | `.agents/skills/impeccable/` | Skill for Codex (`$impeccable <command>`) |
 | `.claude/agents/impeccable-*.md` | 4 Claude subagents the skill spawns (documenter, finish reviewer, asset producer, manual-edit applier) |
+| `LICENSE`, `NOTICE.md`, `THIRD-PARTY.md`, `LICENSE-platform-design-skills`, `scripts/LICENSE-modern-screenshot` in both skill folders; `.claude/agents/IMPECCABLE-NOTICE.txt` | Licence texts and notices (see [Licences](#licences)) |
 | `.impeccable/config.json` | Shared detector and hook config: hook on, quiet mode |
 | `.claude/settings.json`, `.codex/hooks.json` | The team hook gate (see below) |
 
@@ -165,6 +172,19 @@ sh .claude/skills/impeccable/scripts/impeccable detect projects/<slug>/web   # s
 ```
 
 **Project context:** in this kit, `PRODUCT.md` and `DESIGN.md` live in `projects/<slug>/`, not the repo root. When running a skill command or `impeccable context`, either pass `--target projects/<slug>/web/<file>` or run from `projects/<slug>/`. Impeccable then treats `projects/<slug>` as the project root and finds that project's files. Without a target it looks at the repo root and reports `NO_PRODUCT_MD`.
+
+### Licences
+
+The vendored files are byte-identical to upstream tag `skill-v4.8.0` (Review's audit). The kit adds only licence files next to them:
+
+| Component | Licence | Text in the repo |
+|---|---|---|
+| Impeccable, Copyright 2025 Paul Bakaus (both skill folders and `.claude/agents/impeccable-*.md`) | Apache-2.0 | `LICENSE`, upstream `NOTICE.md` |
+| ehmo's `platform-design-skills`, from which `reference/ios.md` and `reference/android.md` are derived | MIT | `LICENSE-platform-design-skills` |
+| modern-screenshot, Copyright (c) 2021-present wxm (`scripts/modern-screenshot.umd.js`) | MIT | `scripts/LICENSE-modern-screenshot` |
+
+- **Agents folder:** the notice for `.claude/agents/` is a `.txt` file, because Claude Code loads every `.md` file in that folder as an agent.
+- **After a reinstall:** a `--force` reinstall may remove the added files. Restore them with `git checkout -- .claude/skills/impeccable .agents/skills/impeccable`. The selftest fails while they are missing.
 
 **Telemetry: off by default in this kit** (PM decision). The CLI would otherwise send anonymous usage pings for its live and generate features (no project names or code). It is set in four places, so it stays off however Impeccable is run:
 
