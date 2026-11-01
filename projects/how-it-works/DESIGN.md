@@ -136,8 +136,9 @@ A painted toy palette: one loud wall colour, one ink, and toy accents that only 
 - **Deep Navy** (#1C2147): all text, outlines, focus rings, the strong button and the footer band. 15.47:1 on white.
 
 ### Secondary
-- **Tomato** (#E8492C): barriers, big shapes and large display accents only. It is 3.99:1 with navy, so never use it behind or as small text.
-- **Tomato Ink** (#B7321A): tomato for small text and for the warning button fill. 6.03:1 on white, and white text on it is 6.03:1.
+- **Tomato** (#E8492C, `--c-accent-bright`): barriers, cups, big shapes and large display accents only. It is 3.99:1 with navy, so never use it behind or as small text.
+- **Tomato Ink** (#B7321A, `--c-accent` and `--c-accent-ink`): tomato for small text and for the warning button fill. 6.03:1 on white, and white text on it is 6.03:1.
+- **Agent colours** (`--agent-*`, with a matching `-ink` for text on each): one per role, matching the clay cast (navy PM, mint Research, sunflower Concept, orange Front-end, white Backend, crimson Review). Always shown with the role's name, never colour alone.
 
 ### Tertiary
 - **Mint Track** (#4DBF95): the track, "go" states and station tags, always with a word. Navy on it is 6.78:1.
