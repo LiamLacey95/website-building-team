@@ -21,6 +21,7 @@ const g = entry.data;
 const id = `crossing-${gate.toLowerCase()}`;
 const H = level;
 ---
+<div class="crossing-wrap">
 <section class="crossing card" id={id} data-crossing={gate} aria-labelledby={`${id}-title`}>
   <div class="crossing__scene" aria-hidden="true">
     <span class="crossing__rail"></span>
@@ -71,8 +72,11 @@ const H = level;
     <p class="visually-hidden" role="status" aria-live="polite" data-crossing-status></p>
   </div>
 </section>
+</div>
 
 <style>
+  /* Sized by its container, not the viewport: variations place it in full rows or narrow columns. */
+  .crossing-wrap { container-type: inline-size; }
   .crossing {
     display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-6);
     align-items: start; padding: var(--space-6);
@@ -124,7 +128,7 @@ const H = level;
   :global(html:not(.js)) .crossing .crossing__arm { rotate: 80deg; }
   :global(html:not(.js)) .crossing .crossing__ball { left: calc(100% - 3rem); }
 
-  @media (max-width: 52rem) {
+  @container (max-width: 50rem) {
     .crossing { grid-template-columns: 1fr; padding: var(--space-5); gap: var(--space-5); }
     .crossing__scene { aspect-ratio: 16 / 9; min-height: 0; }
   }
