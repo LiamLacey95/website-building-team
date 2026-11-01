@@ -13,8 +13,13 @@ export const motionOff = (): boolean =>
 
 /** Run a DOM change through a same-document View Transition when motion is on and supported. */
 export function transition(update: () => void): void {
-  if (motionOff() || !('startViewTransition' in document)) update();
-  else document.startViewTransition(update);
+  if (motionOff() || !('startViewTransition' in document)) { update(); return; }
+  // A newer transition skips an older one (fast paging, a re-skin mid-change): the DOM update still runs,
+  // so the rejected animation promises are expected and must not surface as errors.
+  const t = document.startViewTransition(update);
+  t.ready.catch(() => {});
+  t.finished.catch(() => {});
+  t.updateCallbackDone.catch(() => {});
 }
 
 // --- Reduce motion ---------------------------------------------------------------------------
