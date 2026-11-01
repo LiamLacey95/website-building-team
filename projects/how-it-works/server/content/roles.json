@@ -1,0 +1,98 @@
+{
+  "pm": {
+    "name": "Project manager",
+    "short": "PM",
+    "threadTitle": "The thread you talk to",
+    "oneLiner": "Turns your sentence into briefs, keeps the board honest, and brings you exactly four decisions.",
+    "does": [
+      "Writes the project brief from your prompt",
+      "Briefs each agent with a goal, inputs, deliverables and a definition of done",
+      "Assembles a gate packet: options, a recommendation and Review's verdict",
+      "Merges approved work and keeps the status board current"
+    ],
+    "owns": [".team/", "projects/<slug>/BRIEF.md", "projects/<slug>/briefs/", "projects/<slug>/gates/"],
+    "neverDoes": "Decide a gate for you.",
+    "signatureLine": "Four questions for you. Everything else, we'll argue about among ourselves.",
+    "tools": ["git", "the status board", "gate packets"]
+  },
+  "research": {
+    "name": "Research",
+    "short": "Research",
+    "threadTitle": "Team · Research",
+    "oneLiner": "Reads the field before anyone draws a line, and cites every claim it makes.",
+    "does": [
+      "Tears down competitors and reference sites",
+      "Writes personas, an inventory of the content you'll need, and the constraints",
+      "Turns findings into positioning, a sitemap and user journeys",
+      "Drafts the questions you answer at Gate 1"
+    ],
+    "owns": ["projects/<slug>/research/", "docs/research/"],
+    "neverDoes": "State a fact without a source, or a guess without saying so.",
+    "signatureLine": "Eight sites read. Three people we're building for. One thing none of them do.",
+    "tools": ["web search", "Playwright screenshots", "a citation habit"]
+  },
+  "concept": {
+    "name": "Concept creator",
+    "short": "Concept",
+    "threadTitle": "Team · Concept (ComfyUI)",
+    "oneLiner": "Makes three genuinely different directions, with key art rendered on your own GPU.",
+    "does": [
+      "Builds three creative directions: moodboard, palette, type pairing, key art, style tile",
+      "Generates imagery locally in ComfyUI with FLUX Klein and Z-Image Turbo",
+      "Writes a provenance label next to every image: prompt, model, seed, licence",
+      "Supplies final assets to Front-end after Gate 3"
+    ],
+    "owns": ["projects/<slug>/concepts/", "artgen/", "projects/<slug>/web/public/assets/generated/"],
+    "neverDoes": "Ship an image without its prompt and licence written down beside it.",
+    "signatureLine": "Direction B is the brave one. I'd still show it to you.",
+    "tools": ["ComfyUI", "FLUX 3 Image Klein", "Z-Image Turbo", "RealESRGAN"]
+  },
+  "frontend": {
+    "name": "Front-end design",
+    "short": "Front-end",
+    "threadTitle": "Team · Front-end Design",
+    "oneLiner": "Builds three versions of the site at once, in three git worktrees, and photographs each at four widths.",
+    "does": [
+      "Codes three variations of the home page and one inner page",
+      "Uses Impeccable as its design vocabulary and slop detector",
+      "Screenshots every variation at 390, 768, 1440 and 1920 pixels",
+      "Builds the chosen variation into the full site"
+    ],
+    "owns": ["projects/<slug>/web/", "projects/<slug>/variants/", "projects/<slug>/screenshots/", "tools/"],
+    "neverDoes": "Hand over a page the slop detector hasn't passed.",
+    "signatureLine": "Variant C fails at 390 wide. Fixing it before anyone else has to tell me.",
+    "tools": ["Astro", "git worktrees", "Impeccable", "Playwright"]
+  },
+  "backend": {
+    "name": "Backend developer",
+    "short": "Backend",
+    "threadTitle": "Team · Backend",
+    "oneLiner": "Everything behind the page: the stack, the content model, forms, deploys, and the setup script itself.",
+    "does": [
+      "Proposes the stack and hosting, with costs and what you'll maintain",
+      "Publishes the content contract that Front-end builds against",
+      "Builds APIs, forms and the content pipeline",
+      "Writes the deploy notes, and the script that sets this whole kit up"
+    ],
+    "owns": ["projects/<slug>/server/", "projects/<slug>/api/", "scripts/", "docs/api/"],
+    "neverDoes": "Commit a secret, or deploy without your yes.",
+    "signatureLine": "The contract's published. If a field changes, Front-end hears it from me first.",
+    "tools": ["Node", "Astro content collections", "Zod", "Vercel"]
+  },
+  "review": {
+    "name": "Review",
+    "short": "Review",
+    "threadTitle": "Team · Review",
+    "oneLiner": "Reads everything, touches nothing, and can send any of it back.",
+    "does": [
+      "Checks every gate packet before you see it",
+      "Audits accessibility (WCAG 2.2 AA), performance and contrast",
+      "Runs Impeccable's slop detector as independent evidence",
+      "Checks that every shipped image has a licence that allows it"
+    ],
+    "owns": ["projects/<slug>/review/", "docs/review/"],
+    "neverDoes": "Fix the thing it's reviewing. It says what's wrong and who owns it.",
+    "signatureLine": "Revise. Three findings, one of them a blocker. Details in the report.",
+    "tools": ["axe", "Lighthouse", "a contrast checker", "the licence walker"]
+  }
+}

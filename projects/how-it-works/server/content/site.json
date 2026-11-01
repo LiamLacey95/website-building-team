@@ -1,0 +1,17 @@
+{
+  "main": {
+    "name": "Website Building Team",
+    "heroLine": "This website started as one sentence. Here's everything that happened next.",
+    "shareLine": "An AI design studio that shows its work.",
+    "setupSentence": "Set up the website building team from BOOTSTRAP.md.",
+    "setupIntro": "Yours starts with this one:",
+    "whatHappensNext": "Paste it into Claude Code or T3 Code inside the repo. That thread becomes your project manager: it installs the tools, opens five agent threads, and asks what you want to build.",
+    "gpuNotice": "Built for a Windows PC with an NVIDIA graphics card (12 GB). It isn't suited to machines without one.",
+    "repoUrl": "https://github.com/LiamLacey95/website-building-team",
+    "meta": {
+      "title": "Website Building Team: an AI design studio that shows its work",
+      "description": "Six agent threads, three creative directions, three coded variations and four human decisions turn one prompt into a launched website. This site is its own case study."
+    },
+    "status": "draft"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "intake-the-sentence": {
+    "chapter": 1,
+    "title": "One line in",
+    "lines": [
+      { "speaker": "human", "to": "pm", "kind": "message", "text": "your first website that i want you to build is a creative website that runs through how this works." },
+      { "speaker": "pm", "to": "human", "kind": "message", "text": "Got it. I'll write that down word for word, add what I think success looks like, and list what I'll need you to decide. You'll see it again at Gate 1." },
+      { "speaker": "pm", "kind": "aside", "text": "Opening projects/how-it-works/. Brief first. Then Research." }
+    ]
+  },
+  "studio-roll-call": {
+    "chapter": 2,
+    "title": "Roll call",
+    "lines": [
+      { "speaker": "pm", "to": "all", "kind": "brief", "text": "New project: a site that explains how we work. Research leads. Everyone else: read the brief and tell me now if anything worries you." },
+      { "speaker": "research", "to": "pm", "kind": "message", "text": "On it. I'll start with who would actually read this." },
+      { "speaker": "concept", "to": "pm", "kind": "message", "text": "Nothing to draw yet. I'll warm up the GPU anyway." },
+      { "speaker": "frontend", "to": "backend", "kind": "message", "text": "When you have a content shape, send it to me before you write it down. I'd rather argue early." },
+      { "speaker": "backend", "to": "frontend", "kind": "message", "text": "Deal. You'll get a draft contract before anything's frozen." },
+      { "speaker": "review", "to": "pm", "kind": "message", "text": "I'll be reading. Don't wait for me to be nice." }
+    ]
+  },
+  "discover-the-gap": {
+    "chapter": 3,
+    "title": "What nobody else shows",
+    "lines": [
+      { "speaker": "research", "to": "pm", "kind": "report", "text": "DONE 01-research-discover. Eight competitors, three personas, twenty references, every claim cited. The headline: nobody who sells AI design shows their own process end to end." },
+      { "speaker": "pm", "to": "research", "kind": "message", "text": "So the site should." },
+      { "speaker": "research", "to": "pm", "kind": "message", "text": "The site should be the process. Follow its own sentence from the first line to launch." }
+    ]
+  },
+  "define-the-argument": {
+    "chapter": 4,
+    "title": "Turning findings into a plan",
+    "lines": [
+      { "speaker": "backend", "to": "pm", "kind": "report", "text": "Stack proposal's in: static Astro, no client framework, every image licence-checked at build. Running cost is nothing until you pick a host." },
+      { "speaker": "review", "to": "pm", "kind": "report", "text": "Revise before it goes to the human. Two questions have options the packet doesn't letter, and one recommendation hides a trade-off." },
+      { "speaker": "pm", "to": "review", "kind": "message", "text": "Fixed both. Re-check?" },
+      { "speaker": "review", "to": "pm", "kind": "report", "text": "Pass. Send it." }
+    ]
+  },
+  "concept-three-roads": {
+    "chapter": 5,
+    "title": "Three roads",
+    "lines": [
+      { "speaker": "concept", "to": "pm", "kind": "report", "text": "Three directions ready. A is a field notebook. B is a control room. C is a pop-up book. Each has key art made on the local GPU, and every image has its prompt and licence beside it." },
+      { "speaker": "review", "to": "pm", "kind": "report", "text": "Licence walk is clean: no non-commercial model anywhere in any image's history. B's contrast needs one fix before the human sees it." },
+      { "speaker": "concept", "kind": "aside", "text": "Fixed B. Kept the arrow." }
+    ]
+  },
+  "variations-three-branches": {
+    "chapter": 6,
+    "title": "Three branches",
+    "lines": [
+      { "speaker": "frontend", "to": "pm", "kind": "message", "text": "Three worktrees, three branches, three dev servers on 4321, 4322 and 4323. Building them side by side so none of them gets my best idea by accident." },
+      { "speaker": "system", "kind": "command", "text": "npx impeccable detect web/src  →  0 findings" },
+      { "speaker": "frontend", "to": "pm", "kind": "report", "text": "All three screenshotted at four widths. Contact sheet's in the packet. C is the most fun and the hardest to read on a phone; I've said so in its hypothesis." }
+    ]
+  },
+  "build-second-opinion": {
+    "chapter": 7,
+    "title": "A second opinion",
+    "lines": [
+      { "speaker": "review", "to": "pm", "kind": "report", "text": "REVISE. Three findings. Focus is hidden under the sticky rail on chapter 6; two buttons fail contrast in dark mode; the credits page is missing one licence." },
+      { "speaker": "frontend", "to": "review", "kind": "message", "text": "Focus and contrast are mine. Fixed." },
+      { "speaker": "backend", "to": "review", "kind": "message", "text": "Licence is mine. Added, and the build now fails if it's ever missing again." },
+      { "speaker": "review", "to": "pm", "kind": "report", "text": "PASS. Ready for the human." }
+    ]
+  },
+  "your-turn": {
+    "chapter": 9,
+    "title": "Over to you",
+    "lines": [
+      { "speaker": "human", "to": "pm", "kind": "message", "text": "Set up the website building team from BOOTSTRAP.md." },
+      { "speaker": "pm", "to": "human", "kind": "message", "text": "Checking your machine first. Then I'll set up the tools, open five threads, and ask what you'd like to build." }
+    ]
+  }
+}

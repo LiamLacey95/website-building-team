@@ -1,0 +1,180 @@
+{
+ "workflow": "WEB3 Z-Image - Fast Exploration",
+ "workflow_file": "artgen/user/default/workflows/WEB3 Z-Image - Fast Exploration.json",
+ "api_file": "artgen/api/WEB3 Z-Image - Fast Exploration.json",
+ "seed": 101,
+ "prompt": "Wide landscape photograph. Rolling green hills at golden hour with a single winding gravel path, low warm sun, long soft shadows, light haze over distant hills. The upper half of the frame is open pale sky with lots of empty space. Natural muted palette, fine photographic grain. No text, no people.",
+ "model": "z_image_turbo_int8_convrot.safetensors",
+ "steps": 8,
+ "cfg": 1.0,
+ "sampler": "res_multistep",
+ "scheduler": "simple",
+ "denoise": 1.0,
+ "aspect": "16:9 (Widescreen)",
+ "megapixels": 1.0,
+ "size": [
+  1360,
+  768
+ ],
+ "licence": "Apache 2.0",
+ "comfyui_version": "0.41.0",
+ "api_prompt": {
+  "2": {
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "z_image_turbo_int8_convrot.safetensors",
+    "weight_dtype": "default"
+   },
+   "_meta": {
+    "title": "Load Diffusion Model"
+   }
+  },
+  "3": {
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "qwen_3_4b_fp8_mixed.safetensors",
+    "type": "lumina2",
+    "device": "default"
+   },
+   "_meta": {
+    "title": "Load CLIP"
+   }
+  },
+  "4": {
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "ae.safetensors"
+   },
+   "_meta": {
+    "title": "Load VAE"
+   }
+  },
+  "5": {
+   "class_type": "ModelSamplingAuraFlow",
+   "inputs": {
+    "shift": 3.0,
+    "sampling": "flow",
+    "model": [
+     "2",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "ModelSamplingAuraFlow"
+   }
+  },
+  "6": {
+   "class_type": "ResolutionSelector",
+   "inputs": {
+    "aspect_ratio": "16:9 (Widescreen)",
+    "megapixels": 1.0,
+    "multiple": 16
+   },
+   "_meta": {
+    "title": "Resolution Selector"
+   }
+  },
+  "7": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "Wide landscape photograph. Rolling green hills at golden hour with a single winding gravel path, low warm sun, long soft shadows, light haze over distant hills. The upper half of the frame is open pale sky with lots of empty space. Natural muted palette, fine photographic grain. No text, no people.",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Prompt"
+   }
+  },
+  "8": {
+   "class_type": "ConditioningZeroOut",
+   "inputs": {
+    "conditioning": [
+     "7",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Conditioning Zero Out"
+   }
+  },
+  "9": {
+   "class_type": "EmptySD3LatentImage",
+   "inputs": {
+    "batch_size": 1,
+    "width": [
+     "6",
+     0
+    ],
+    "height": [
+     "6",
+     1
+    ]
+   },
+   "_meta": {
+    "title": null
+   }
+  },
+  "10": {
+   "class_type": "KSampler",
+   "inputs": {
+    "seed": 101,
+    "steps": 8,
+    "cfg": 1.0,
+    "sampler_name": "res_multistep",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "model": [
+     "5",
+     0
+    ],
+    "positive": [
+     "7",
+     0
+    ],
+    "negative": [
+     "8",
+     0
+    ],
+    "latent_image": [
+     "9",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "KSampler"
+   }
+  },
+  "11": {
+   "class_type": "VAEDecode",
+   "inputs": {
+    "samples": [
+     "10",
+     0
+    ],
+    "vae": [
+     "4",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "VAE Decode"
+   }
+  },
+  "12": {
+   "class_type": "SaveImage",
+   "inputs": {
+    "filename_prefix": "_smoke/20261101-130808/smoke_web3",
+    "images": [
+     "11",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Save Image"
+   }
+  }
+ },
+ "note": "Fixture copy of a kit smoke-test image, resized to 1600 px WebP. Not concept art."
+}

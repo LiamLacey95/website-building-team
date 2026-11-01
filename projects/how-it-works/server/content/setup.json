@@ -1,0 +1,125 @@
+{
+  "main": {
+    "steps": [
+      {
+        "title": "Clone the repo",
+        "detail": "Anywhere you like. Everything machine-specific goes into one git-ignored file, team.config.json, so nothing in the repo has your paths in it."
+      },
+      {
+        "title": "Say the sentence",
+        "detail": "Open the folder in Claude Code or T3 Code and paste the setup sentence. That thread reads BOOTSTRAP.md and becomes your project manager."
+      },
+      {
+        "title": "Let it check your machine",
+        "detail": "It looks for git, Node, Python, an NVIDIA GPU and disk space, and tells you exactly what's missing before it installs anything."
+      },
+      {
+        "title": "Connect or install ComfyUI",
+        "detail": "Point it at an existing ComfyUI, or let it install one with the models the workflows need. A fresh install needs a free Hugging Face account and your go-ahead for the download."
+      },
+      {
+        "title": "Meet the team",
+        "detail": "The project manager opens five more threads: Research, Concept, Front-end, Backend and Review. Each runs a quick self-test and reports in."
+      },
+      {
+        "title": "Give it a prompt",
+        "detail": "One sentence about the website you want. From there, you're asked four times. Everything in between is the team's job."
+      }
+    ],
+    "commands": [
+      {
+        "label": "What the project manager runs",
+        "command": "node scripts/bootstrap.mjs --yes --comfyui-path \"<your ComfyUI folder>\""
+      },
+      {
+        "label": "Check everything, any time",
+        "command": "node scripts/bootstrap.mjs --check"
+      },
+      {
+        "label": "No GPU on this machine (setup still works; image generation won't)",
+        "command": "node scripts/bootstrap.mjs --yes --skip-comfyui"
+      }
+    ],
+    "checkOutput": [
+      "Health check  <repo>",
+      "",
+      " Prerequisites",
+      "  [ OK ] git            2.51.2.windows.1",
+      "  [ OK ] Node.js        24.11.1",
+      "  [ OK ] npm            11.6.2",
+      "  [ OK ] Python         3.11.9  <local path>",
+      "  [ OK ] gh (optional)  2.86.0, signed in",
+      "  [ OK ] NVIDIA GPU     NVIDIA GeForce RTX 4070 SUPER, 12.0 GB VRAM, driver 617.14",
+      "  [ OK ] Disk (repo)    599 GB free on <repo>",
+      "",
+      " Config",
+      "  [ OK ] team.config.json    team.config.json",
+      "  [ OK ] config git-ignored  yes",
+      "  [ OK ] activeProject       how-it-works",
+      "  [ OK ] worktreesDir        <repo>.worktrees",
+      "",
+      " Tooling",
+      "  [ OK ] tools/ packages              current",
+      "  [ OK ] docs/review/tools/ packages  current",
+      "  [ OK ] Playwright Chromium          installed",
+      "  [ OK ] Impeccable (claude)          .claude/skills/impeccable",
+      "  [ OK ] Impeccable (codex)           .agents/skills/impeccable",
+      "  [ OK ] Impeccable CLI               4.8.0",
+      "  [ OK ] Impeccable telemetry         off (machine setting)",
+      "",
+      " ComfyUI",
+      "  [ OK ] ComfyUI folder                        <local path>  (v0.41.0, bdc63e7)",
+      "  [ OK ] ComfyUI python                        Python 3.13.11, torch 2.14.1+cu130, CUDA available",
+      "  [ OK ] ComfyUI server                        running on port 8188",
+      "  [ OK ] comfyui version                       0.41.0 at the pinned commit bdc63e72f5",
+      "  [ OK ] python                                <local path> (not imported: --quick)",
+      "  [ OK ] model flux3_image_klein_int8_convrot.safetensors",
+      "                                               present, size matches (hash not checked: --quick)",
+      "  [ OK ] model flux3_image_klein_sd_int8_convrot.safetensors",
+      "                                               present, size matches (hash not checked: --quick)",
+      "  [ OK ] model qwen3vl_4b_int8_convrot.safetensors",
+      "                                               present, size matches (hash not checked: --quick)",
+      "  [ OK ] model flux2-vae.safetensors           present, size matches (hash not checked: --quick)",
+      "  [ OK ] model z_image_turbo_int8_convrot.safetensors",
+      "                                               present, size matches (hash not checked: --quick)",
+      "  [ OK ] model qwen_3_4b_fp8_mixed.safetensors",
+      "                                               present, size matches (hash not checked: --quick)",
+      "  [ OK ] model ae.safetensors                  present, size matches (hash not checked: --quick)",
+      "  [ OK ] model RealESRGAN_x4plus.pth           present, size matches (hash not checked: --quick)",
+      "  [ OK ] model 4x-UltraSharp.safetensors       present, size matches (hash not checked: --quick)",
+      "  [ OK ] model depth_anything_3_mono_large.safetensors",
+      "                                               present, size matches (hash not checked: --quick)",
+      "  [ OK ] model Z-Image-Turbo-Fun-Controlnet-Union-2.1-2602-8steps.safetensors",
+      "                                               present, size matches (hash not checked: --quick)",
+      "  [ OK ] ComfyUI launchers                     launchers match team.config.json",
+      "",
+      "  35 ok, 0 warnings, 0 failures"
+    ],
+    "faq": [
+      {
+        "q": "Do I need an NVIDIA GPU?",
+        "a": "Yes. The kit generates its imagery locally in ComfyUI and is tuned for an NVIDIA card with 12 GB of video memory. It isn't suited to machines without one."
+      },
+      {
+        "q": "Which agents does it run on?",
+        "a": "Claude Code or T3 Code. The project manager is the thread you start; it creates the other five."
+      },
+      {
+        "q": "Do I have to make every decision?",
+        "a": "Only four: strategy, creative direction, design, and release. The team prepares each one as a packet with options and a recommendation, and you can always say \"revise\"."
+      },
+      {
+        "q": "Can I use the images commercially?",
+        "a": "Shipped images come only from commercially licensed workflows, and every image keeps its prompt, model and licence beside it. FLUX Klein's licence allows commercial use for businesses under US$5M in annual revenue; the credits page says what applies."
+      },
+      {
+        "q": "Where does my work end up?",
+        "a": "In your repo. Each website is a folder under projects/, with its brief, research, concepts, gate decisions and code, all as plain files you can read."
+      },
+      {
+        "q": "What if I don't like any of the options?",
+        "a": "Say \"revise\" and what's wrong. The round happens inside the same gate; nothing moves on until you say yes."
+      }
+    ]
+  }
+}

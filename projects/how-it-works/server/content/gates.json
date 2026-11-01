@@ -1,0 +1,109 @@
+{
+  "G1": {
+    "number": 1,
+    "name": "Strategy and scope",
+    "where": "The point of the first diamond, where research becomes a plan",
+    "question": "Is this the right site to build, for the right people, on the right stack?",
+    "packet": [
+      "One screen of strategy: who it's for and what it must prove",
+      "The sitemap and the story, chapter by chapter",
+      "The stack, with what it costs and what you'll maintain",
+      "Every open question, each with lettered options and a recommendation",
+      "Review's verdict on all of it"
+    ],
+    "options": [
+      { "letter": "A", "label": "Accept all recommendations", "detail": "The team proceeds exactly as proposed." },
+      { "letter": "B", "label": "Pick per question", "detail": "Answer by number and letter, for example \"Q2 C, Q5 B\"." },
+      { "letter": "C", "label": "Revise", "detail": "Say what's wrong; the team reworks the packet inside the same gate." }
+    ],
+    "decision": {
+      "choice": "B",
+      "quote": "Mostly yes. Host it on Vercel, make the quotes up, and push the creativity as far as it'll go.",
+      "consequence": "The stack moved to Vercel, the story stopped quoting the repo and started telling it, and 'creative' became the measure of success."
+    },
+    "revise": {
+      "quote": "Revise: the hosting question doesn't say what we lose if the repo stays private.",
+      "outcome": "Backend added the trade-off to the packet, Review re-checked it, and the question came back the same afternoon."
+    }
+  },
+  "G2": {
+    "number": 2,
+    "name": "Creative direction",
+    "where": "Inside the second diamond, after Concept's three directions",
+    "question": "Which direction should the site take?",
+    "packet": [
+      "Three directions side by side: moodboard, palette, type pairing, key art, style tile",
+      "What each direction is betting on, in one sentence",
+      "Every image's provenance label and licence",
+      "Review's verdict, including a visual check of the generated art"
+    ],
+    "options": [
+      { "letter": "A", "label": "Direction A", "detail": "Take it as shown." },
+      { "letter": "B", "label": "Direction B", "detail": "Take it as shown." },
+      { "letter": "C", "label": "Direction C", "detail": "Take it as shown." },
+      { "letter": "D", "label": "Combine", "detail": "For example, B's palette with C's type. Concept merges them into one direction." }
+    ],
+    "decision": {
+      "choice": "D",
+      "quote": "B, but with C's type. And keep that weird hand-drawn arrow.",
+      "consequence": "Concept merged the two into one direction and wrote it down as the design system everything after this follows."
+    },
+    "revise": {
+      "quote": "Revise: all three feel like the same studio in different jackets.",
+      "outcome": "Concept threw out the safest direction and made a stranger one. The second round is the one you're looking at."
+    }
+  },
+  "G3": {
+    "number": 3,
+    "name": "Design selection",
+    "where": "Late in the second diamond, after three coded variations",
+    "question": "Which coded variation becomes the real site?",
+    "packet": [
+      "Three working home pages, each built on its own git branch",
+      "Screenshots of each at 390, 768, 1440 and 1920 pixels wide",
+      "Each variation's hypothesis: what it's trying to prove",
+      "Impeccable's critique, the slop detector's result, and Review's verdict"
+    ],
+    "options": [
+      { "letter": "A", "label": "Variation A", "detail": "Build the full site on it." },
+      { "letter": "B", "label": "Variation B", "detail": "Build the full site on it." },
+      { "letter": "C", "label": "Variation C", "detail": "Build the full site on it." },
+      { "letter": "D", "label": "Combine", "detail": "Name the parts: \"A's hero, C's chapter rail\"." }
+    ],
+    "decision": {
+      "choice": "A",
+      "quote": "A. It's the only one I scrolled to the end of without meaning to.",
+      "consequence": "Variation A merged into the main branch. The other two stay on their branches until launch, in case anything's worth stealing."
+    },
+    "revise": {
+      "quote": "Revise: the mobile hero buries the setup sentence.",
+      "outcome": "Front-end moved the sentence above the fold at 390 pixels and re-shot all four widths."
+    }
+  },
+  "G4": {
+    "number": 4,
+    "name": "Release sign-off",
+    "where": "The end of the second diamond, before anything goes public",
+    "question": "Is it ready to go live?",
+    "packet": [
+      "The finished site, on a private preview link",
+      "Review's audit: accessibility, Lighthouse on mobile, contrast, slop detector",
+      "A proofread of every page, and a licence check of every image",
+      "The deploy plan, and what you'll need to look after"
+    ],
+    "options": [
+      { "letter": "A", "label": "Ship it", "detail": "The preview becomes the public site." },
+      { "letter": "B", "label": "Ship with follow-ups", "detail": "Go live; the listed fixes follow." },
+      { "letter": "C", "label": "Revise", "detail": "Nothing goes public until the listed issues are fixed." }
+    ],
+    "decision": {
+      "choice": "A",
+      "quote": "Ship it.",
+      "consequence": "The preview became the public site. That's the page you're reading."
+    },
+    "revise": {
+      "quote": "Revise: two buttons fail contrast in dark mode, and the credits page is missing a licence.",
+      "outcome": "Front-end fixed the colours, Backend added the licence, and Review signed off on the second pass."
+    }
+  }
+}

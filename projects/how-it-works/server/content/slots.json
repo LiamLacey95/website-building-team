@@ -1,0 +1,57 @@
+{
+  "$comment": "Real imagery the story shows once later gates have produced it. Sources are globs relative to projects/how-it-works. See server/content/slots.ts and api/contract.md.",
+  "g1-packet": {
+    "gate": "G1",
+    "chapter": 4,
+    "label": "The Gate 1 packet",
+    "pendingLabel": "The Gate 1 packet appears here",
+    "kind": "screenshot",
+    "sources": ["gates/G1-*/contact-sheet.{png,webp}", "screenshots/gates/g1-*.{png,webp}"],
+    "min": 1,
+    "max": 1,
+    "defaultAlt": "The Gate 1 packet: eleven questions, each with lettered options and a recommendation"
+  },
+  "g2-style-tiles": {
+    "gate": "G2",
+    "chapter": 5,
+    "label": "Three creative directions",
+    "pendingLabel": "This happens at Gate 2",
+    "kind": "generated",
+    "sources": ["concepts/*/style-tile.{png,webp}"],
+    "min": 3,
+    "max": 3,
+    "defaultAlt": "Style tile for direction {dir}"
+  },
+  "g2-key-art": {
+    "gate": "G2",
+    "chapter": 5,
+    "label": "Key art, with its provenance label",
+    "pendingLabel": "This happens at Gate 2",
+    "kind": "generated",
+    "sources": ["concepts/*/key-art.{png,webp}", "web/public/assets/generated/hero*.{png,webp}"],
+    "min": 1,
+    "max": 1,
+    "defaultAlt": "Key art generated in ComfyUI for direction {dir}"
+  },
+  "g3-contact-sheet": {
+    "gate": "G3",
+    "chapter": 6,
+    "label": "Three variations at four widths",
+    "pendingLabel": "This happens at Gate 3",
+    "kind": "screenshot",
+    "sources": ["screenshots/g3/*-{390,768,1440,1920}.png"],
+    "min": 4,
+    "defaultAlt": "Variation screenshot"
+  },
+  "g4-review": {
+    "gate": "G4",
+    "chapter": 7,
+    "label": "Review's audit",
+    "pendingLabel": "This happens at Gate 4",
+    "kind": "screenshot",
+    "sources": ["review/*.{png,webp}", "gates/G4-*/*.{png,webp}"],
+    "min": 1,
+    "max": 1,
+    "defaultAlt": "Review's audit summary: accessibility, Lighthouse and slop-detector results"
+  }
+}

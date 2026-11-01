@@ -1,0 +1,17 @@
+{
+  "commits": 81,
+  "commitsByRole": {
+    "pm": 32,
+    "research": 6,
+    "concept": 7,
+    "frontend": 8,
+    "backend": 19,
+    "review": 9,
+    "other": 0
+  },
+  "briefs": 22,
+  "reports": 24,
+  "conceptImages": 0,
+  "gatesDecided": 1,
+  "source": "snapshot"
+}

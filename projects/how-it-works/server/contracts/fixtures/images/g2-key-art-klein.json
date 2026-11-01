@@ -1,0 +1,168 @@
+{
+ "workflow": "WEB1 Klein - Hero and Key Art",
+ "workflow_file": "artgen/user/default/workflows/WEB1 Klein - Hero and Key Art.json",
+ "api_file": "artgen/api/WEB1 Klein - Hero and Key Art.json",
+ "seed": 102,
+ "prompt": "Wide editorial photograph. A ceramicist's bright studio: hands shaping a pale clay bowl on a wheel on the right third of the frame, shelves of unglazed pots softly out of focus behind, diffuse north-window light. The left half of the frame is a clean, softly lit plaster wall with plenty of negative space for a headline. Palette of warm clay, bone white and dusty blue. Shot on a 50 mm lens at f/2.8, shallow depth of field, true-to-life colour, subtle film grain. No text, no letters, no logos.",
+ "negative": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+ "model": "flux3_image_klein_int8_convrot.safetensors",
+ "steps": 30,
+ "cfg": 3.5,
+ "sampler": "euler",
+ "scheduler": "simple",
+ "denoise": 1.0,
+ "aspect": "16:9 (Widescreen)",
+ "megapixels": 2.0,
+ "size": [
+  1936,
+  1088
+ ],
+ "licence": "FLUX Kommunity licence: free commercial use under US$5M annual revenue",
+ "comfyui_version": "0.41.0",
+ "api_prompt": {
+  "2": {
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "flux3_image_klein_int8_convrot.safetensors",
+    "weight_dtype": "default"
+   },
+   "_meta": {
+    "title": "Load Diffusion Model"
+   }
+  },
+  "3": {
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
+    "type": "flux3",
+    "device": "default"
+   },
+   "_meta": {
+    "title": "Load CLIP"
+   }
+  },
+  "4": {
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "flux2-vae.safetensors"
+   },
+   "_meta": {
+    "title": "Load VAE"
+   }
+  },
+  "5": {
+   "class_type": "ResolutionSelector",
+   "inputs": {
+    "aspect_ratio": "16:9 (Widescreen)",
+    "megapixels": 2.0,
+    "multiple": 16
+   },
+   "_meta": {
+    "title": "Resolution Selector"
+   }
+  },
+  "6": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "Wide editorial photograph. A ceramicist's bright studio: hands shaping a pale clay bowl on a wheel on the right third of the frame, shelves of unglazed pots softly out of focus behind, diffuse north-window light. The left half of the frame is a clean, softly lit plaster wall with plenty of negative space for a headline. Palette of warm clay, bone white and dusty blue. Shot on a 50 mm lens at f/2.8, shallow depth of field, true-to-life colour, subtle film grain. No text, no letters, no logos.",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Prompt"
+   }
+  },
+  "7": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "text": "text, letters, words, typography, caption, watermark, logo, signature, user interface, frame, border, blurry, lowres, jpeg artifacts, oversaturated, plastic skin, extra fingers, deformed hands",
+    "clip": [
+     "3",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Negative (used when CFG > 1)"
+   }
+  },
+  "8": {
+   "class_type": "EmptyFlux2LatentImage",
+   "inputs": {
+    "batch_size": 1,
+    "width": [
+     "5",
+     0
+    ],
+    "height": [
+     "5",
+     1
+    ]
+   },
+   "_meta": {
+    "title": "Empty Flux 2 Latent"
+   }
+  },
+  "9": {
+   "class_type": "KSampler",
+   "inputs": {
+    "seed": 102,
+    "steps": 30,
+    "cfg": 3.5,
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "model": [
+     "2",
+     0
+    ],
+    "positive": [
+     "6",
+     0
+    ],
+    "negative": [
+     "7",
+     0
+    ],
+    "latent_image": [
+     "8",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "KSampler"
+   }
+  },
+  "10": {
+   "class_type": "VAEDecode",
+   "inputs": {
+    "samples": [
+     "9",
+     0
+    ],
+    "vae": [
+     "4",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "VAE Decode"
+   }
+  },
+  "11": {
+   "class_type": "SaveImage",
+   "inputs": {
+    "filename_prefix": "_smoke/20261101-130808/smoke_web1",
+    "images": [
+     "10",
+     0
+    ]
+   },
+   "_meta": {
+    "title": "Save Image"
+   }
+  }
+ },
+ "note": "Fixture copy of a kit smoke-test image, resized to 1600 px WebP. Not concept art."
+}

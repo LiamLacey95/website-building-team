@@ -1,0 +1,23 @@
+{
+  "$comment": "CONTENT_SLOTS=filled uses these. Real images we already own: kit smoke-test renders (resized WebP, sidecars kept) and the Front-end dry-run screenshots. Stand-ins for layout work at Gate 3, not concept art.",
+  "g1-packet": [
+    { "file": "images/g3-dry-run-home-1440.png", "alt": "Stand-in for the Gate 1 packet: a plain test page at 1440 pixels wide", "caption": "Stand-in: the real packet thumbnail lands at Phase 5" }
+  ],
+  "g2-style-tiles": [
+    { "file": "images/g2-key-art-zimage.webp", "alt": "Stand-in for direction A: rolling green hills at golden hour with a winding gravel path", "caption": "Direction A (stand-in, Z-Image Turbo)" },
+    { "file": "images/g2-key-art-klein.webp", "alt": "Stand-in for direction B: a generated landscape in muted tones", "caption": "Direction B (stand-in, FLUX Klein)" },
+    { "file": "images/g2-key-art-zimage.webp", "alt": "Stand-in for direction C: rolling green hills at golden hour with a winding gravel path", "caption": "Direction C (stand-in, Z-Image Turbo)" }
+  ],
+  "g2-key-art": [
+    { "file": "images/g2-key-art-klein.webp", "alt": "Stand-in key art: a generated landscape in muted tones", "caption": "Made on a local GPU in ComfyUI (stand-in)" }
+  ],
+  "g3-contact-sheet": [
+    { "file": "images/g3-dry-run-home-390.png", "alt": "Test variation at 390 pixels wide, phone layout", "caption": "390 px" },
+    { "file": "images/g3-dry-run-home-768.png", "alt": "Test variation at 768 pixels wide, tablet layout", "caption": "768 px" },
+    { "file": "images/g3-dry-run-home-1440.png", "alt": "Test variation at 1440 pixels wide, laptop layout", "caption": "1440 px" },
+    { "file": "images/g3-dry-run-home-1920.png", "alt": "Test variation at 1920 pixels wide, desktop layout", "caption": "1920 px" }
+  ],
+  "g4-review": [
+    { "file": "images/g3-dry-run-home-1920.png", "alt": "Stand-in for Review's audit summary", "caption": "Stand-in: Review's audit lands at Gate 4" }
+  ]
+}

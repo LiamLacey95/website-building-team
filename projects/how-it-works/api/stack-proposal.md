@@ -1,366 +1,234 @@
 # Stack proposal: how-it-works
 
-Owner: Backend (with Front-end). Phase: 2 Define. Feeds: **Gate 1** (answers `research/define/gate1-questions.md` Q2 and Q9 on the technical side).
-Date: 2026-11-01. Brief: `briefs/02-backend-stack-proposal.md`. Site type (see `docs/api/stack-playbook.md`): **1 Brochure / 3 Content**: a static story site with no runtime backend.
+Owner: Backend (with Front-end). Version 2, after Gate 1. Brief: `briefs/05-backend-contract-vercel.md`.
+Date: 2026-11-01. Site type (`docs/api/stack-playbook.md`): **1 Brochure / 3 Content**: a static story site with no runtime backend.
 
-Front-end sign-off on §1 (framework) and §4 (interactivity): **OK with notes** (2026-11-01), recorded at the end of this file.
+**Gate 1 decided** (`gates/G1-strategy/DECISION.md`), and those decisions override version 1 of this file, which Review passed and the human saw in the Gate 1 packet. Version 1 is in git history (`d5fea90`).
+
+Front-end signed off §1 and §4 of version 1 ("OK with notes"). The Gate 1 changes to those sections are being agreed with Front-end through the contract (`api/contract.md`), and the sign-off table at the end records the state.
+
+## Gate 1 changes
+
+| Decision | What changed in the stack |
+|---|---|
+| **Q2 C: Vercel** | **Hosting is Vercel at the site root**, not GitHub Pages. That means:<br>- no base path;<br>- a real `Content-Security-Policy` **header** from `vercel.json` instead of a meta tag;<br>- private preview deployments per branch.<br>The repo doesn't have to be public. Going live needs the human's Vercel account at Gate 4 (§3). |
+| **Q3 A as a creative showcase** | **Creativity, interest and polish are the measure.**<br>- The 10 KB JavaScript cap is gone. The playbook budget (JS under 150 KB gzipped on content pages, LCP under 2.5 s, CLS under 0.1) stays as the ceiling, and a set piece may spend most of it.<br>- Accessibility and reduced motion still apply (§4). |
+| **Q5: quotes made up** | **The verbatim-excerpt pipeline is removed:** no heading or marker extraction, no "from `<path>` at `<sha>`" captions.<br>- Dialogue, agent messages and gate decisions are authored content (`server/content/`), written for the story.<br>- File views on the site show real paths with lines written for the story.<br>- Real imagery and screenshots still come from the repo through slots. |
+| **Q6: no time or cost** | Nothing on the site shows a timing, duration, cost or token figure.<br>- The "receipt" chapter becomes **The paper trail**: counts of commits by role, briefs, reports, images and gates, with no dates.<br>- A test fails if authored copy contains a time or cost figure. |
+| **Q7 D: NVIDIA GPU required** | The site and setup copy say so plainly (`site.gpuNotice`, the FAQ). |
+| **Q9: no analytics** | No analytics, no cookies, no banner. The CSP allows no third-party origin at all. |
+| **Q10 C: history rewrite at G4** | The real git log stays. Vercel builds clone only 10 commits, so counts come from a **committed snapshot** (§2), not a live `git log` in CI. The version 1 snapshot plan for a squashed public repo isn't needed. |
+| **Q11 A: Klein may ship** | `server/content/licence-policy.json` says `"klein": "allowed"`. The licence guard still walks every image's whole provenance chain and still refuses anything non-commercial. |
+
+**Kept from version 1:** Astro 7 static, the licence guard, redaction with a post-build scan, the image pipeline (AVIF and WebP), slots for later gates, `llms.txt` and `story.md`, and the component rules for a strict CSP.
 
 ## Requirements that drive the stack
 
 | Requirement (source) | Implication |
 |---|---|
-| Show real artefacts from this repo, not mock-ups (BRIEF, `SUMMARY.md` insight 1) | A **build-time content pipeline** that reads `projects/how-it-works/`, `.team/` and `git log`, never a CMS |
-| Later gates' artefacts don't exist yet (story outline, constraint 1) | **Slots**: a missing artefact renders "This happens at Gate N", the build never fails for it, and the slot fills automatically once the files exist |
-| Excerpts must stay true to their source (constraint 4) | Quote by **marker or heading** from the real file; the build fails if a marker disappears |
-| Chapter 8 is the git log (constraint 2) | CI checks out **full history** (`fetch-depth: 0`) |
-| Concept PNGs and contact sheets (constraint 3) | **AVIF/WebP at responsive widths** at build time; masters stay in the repo, outside `dist/` |
-| No runtime fetching; at most two small JS islands (constraint 5) | **Static HTML**, no framework runtime, vanilla JS islands |
-| `llms.txt` and a markdown twin (constraint 6) | Generated from the same content by build endpoints |
-| GitHub Pages project site under `/website-building-team/` (constraint 7) | `base` path everywhere; a link check in CI |
-| WCAG 2.2 AA, reduced motion, no cookie banner (`constraints.md`) | CSS-first motion under `@supports` and `prefers-reduced-motion`; nothing stored except a user-requested motion preference |
-| Performance budget: LCP < 2.5 s, CLS < 0.1, JS < 150 KB | No client framework; images sized and lazy; fonts self-hosted |
-| Licences: only commercially licensed generated images ship; no third-party screenshots (`constraints.md`) | The pipeline **refuses** images whose sidecar shows a non-commercial workflow, and never reads `research/refs/` |
-| Publishing needs the human's approval (BRIEF: Gate 1 plan, Gate 4 go-live) | The deploy job waits behind a **GitHub environment approval**, so Gate 4 is enforced by the tooling |
+| A highly creative, polished showcase (G1 Q3) | Static HTML plus whatever client code a set piece earns, self-hosted and bundled. No CDN, so the CSP stays `'self'` |
+| The story is written, not mined (G1 Q5) | Authored content collections in `server/content/`, validated by Zod schemas in `server/contracts/` |
+| Real imagery from later gates (Concept art, the G3 contact sheet, Review's audit) | **Slots:** pending until the files exist ("This happens at Gate N"), filled automatically, and strict at release |
+| Setup facts must match the kit (requirements, the `--check` output) | Read from `BOOTSTRAP.md` at build time when available; a committed snapshot otherwise, with a drift test |
+| Vercel isolates the Root Directory and clones 10 commits | Root Directory is `projects/how-it-works`; kit facts and counts come from committed snapshots |
+| WCAG 2.2 AA, reduced motion, no cookie banner | Motion only under `prefers-reduced-motion: no-preference` and the motion toggle; nothing stored except the motion preference |
+| Only commercially licensed generated images ship | The licence guard walks every sidecar's chain; the build fails otherwise |
+| Going live needs the human's approval (G4) | Vercel Deployment Protection stays on "All deployments" until Gate 4 (§3) |
 
 ## 1. Framework and build
 
-### Option A: Astro 7, static output (recommended)
+**Astro 7.4.4, `output: 'static'`, no adapter** (a static Astro site needs none on Vercel: "Your Astro project is a static site by default. You don't need any extra configuration to deploy a static Astro site to Vercel", [Astro docs](https://docs.astro.build/en/guides/deploy/vercel/)).
 
-- **Framework:** `astro` 7.4.4 (npm, 2026-11-01), `output: 'static'`, no UI framework integration. Components are `.astro` files, so they ship zero JS unless a `<script>` is added.
-- **Content:** Astro content collections with **custom loaders** from the Content Loader API. The built-in `glob()` loader reads Markdown, JSON and YAML from any folder on disk, including outside `web/` ([Astro Content Loader API](https://docs.astro.build/en/reference/content-loader-reference/)). A custom loader handles the git log and slots (§2).
-- **Images:** `astro:assets` `<Picture formats={['avif','webp']} widths=[…]>`, which uses sharp at build time.
-- **CSP:** Astro's built-in CSP (`security.csp`, stable since Astro 6 per [Report URI's Astro guide](https://docs.report-uri.com/frameworks/astro/); it began as [an experimental flag in 5.9](https://docs.astro.build/en/reference/experimental-flags/csp)). It hashes Astro's own inline scripts and styles and emits a `<meta http-equiv="Content-Security-Policy">`, which is the only option on Pages. **Limit:** `<ClientRouter />` view transitions are incompatible with it, so we use cross-document `@view-transition` in CSS if we want transitions at all.
-- **Component rules under this CSP (Review checks them):**
-  - no inline event handlers;
-  - no `style="…"` attributes, because a hashed `style-src` does not cover them;
-  - no `define:vars`. Values travel through data attributes and classes instead.
-- **Fonts:** self-hosted woff2, through Astro's fonts API or plain `@font-face`. Only the display face is preloaded, and the OFL text ships alongside. This fits `font-src 'self'`.
-- **Why:** it is the playbook default for content sites. It already does everything the outline needs: content from files, image pipeline, static HTML, zero JS by default, base-path support and a documented Pages deploy. Research's evidence points to exactly this shape.
+No UI framework by default. Front-end may add a small library for a set piece (canvas, WebGL) if it earns its place. It must be bundled, not loaded from a CDN, with a static or reduced-motion fallback.
 
-### Option B: Eleventy 3 + a sharp script
+Alternatives considered in version 1 (Eleventy 3, a Next.js 16 static export) are still worse fits. The Vercel move favours neither.
 
-`@11ty/eleventy` 3.1.7. Very light and fully static. But we would hand-build the image pipeline (eleventy-img), CSP hashing and typed content schemas. It's more glue for the same result.
+**Required `astro.config` settings**, all proven in a local build (§5):
 
-### Option C: Next.js 16 static export
-
-`next` 16.4.3 with `output: 'export'`. It ships the React runtime (well over our two-island budget), its images can't be optimised in a static export without extra tooling, and its server features would go unused. It's the wrong tool for a static story.
-
-**Decision: A.** `web/` is an Astro project; `server/` holds the content pipeline that `web/` imports (§2). Node 24 LTS (as installed), npm with a committed lockfile.
-
-## 2. Content pipeline
-
-### Where the code lives
-
-| Path | Owner | What |
-|---|---|---|
-| `projects/how-it-works/server/content/` | Backend | Loaders, slot registry, excerpt extraction, git log reader, redaction, licence guard (plain TypeScript, imported by `web/`) |
-| `projects/how-it-works/server/contracts/` | Backend | Types and Zod schemas for every collection: the contract Front-end builds against (published in `api/contract.md` before Gate 3) |
-| `projects/how-it-works/server/contracts/fixtures/` | Backend | Realistic fixtures for slots that are still empty, so Gate 3 variations can show filled *and* pending states |
-| `projects/how-it-works/web/src/content.config.ts` | Front-end | Imports the loaders and schemas; pages and components render them |
-
-### How sources become content
-
-| Source (repo paths) | Collection | Loader |
-|---|---|---|
-| `projects/how-it-works/BRIEF.md`, `research/**/*.md` (not `refs/`), `api/*.md`, `gates/*/README.md`, `gates/*/review.md`, `review/*.md`, `variants/*.md`, `.team/roles/*.md` | `docs` | `glob()` with the repo root as `base` |
-| `.team/DECISIONS.md` | `decisions` | Custom: parses the table and filters `Project = how-it-works` or `kit` |
-| `concepts/*/**/*.png` plus the `.json` sidecar next to each | `images` | Custom: pairs image and sidecar; applies the licence guard (below) |
-| `screenshots/**/manifest.json` (written by `tools/screenshot.mjs`) | `screenshots` | Custom: reads the manifests and resolves each PNG |
-| `git log --format=%H%x09%aI%x09%s` | `commits` | Custom: runs git at build time, parses `<role>: <what>`, computes per-role counts and phase timestamps |
-| `server/content/slots.ts` (the registry) | `slots` | Custom: resolves each slot to `filled` or `pending` |
-
-### Slots
-
-The registry lists every artefact the story and `/made/` expect:
-
-```ts
-{ id: 'g2-style-tiles', chapter: 5, gate: 'G2', sources: ['projects/how-it-works/concepts/*/style-tile.png'], min: 3 }
+```js
+export default defineConfig({
+  site: 'https://<production domain>',      // set at Gate 4
+  trailingSlash: 'always',                   // matches vercel.json "trailingSlash": true
+  build: { inlineStylesheets: 'never' },     // no <style> blocks: style-src 'self'
+  vite: {
+    resolve: { dedupe: ['zod'] },            // server/contracts uses Astro's copy of zod
+    server: { fs: { allow: ['..'] } },       // dev server may read ../server
+    build: { assetsInlineLimit: 0 },         // no inline <script>: script-src 'self'
+  },
+});
 ```
 
-At build time each slot resolves to:
-- `{ status: 'filled', items }`, or
-- `{ status: 'pending', gate: 'G2', label: 'This happens at Gate 2' }`.
+**Component rules (Review checks them; `server/scripts/check-dist.ts` enforces the first three on every build):**
+- no inline `<script>`; any script that must run before paint, such as the motion preference, is a small file in `public/` loaded with `<script src>`;
+- no `<style>` blocks and no `style="…"` attributes;
+- no `define:vars` and no inline event handlers;
+- no CDN or third-party origin.
 
-Components switch on `status`, so a missing slot never breaks the build and is never filled with lorem ipsum. The slot fills on the next build after the files land.
+## 2. Content and data
 
-For the release build, `STRICT_SLOTS=1` turns any pending slot into a build error. This makes "every slot is filled" a technical check before Gate 4. The `/made/` "Messages" slot is only registered if Q5 is approved.
+The full contract is in `api/contract.md`. In short:
 
-### Excerpts
-
-A doc can be quoted in two ways:
-- **By heading:** `excerpt: { file: 'research/SUMMARY.md', heading: 'Three insights that should shape the design' }`.
-- **By marker:** wrap a passage in `<!-- excerpt:hero-claim -->` … `<!-- /excerpt -->` in the source file and quote it by that marker.
-
-The text is extracted verbatim and rendered with a "from `<path>` at `<short sha>`" caption linking to the file on GitHub. If the file exists but the heading or marker is gone, the build **fails**, so the site cannot silently drift from the repo. If the file doesn't exist yet, that is a slot (pending), not an error.
-
-### Redaction (Q5 "curated")
-
-Every string from a source passes through a redaction step before it reaches HTML. One pattern list (`server/content/redact.ts`) drives both the redaction step and the post-build scan, so the two can't drift apart:
-
-| What | Pattern (JS regex, case-insensitive unless noted) | Replaced with |
+| Collection | Source | Loader |
 |---|---|---|
-| Windows paths, either slash (`F:\ArtGen\…`, `F:/ArtGen/…`, `C:\Users\…\AppData\…`) | `\b[A-Za-z]:[\\/][^\s"'<>()\]]*` | the repo-relative path if it is inside the repo, else `<local path>` |
-| Git Bash / MSYS paths (`/c/Users/…`, `/f/ArtGen/…`) | `(?<![\w.])/[a-z]/(?:Users\|home\|[A-Za-z][\w .-]*)/[^\s"'<>()\]]*` | same |
-| POSIX home paths (`/home/…`, `/Users/…`) | `(?<![\w.])/(?:home\|Users)/[^/\s]+[^\s"'<>()\]]*` | same |
-| UNC paths | `\\\\[^\\\s]+\\[^\s"'<>()\]]*` | `<local path>` |
-| T3 thread ids | `thread:mcp:[0-9a-f-]{36}:[\w.:-]+` and `t3-thread://\S+` | `<thread>` |
-| Environment, thread and other UUIDs | `\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b` | `<id>` |
-| Email addresses | `[\w.+-]+@[\w-]+(?:\.[\w-]+)+` | `<email>` |
+| `site`, `roles`, `gates`, `scenes`, `setup`, `credits` | `server/content/*.json`, authored (G1 Q5) | Astro `file()` |
+| `chapters` | `server/content/chapters/*.md`, authored; frontmatter plus narrative | Astro `glob()` |
+| `requirements` | `BOOTSTRAP.md` §1 when the kit is checked out; else `server/content/generated/requirements.json` | `requirementsLoader()` |
+| `slots` | `server/content/slots.json` registry → real files in `concepts/`, `screenshots/`, `review/`, `gates/` | `slotsLoader()` |
+| `numbers` | `git log` and file counts when the full kit is available; else `server/content/generated/numbers.json` | `numbersLoader()` |
 
-Notes:
-- **Repo root first.** Before the patterns run, the repo root found at build time is replaced with nothing, in every spelling: back- and forward-slash, either drive-letter case, and the `/f/…` Git Bash form. This matters because the patterns stop at whitespace, and this repo's folder name contains a space (`Website Test`). In effect, a path inside the repo is rewritten to its repo-relative form, so `F:/ArtGen/Website Test/projects/how-it-works/BRIEF.md` reads `projects/how-it-works/BRIEF.md`. That keeps it useful as a citation. Other paths become `<local path>`.
-- **Git commit hashes are not touched.** They are hex but not UUID-shaped.
-- **The post-build scan** runs the same list over every text file in `dist/` (`.html`, `.txt`, `.md`, `.xml`, `.json`, `.js`, `.css`) and fails CI with the file and line. It covers anything the redaction step missed, such as text in an image `alt` or a JSON-LD block.
-- **Checked now:** these patterns were run against 12 real strings from this repo (all redacted) and 5 that must survive (all kept: commit hashes, URLs, repo-relative paths, ratios such as `4.5:1`, commands).
-- **Unit tests** use real strings from this repo's reports: forward- and back-slash drive paths, `/c/Users/…`, a `thread:mcp:…` id, an environment UUID and an email. There is also a negative case: a commit hash and a URL must survive.
+**Snapshots.**
+- `node server/scripts/sync-kit-facts.ts` refreshes both snapshots from the full checkout.
+- A test fails if the requirements snapshot drifts from `BOOTSTRAP.md`.
+- The numbers snapshot is refreshed before Gate 4 and after the Q10 history rewrite, because counts move with every commit.
 
-### Licence guard
+**Slots.**
+- Unchanged from version 1, except that image paths are resolved for Astro's `image()` helper, so `<Picture>` optimises files that live outside `web/`.
+- `CONTENT_SLOTS=filled|pending` forces a state for the Gate 3 variations: "filled" uses our own kit smoke-test renders and dry-run screenshots, which are stand-ins and say so in their captions.
+- `STRICT_SLOTS=1` fails the release build if any slot is still pending.
 
-An image is published only if its **whole provenance chain** passes, not just the top-level workflow. An upscale (WEB6b) records the image it started from in a nested `source_provenance`, and that source may be FLUX Klein output. The guard walks the chain the same way Review's `docs/review/tools/licences.mjs` does:
+**Licence guard (kept).**
+- Every generated image's sidecar is walked in full, including nested `source_provenance` and provenance stored as a JSON string.
+- An image fails on a workflow outside WEB1 to WEB5 and WEB6b, on a non-commercial model or licence anywhere in the chain, or on a missing sidecar.
+- FLUX Klein follows `licence-policy.json`, now `allowed` (Q11 A).
+- Review's `docs/review/tools/licences.mjs` stays the independent check.
 
-1. **Find the sidecar:** `<image>.json` or `<image-without-ext>.json`. No sidecar, or invalid JSON: **fail**, because there is no recorded provenance.
-2. **Walk every node of the sidecar,** including nested `source_provenance`, and parse nested provenance that is stored as a JSON string. Collect:
-   - every `workflow` id;
-   - every model name (`model`, `upscale_model`, `unet_name`, `ckpt_name`, `clip_name`, `vae_name`, `lora_name`, `control_net_name`);
-   - every `licence`/`license` string.
-3. **Fail** if anything in the chain is:
-   - a workflow outside the allow-list (WEB1 to WEB5, WEB6b);
-   - a non-commercial model or licence (`/ultrasharp|non-?commercial|cc[ -]by-nc|by-nc-sa/i`). WEB6's 4x-UltraSharp is CC BY-NC-SA, so it is for concept boards only.
-4. **FLUX Klein follows the human's Gate 1 answer to Q11** (Klein is free for commercial use only under US$5M annual revenue). The answer is recorded in `server/content/licence-policy.json` as `{ "klein": "allowed" | "boards-only" }`:
-   - **Q11 A:** Klein in the chain passes. The image is listed on `/credits/` with the AI-imagery disclosure.
-   - **Q11 B:** Klein anywhere in the chain fails, so shipped images are Z-Image Turbo (Apache-2.0) only.
-   - **Not yet answered:** Klein passes in development and fails in the strict release build. Gate 4 can't ship an unanswered licence question.
-5. **Report.** Failures name the image, the offending node's path in the chain (for example `source_provenance.source_provenance.model`) and a pointer to `artgen/README.md`.
+**Redaction (kept).**
+- One pattern list (`server/content/redact.ts`) covers drive paths with either slash, Git Bash and POSIX home paths, UNC paths, T3 thread ids, UUIDs and emails. The repo root is replaced first, which handles the space in this repo's folder name.
+- It is used to clean the captured `--check` output, and by the post-build scan of `dist/`.
 
-The same check runs over `web/public/assets/generated/`, and `research/refs/` is never read. Review's `licences.mjs` stays the independent check at Gates 2 and 4: same rules, separate code.
+**Removed (Q5, Q6, Q10):**
+- excerpt markers and verbatim quotes;
+- source captions with commit hashes;
+- dates and durations in the paper trail;
+- the squashed-repo git-log snapshot plan.
 
-### Images
+**Second outputs (kept, Front-end builds them from the same collections):** `llms.txt`, `story.md`, `sitemap-index.xml` (`@astrojs/sitemap`), `robots.txt`, and JSON-LD `SoftwareSourceCode`.
 
-- PNG masters stay where they are.
-- At build, `<Picture>` emits AVIF and WebP. **Front-end sets the widths and `sizes` per component.** The working default for artefacts is 400, 800, 1200 and 1600, plus 2400 only for a full-bleed hero. Explicit `width`/`height` keep CLS at 0, and images below the fold use `loading="lazy"`.
-- Contact sheets are rebuilt from the individual screenshots at each width rather than shipped as one huge PNG.
-- **Size estimate:** about 60 images × 4 widths × 2 formats × ~80 KB ≈ **40 MB**, against Pages' 1 GB limit. A CI check fails the build if `dist/` exceeds **150 MB** (the budget, not the platform limit).
-- **Phase 4 spike (first thing, Backend with Front-end):**
-  1. **Images outside `web/`:** Vite only reads files outside the project root if `server.fs.allow` includes the repo root (set in `astro.config`). If `astro:assets` refuses assets outside `web/`, the fallback is a 30-line prebuild step that copies the selected masters into a git-ignored `web/src/assets/artefacts/`. The rest of the design is unchanged.
-  2. **CSP:** render a `<Picture>` and the three JS features under the real meta CSP. Confirm there are no inline `style` attributes and **zero CSP violations** in the console.
+## 3. Hosting and deploy: Vercel
 
-### Git log: live or snapshot (Q10)
+**Project layout on Vercel:**
+- **Root Directory: `projects/how-it-works`.** Vercel isolates the Root Directory: "Your app will not be able to access files outside of that directory. You also cannot use `..` to move up a level" ([Configure a build](https://vercel.com/docs/builds/configure-a-build)). `web/` imports `../server`, so the root has to be the project folder, not `web/`. Kit files above it (`BOOTSTRAP.md`, `.team/`) are covered by the snapshots.
+- **`projects/how-it-works/vercel.json`** (Backend), which sets:
+  - `framework: null`;
+  - install `npm ci --prefix web`;
+  - build `npm run build --prefix web && node server/scripts/check-dist.ts web/dist`;
+  - output `web/dist`;
+  - `trailingSlash: true`;
+  - headers (below).
 
-Chapter 8 ("The receipt") and `/made/` read the commit history. Where it comes from depends on the human's answer to Q10:
+  The post-build check runs inside the Vercel build, so a page with an inline script, a leaked path or an over-budget `dist/` never deploys.
+- **Node:** 22.x (22.18 or later) or 24.x in Project Settings. The check script is TypeScript run directly by Node.
+- **Git history:** Vercel clones with `--depth=10` (same page). Nothing in the build needs more, because counts come from the snapshot.
 
-| Q10 | Public history | Source for chapter 8 |
+**Headers (all routes):**
+
+| Header | Value |
+|---|---|
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests` |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), browsing-topics=()` |
+| `Strict-Transport-Security` | `max-age=63072000; includeSubDomains` |
+| `Cross-Origin-Opener-Policy` | `same-origin` |
+| `X-Frame-Options` | `DENY` (older browsers; `frame-ancestors` covers modern ones) |
+| `Cache-Control` on `/_astro/*` | `public, max-age=31536000, immutable` (hashed file names) |
+
+As a header, the CSP can set `frame-ancestors`, which the version 1 meta tag couldn't. Vercel's preview toolbar injects its own script on previews and the CSP will block it. That's acceptable, and the production site doesn't use the toolbar.
+
+**Previews per branch.**
+- Every push to a branch other than the production branch (`master`) gets a preview deployment, with URLs `<project>-git-<branch>-<scope>.vercel.app` and a per-commit URL ([Generated URLs](https://vercel.com/docs/deployments/generated-urls)).
+- This suits **Gate 3**: each variant branch (`variant/how-it-works-g3-a-…`) gets its own preview link the human can open on a phone, in addition to the contact sheet.
+- It only works once the Vercel project exists. Previews stay private under Deployment Protection (below). The local workflow (`tools/variants.mjs`) remains the default if the human doesn't want to create the project before Gate 4.
+
+**Plan.**
+- Hobby is free but "restricted to non-commercial personal use only". Commercial use is anything "used for the purpose of financial gain of anyone involved in any part of the production of the project" ([Fair use guidelines](https://vercel.com/docs/limits/fair-use-guidelines)).
+- A personal showcase of a free, open-source kit with no ads or sales fits Hobby *(inferred; the human decides)*.
+- If the site will market paid services, Pro is US$20 per deploying seat per month ([Pro plan](https://vercel.com/docs/plans/pro-plan)).
+- Hobby can deploy from a private repo on a personal GitHub account; the restriction applies to repos owned by GitHub organizations ([Vercel Git docs](https://vercel.com/docs/git)) *(inferred from that wording)*.
+
+**Gate 4 on Vercel.** Vercel has no required-reviewer step on Hobby, so the approval runs on **Deployment Protection**:
+- "Standard Protection … protects all domains except production domains"; "All Deployments" secures preview and production alike ([Deployment Protection](https://vercel.com/docs/deployment-protection)).
+- Hobby includes Vercel Authentication "for preview and production deployments" ([Hobby plan](https://vercel.com/docs/plans/hobby)).
+
+The plan:
+1. **Until Gate 4:** protection is set to **All Deployments**. Only the human, signed in, can see any deployment, production included.
+2. **Gate 4 "ship it" =** the human switches protection to **Standard**. Production becomes public; previews stay private.
+
+**What the human does (only at Gate 4, or at Gate 3 if they want variant previews). The team never logs in, links or deploys.**
+1. **Vercel account:** Hobby, or Pro if the site is commercial.
+2. **Do the Q10 history rewrite first** (PM, with all agents paused), then push. Vercel then never sees the old history.
+3. **Create the project without deploying:** run `npx vercel link` in `projects/how-it-works`, or import in the dashboard. *The first deployment of a new project is always production* ([Environments](https://vercel.com/docs/deployments/environments)), so with the dashboard import, set protection right after the first deploy.
+4. **Settings:**
+   - Root Directory `projects/how-it-works`;
+   - Framework "Other" (`vercel.json` overrides it);
+   - Node 22.x or 24.x;
+   - Deployment Protection "All Deployments" until go-live;
+   - no environment variables are needed: there are no secrets.
+5. **Connect Git:** grant the Vercel GitHub app access to `LiamLacey95/website-building-team`; the production branch is `master`.
+6. **Go live:** switch protection to Standard. Optionally add a custom domain and set `site` in `astro.config`.
+7. **After launch:** nothing runs at request time; there's nothing to patch, back up or pay for on Hobby.
+
+## 4. Interactivity
+
+- **The 10 KB cap is lifted** (G1 Q3). The playbook budget is the ceiling: JS under 150 KB gzipped on content pages, LCP under 2.5 s and CLS under 0.1 on mobile.
+- **Must stay true:** every chapter works without JS and with reduced motion. Motion runs only under `prefers-reduced-motion: no-preference` and when the motion toggle is on. No scroll-jacking; drag has a button alternative (WCAG 2.5.7).
+- **Still planned, from version 1:** copy button, motion toggle, contact-sheet width switcher, CSS scroll-driven effects under `@supports`, and optional CSS view transitions. The motion pre-paint snippet becomes an external `public/` script (CSP).
+- **New option:** a canvas or WebGL set piece through a small bundled library, with a static fallback.
+- **Front-end decides** at Gate 3, inside these limits.
+
+## 5. Proof: local Vercel build (no account)
+
+Run on 2026-11-01 against a copy of `projects/how-it-works` with no kit above it, which is how Vercel sees it. It used `npx vercel@65.9.0` and a hand-written, git-ignored `.vercel/project.json`; there was no login, no `vercel pull` and no link.
+
+- `astro build` with the contract: all ten collections synced. The requirements and numbers loaders fell back to the snapshots, and every slot filled from the sample images (`CONTENT_SLOTS=filled`).
+- `<Picture>` optimised images from `server/contracts/fixtures/` (outside `web/`) to AVIF and WebP. **This answers the version 1 Phase 4 question.**
+- With the two settings in §1, the HTML had **no inline `<script>`, no `<style>`, no `style=`**. Without `assetsInlineLimit: 0`, Astro inlined the small module script, which the header CSP would block.
+- `vercel build`: exit 0. The `.vercel/output/` Build Output API v3 had `config.json` and `static/`, and the generated routes carry every header above plus the trailing-slash redirects.
+- `check-dist.ts` ran inside the Vercel build: clean. Tested against a deliberately broken page, it caught the inline script, the `<style>`, the `style=`, a drive path and an email.
+- The build needed no `server/node_modules`: Zod resolved through Astro's copy (`dedupe`).
+
+**Note for Front-end:** for a WebP source, `<Picture>`'s default PNG fallback came out larger than the source (up to about 1.1 MB). Set `fallbackFormat` (for example `webp` or `jpg`) per component.
+
+## Cost
+
+| Item | Plan | US$/month |
 |---|---|---|
-| A, B | Unchanged | Live `git log` in CI (`fetch-depth: 0`) |
-| C (rewrite to remove the screenshots) | Same commits, new hashes | Live `git log`. Hashes are read at build time, so they match whatever is public |
-| **D (fresh squashed public repo)** | One initial commit | **A committed snapshot**, exported from the working repo just before the squash |
+| Hosting | Vercel Hobby (non-commercial) | 0 |
+| | Vercel Pro, only if the site is commercial | 20 per deploying seat |
+| CMS, analytics, fonts | none, none, self-hosted OFL | 0 |
+| Domain (optional) | any registrar | about 10 to 20 a year *(not checked)* |
 
-**Snapshot format and location:** `projects/how-it-works/server/content/git-log.snapshot.json`, committed. It is plain JSON, so it's readable in the public repo, and redacted by the same patterns as everything else:
+## Accounts and secrets
 
-```json
-{
-  "exportedAt": "2026-11-20T16:02:11Z",
-  "sourceHead": "<full sha of the working repo's HEAD at export>",
-  "sourceRepo": "private working copy",
-  "count": 214,
-  "commits": [
-    { "sha": "062f2ca1…", "short": "062f2ca", "date": "2026-11-01T10:12:03Z",
-      "role": "pm", "subject": "team playbook, roles, setup briefs",
-      "files": 18, "areas": ["team"] }
-  ]
-}
-```
-
-- **Fields** are the minimum the chapter needs: hash, ISO date (UTC), the role parsed from the `<role>: ` prefix (`other` when there's none), subject, files changed, and coarse areas (`team`, `kit`, `research`, `concepts`, `web`, `server`, `review`, `gates`).
-- **No author names or emails**, and no file paths. Subjects pass through redaction.
-- **Order:** oldest first, `git log --reverse`.
-
-**Exporter:** `node projects/how-it-works/server/content/export-git-log.mjs [--out <file>]`. It is about 60 lines, Node built-ins only, and I'll write it in Phase 5 with tests.
-- It runs `git log --reverse --format=%H%x1f%aI%x1f%s --shortstat` plus `--name-only` for the areas.
-- It refuses to run on a shallow clone.
-- It prints the count and the date range so the PM can check them before squashing.
-- It's ready under every Q10 answer and only needed under D.
-
-**When, under D:** it's the last commit in the working repo before the squash. Order: export, commit the snapshot, Review checks it (the redaction scan plus a count against `git rev-list --count HEAD`), then the PM creates the squashed public repo from that tree. The snapshot is then part of the public repo's single commit.
-
-**How the loader chooses:**
-- If `git-log.snapshot.json` exists, chapter 8 shows the snapshot's commits, then any live commits after the squash commit (fixes made in the public repo after launch). The caption says so plainly: *"History to <date>, exported from the team's working repository; the public repository starts from a single squashed commit."*
-- Snapshot hashes are shown as text, not links, because those commits don't exist in the public repo. Live commits link to GitHub.
-- Without a snapshot, the loader uses the live log. A shallow clone fails the release build rather than showing a wrong count (see Risks).
-
-### Second outputs
-
-- `src/pages/llms.txt.ts` and `src/pages/story.md.ts` are build endpoints. They render the same collections as plain text and Markdown.
-- `sitemap-index.xml` comes from `@astrojs/sitemap`, plus `robots.txt`.
-- JSON-LD `SoftwareSourceCode` in the head ([schema.org](https://schema.org/SoftwareSourceCode)).
-
-### Tests
-
-The pipeline gets unit tests with `node:test` (no extra dependency). They cover:
-- slot resolution;
-- excerpt extraction (heading, marker, missing marker);
-- commit parsing, and choosing between snapshot and live log;
-- redaction patterns, with real strings from this repo plus negative cases;
-- the licence guard on nested chains: a WEB6b upscale of a Klein source under each Q11 policy, and an UltraSharp node three levels deep. Fixtures live in `server/content/__fixtures__/`. CI runs them before the build.
-
-## 3. Hosting and deploy
-
-### GitHub Pages from this repo via GitHub Actions (recommended)
-
-- **URL:** `https://liamlacey95.github.io/website-building-team/`, with `site: 'https://liamlacey95.github.io'` and `base: '/website-building-team'` in `astro.config`. Every link and asset goes through `import.meta.env.BASE_URL`, and a CI link check on `dist/` catches misses.
-  - A custom domain later means setting `site` to the domain, removing `base` and adding a `CNAME` ([Astro deploy guide](https://docs.astro.build/en/guides/deploy/github/)).
-- **Workflow:** `.github/workflows/how-it-works.yml`, which I'll write in Phase 5. Its steps:
-  1. `actions/checkout` with `fetch-depth: 0` (full history for the git log).
-  2. `actions/setup-node` with Node 24 and an npm cache.
-  3. `npm ci`, pipeline tests, `astro build` (with `STRICT_SLOTS=1` on the release run).
-  4. Checks on `dist/`: link and base path, redaction scan, size budget.
-  5. `actions/upload-pages-artifact`, then `actions/deploy-pages@v4` with permissions `pages: write`, `id-token: write` ([deploy-pages README](https://github.com/actions/deploy-pages)). **This deploy job is only added at Gate 4, after the reviewer exists** (see the order below). Until then the workflow stops at step 4.
-
-  Action versions get pinned when I write the workflow.
-- **CSP (meta tag, emitted by Astro):** `default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' <hashes>; script-src 'self' <hashes>; base-uri 'self'; form-action 'none'; object-src 'none'`.
-  - A meta tag can't set `frame-ancestors` or reporting ([GitHub community discussion](https://github.com/orgs/community/discussions/54257)), so we accept that limit.
-  - Analytics, if chosen, add one origin (§5).
-- **Limits** ([GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)): published site ≤ 1 GB, soft bandwidth 100 GB/month, deploys time out after 10 minutes, and the 10 builds/hour limit doesn't apply to custom Actions workflows. We're well inside all of them.
-- **Gate 4 enforced, on a public repo only:** the deploy job uses the `github-pages` environment with a **required reviewer (the human)**. CI can build and check every push, but nothing goes live until the human approves the deployment.
-  - **Caveat:** GitHub says *"If you are on a GitHub Free, GitHub Pro, or GitHub Team plan, required reviewers are only available for public repositories"* ([Deployments and environments, "Required reviewers"](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)). The approval gate exists only on a **public** repo, so under Q2 B (a private repo on Pro or Team) it is **lost**; see the table below.
-  - **Order under Q2 A, at Gate 4**, so the first deploy can't run unapproved:
-    1. Do whatever Q10 requires (remove the screenshots, rewrite history, or create the fresh public repo).
-    2. Make the repo public.
-    3. Create the `github-pages` environment and set the human as a **required reviewer**. Restrict deployment branches to `master`.
-    4. Only then merge the deploy workflow (`.github/workflows/how-it-works.yml`) to `master`. Its first run then waits for approval.
-
-    Until step 4, CI is a build-and-check workflow with **no deploy job**, so nothing can be published by accident while the repo is private or before the reviewer exists.
-
-### Preview builds
-
-**No official per-branch Pages previews.** `actions/deploy-pages` has a `preview` input, but its README says it is *"only in alpha currently and is not available to the public"* ([deploy-pages](https://github.com/actions/deploy-pages)).
-
-Third-party actions such as `rossjrw/pr-preview-action` need branch-based (`gh-pages`) publishing, which conflicts with Actions-based deploys and would publish unreviewed work publicly. **Not recommended.**
-
-Instead:
-- Every push and pull request **builds and checks** the site, and uploads `dist/` as a downloadable workflow artifact.
-- Gate 3 variants are reviewed locally anyway (`node tools/variants.mjs dev all`) and screenshotted into the gate packet.
-
-### What makes it public: the private-repo question (Q2)
-
-**Facts:**
-- GitHub Free publishes Pages **only from public repositories**. GitHub's plans page lists Pages under "Advanced tools and insights in private repositories" for **GitHub Pro** and **GitHub Team** ([GitHub's plans](https://docs.github.com/en/get-started/learning-about-github/githubs-plans); [pricing](https://github.com/pricing) shows Free "Public repositories", Team "Included").
-- A site published from a private repo is still visible to anyone on the internet. Only **GitHub Enterprise Cloud** organizations can restrict a site to people with repo access ([Pages visibility](https://docs.github.com/en/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site)).
-- **Prices:**
-  - Team is **US$4 per user per month** ([pricing](https://github.com/pricing)) and needs an **organization**, so the repo would move from `LiamLacey95` to an org.
-  - **GitHub Pro (personal) isn't priced on the current pricing page.** It has historically been about US$4/month, but I couldn't confirm that, so check it before choosing.
-- Actions minutes: unlimited on public repos; private repos draw on the plan's monthly allowance. Our builds are a few minutes each, well within any plan.
-
-**What that means for the human's options:**
-
-| Option (Q2) | Cost | Notes |
-|---|---|---|
-| **A. Make the repo public at Gate 4; Pages on GitHub Free** (recommended) | **$0** | The kit is meant to be cloned, so it goes public anyway. Until G4 the repo stays private and CI only builds and checks (no deploy job). At G4, follow the four-step order above: Q10, then public, then reviewer, then the deploy workflow. Before going public, run Review's secret and personal-data scan. **Gate 4 approval: enforced by GitHub.** |
-| B. Keep the repo private; buy Pro (personal) or Team (org, $4/user/month) | Pro: unconfirmed, about $4/month; Team: $4/user/month plus moving to an org | The site is public but the code isn't, which contradicts "anyone can clone it". **The required-reviewer rule isn't available for private repos on Pro or Team, so the Gate 4 approval gate is lost.** The fallback is procedural: the deploy job runs only from a manual `workflow_dispatch` that the human triggers. Only worth it if the kit must stay private. |
-| C. Another static host from the private repo (Cloudflare Pages, Netlify) | $0 on free tiers (`docs/api/stack-playbook.md`) | Another account to own; headers become possible (a real CSP header and `frame-ancestors`). Nothing in the stack changes except the deploy step. **Gate 4 approval: the host's own control.** For example, production deploys only from a `release` branch the human merges into, or a manual production promote. It's not a GitHub environment. |
-
-## 4. Interactivity budget
-
-No client framework. **One shared vanilla TypeScript module** (`web/src/scripts/site.ts`, bundled by Astro) holds the copy button, the motion toggle and the width switcher. That keeps the story outline's "at most two small JS islands" honest: one module, plus the tiny head snippet for motion. **Hard cap: 10 KB gzipped for the whole site**, against the 150 KB budget. All of it is progressive enhancement: with JS off, every story, artefact and link still works.
-
-| Feature | Where | JS (gzipped, est.) | Without JS |
+| Account | Owner | Secrets | Notes |
 |---|---|---|---|
-| Copy button for the setup sentence | Hero, chapter 9, `/setup/` | ~1 KB (`navigator.clipboard`, `aria-live` "Copied") | Selectable `<code>` block with "Select and copy" |
-| Reduce-motion toggle | Header, every page | ~1 KB: sets `data-motion="off"` on `<html>`. Persisted in `localStorage` because the visitor asked for it (strictly necessary, so no banner; named in the privacy note). An inline head snippet (CSP-hashed) applies it before first paint, so there's no flash | Hidden; CSS still honours the OS setting |
-| Contact-sheet width switcher | Chapter 6, `/made/` | ~1 KB: buttons, not swipe (WCAG 2.5.7) | All widths shown stacked |
-| Scroll-driven effects (diamond draw, artefacts sliding in, prompt token) | Home story | **0 KB.** Pure CSS inside `@supports (animation-timeline: view())`, `@media (prefers-reduced-motion: no-preference)` and `:root:not([data-motion="off"])` | Static story; content is never hidden at `opacity: 0` by default |
-| Chapter nav and progress rail; mobile nav | Home; every page | 0 KB: anchor links, `<details>` or popover; current chapter by CSS scroll-driven state where supported | Plain links |
-| View transitions between pages (only if a Gate 3 variation wants them) | Site-wide | 0 KB: CSS `@view-transition { navigation: auto }`, behind `prefers-reduced-motion: no-preference` and `:root:not([data-motion="off"])` | Normal navigation |
-| Artefact viewer (full-size image or contact sheet), only if a Gate 3 variation needs it | Chapters 5 and 6, `/made/` | 0 KB first: `<dialog>` or popover with `command`/`commandfor` invokers. If a polyfill is needed, it stays under 2 KB and inside the 10 KB cap | A plain link to the full image |
-
-Explicitly out: animation libraries, WebGL or canvas on first load, scroll-jacking, client-side data fetching, `<ClientRouter />`.
-
-## 5. Analytics (Q9)
-
-| Option | Cost | Cookies | CSP impact | Notes |
-|---|---|---|---|---|
-| **None at launch** (recommended, matches Q9 A) | $0 | none | none | Use GitHub's own traffic insights (views, clones, stars) once public |
-| GoatCounter (hosted) | $0: "free for reasonable public usage"; small businesses are fine, millions of pageviews a day are not ([goatcounter.com](https://www.goatcounter.com/)) | "Identify unique visits without cookies or persistently storing any personal data" ([GDPR help](https://www.goatcounter.com/help/gdpr)) | Add its script and endpoint origins to `script-src`/`connect-src` | Can count copy-button clicks as an event. Donation-supported |
-| Plausible (hosted) | US$9/month Starter, 10k pageviews/month, 30-day trial, no free tier ([plausible.io](https://plausible.io/#pricing)) | none | Same as above | Polished dashboards; recurring cost |
-
-If Q9 becomes B, I recommend GoatCounter. Either way the privacy note must mention GitHub's own IP logging ([About GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages)).
-
-## Comparison of the framework options
-
-| | A. Astro 7 | B. Eleventy 3 | C. Next.js 16 export |
-|---|---|---|---|
-| Monthly running cost | $0 on Pages | $0 | $0 |
-| Setup effort | Low: content loaders, images and CSP are built in | Medium: image pipeline and CSP glue | Medium-high: image export and a React runtime to avoid |
-| Client JS baseline | 0 KB | 0 KB | ~90 KB+ React runtime *(inferred)* |
-| Fit with "artefacts from files" | Content collections plus custom loaders | Data cascade, untyped | File reads in server components at build |
-| Lock-in | Low: output is plain HTML/CSS | Low | Medium |
-| What the client maintains | Nothing at runtime; a rebuild on push | Same | Same |
-
-## Cost breakdown (recommended option)
-
-| Item | Plan | $/month | Source |
-|---|---|---|---|
-| Hosting | GitHub Pages, public repo, GitHub Free | 0 | [GitHub's plans](https://docs.github.com/en/get-started/learning-about-github/githubs-plans) |
-| CI | GitHub Actions, public repo | 0 | same |
-| CMS | none: content is the repo | 0 | n/a |
-| Analytics | none (or GoatCounter, free) | 0 | [goatcounter.com](https://www.goatcounter.com/) |
-| Fonts | self-hosted OFL | 0 | `constraints.md` |
-| Domain (optional) | e.g. a `.dev` | about US$10 to 20/year *(not checked)* | registrar |
-| **Total** | | **$0** (plus an optional domain) | |
-
-## Accounts and secrets needed
-
-| Account | Owner | Env var(s) | Scope |
-|---|---|---|---|
-| GitHub repo `LiamLacey95/website-building-team` | the human | none: Pages uses the workflow's OIDC token | Workflow permissions `contents: read`, `pages: write`, `id-token: write` only |
-| `github-pages` environment reviewer | the human | n/a | Approves each production deploy (Gate 4). Public repo only on Free, Pro and Team (§3) |
-| GoatCounter (only if Q9 = B) | the human | none (the site code is public) | n/a |
-
-No secrets are stored in the repo or in Actions for the recommended option.
-
-## What the human maintains after launch
-
-- Approve deploys in GitHub (the `github-pages` environment).
-- Keep the repo public (or choose B or C above).
-- Optional: domain renewal, and the analytics account if chosen.
-- Nothing runs at request time, so there is nothing to patch, back up or pay for monthly.
+| Vercel | the human | none | Created at Gate 4 (or Gate 3 for previews). The team never logs in |
+| GitHub | the human | none | The Vercel GitHub app needs read access to the repo |
 
 ## Risks
 
 | Risk | Likelihood | Mitigation |
 |---|---|---|
-| `astro:assets` won't optimise images that live outside `web/` | Medium | Spike at the start of Phase 4; fallback prebuild copy step (§2). No change to the contract |
-| A quoted heading or marker is edited away | Medium | The build fails loudly with the file and marker name; fix the marker or the reference |
-| Personal data or machine paths leak through artefacts | Medium | Redaction plus a post-build scan that fails CI; Review's kit audit before going public |
-| A non-commercial image slips into the site | Low | Licence guard on sidecars fails the build; `generate.py` already refuses WEB6 output into `web/` |
-| A shallow checkout gives an empty receipt chapter | Low | `fetch-depth: 0`; the loader detects a shallow repo and fails the release build rather than showing a wrong count |
-| The deploy workflow lands before the reviewer exists, so the first deploy is unapproved | Low | The four-step order at G4; until then CI has no deploy job |
-| Q10 D squashes the history the receipt chapter needs | Certain under D | The committed git-log snapshot, exported and checked before the squash |
-| Astro CSP blocks something Front-end adds (an inline handler, a third-party script) | Low | Inline handlers are banned in the component rules; Review checks the CSP in the G4 audit |
-| Repo stays private and the human doesn't want Pro or Team | Low | Option C (Cloudflare Pages or Netlify) swaps one deploy step |
-| Variants can't be previewed on Pages | Certain | Local preview via `tools/variants.mjs` plus downloadable CI artifacts, which is how Gate 3 already works |
+| The production site is public before Gate 4 (a new project's first deploy is production) | Medium if imported early | Create the project with `vercel link` (no deploy) or only at Gate 4. Set protection to All Deployments before connecting Git |
+| A set piece needs a CDN or inline code that the CSP blocks | Medium | Bundle and self-host. `check-dist` and the header make this visible at build time, not in production |
+| Snapshots go stale (requirements or counts) | Medium | The requirements drift test; refresh both before Gate 4 and after the Q10 rewrite |
+| Hobby's non-commercial terms don't fit the human's use | Low | Pro at US$20/month; nothing else changes |
+| Heavy client code hurts LCP on mobile | Medium | Playbook budget; Review's Lighthouse check at Gate 4; static fallback |
+| A non-commercial image slips in | Low | The licence guard fails the build; `generate.py` refuses WEB6 output into `web/` |
 
 ## Recommendation
 
-Build the site as a **static Astro 7 project** whose content comes from a **build-time pipeline over the repo itself**. The pipeline has slots for future gates, verbatim excerpts by marker, redaction, and a licence guard on images. Ship **under 10 KB of vanilla JS** with CSS-only scroll effects.
+Static Astro 7 on Vercel at the site root, built from the `projects/how-it-works` folder:
+- authored story content plus three computed collections, behind a published Zod contract;
+- a header CSP that allows nothing outside the site, enforced by a post-build check that runs inside the Vercel build;
+- the licence guard and redaction from version 1;
+- Gate 4 enforced by Vercel Deployment Protection.
 
-Deploy to **GitHub Pages via Actions**. Every push builds and checks the site. Go-live is gated by a human-approved `github-pages` environment, and the repo becomes public at Gate 4. **Running cost is $0.**
-
-The main risk is image handling for files outside `web/`, with a known small fallback.
-
-## Answers for Gate 1
-
-- **Q2 (hosting):** A is technically sound and costs $0. B means Pro (price unconfirmed, historically about $4/month) or Team ($4/user/month in an org), and the site is public either way. C works from the private repo.
-- **Q9 (analytics):** none at launch. If counting copies matters later, GoatCounter is free and cookieless.
+Running cost is US$0 on Hobby if the site stays non-commercial. Nothing here needs an account until the human creates one.
 
 ## Front-end sign-off
 
-Signed off by Front-end on 2026-11-01 as **"OK with notes"**. None of the notes changes the stack; all are folded in above.
-
-| Item | Status | Notes |
+| Item | Version 1 | Version 2 (after Gate 1) |
 |---|---|---|
-| §1 Framework and build | **OK** | (1) Front-end sets image widths and `sizes` per component; the default is 400/800/1200/1600, plus 2400 for a full-bleed hero, and the 40 MB estimate holds. (2) Component rules: no `style=` attributes, no `define:vars`, no inline handlers. The spike checks `<Picture>` under the real CSP for zero violations. (3) Self-hosted woff2, display face preloaded, OFL text shipped. (4) Backend publishes `api/contract.md` plus fixtures for **both filled and pending** slot states **before Gate 3 work starts**; all three variations build against them. |
-| §4 Interactivity budget | **OK** | (5) View transitions are CSS-only and gated by motion preferences; whether to use them is a Gate 3 design call. (6) A possible artefact viewer, zero-JS first, under 2 KB if a polyfill is needed. (7) Copy button, motion toggle and width switcher share one module, to honour the outline's two-island limit (Backend's call). |
-
-Front-end-side follow-ups (not Backend's):
-- `tools/screenshot.mjs` is being fixed to keep the base path. Local dev and preview URLs are `http://127.0.0.1:4321/website-building-team/`.
-- Each variant worktree runs its own `npm ci` in `projects/how-it-works/web/`.
+| §1 Framework and build | OK with notes (2026-11-01) | Contract shape sent to Front-end on 2026-11-01. Front-end's version 1 notes (image widths per component, the component rules, self-hosted fonts, filled and pending fixtures before Gate 3) are all kept. Awaiting a reply on the version 2 specifics (Root Directory, the two inline settings, `fallbackFormat`). |
+| §4 Interactivity | OK with notes (2026-11-01) | The 10 KB cap is lifted by Gate 1. Version 1 notes 5 to 7 still apply. |

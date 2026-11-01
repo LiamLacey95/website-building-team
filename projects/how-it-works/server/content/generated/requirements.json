@@ -1,0 +1,32 @@
+[
+  {
+    "order": 0,
+    "need": "OS",
+    "minimum": "Windows 11 (tested)",
+    "notes": "Linux: the scripts support it but nobody has tested it yet. macOS: everything except local image generation (no CUDA); use `--skip-comfyui`"
+  },
+  {
+    "order": 1,
+    "need": "GPU",
+    "minimum": "NVIDIA, 12 GB VRAM; driver 580+ (CUDA 13) recommended",
+    "notes": "Tuned and tested on an RTX 4070 SUPER. An 8 GB profile exists (distilled Klein, smaller sizes) but is **untested** on a real 8 GB card. No GPU: `--skip-comfyui` (see the Concept role's fallback)"
+  },
+  {
+    "order": 2,
+    "need": "Disk",
+    "minimum": "about 40 GB free",
+    "notes": "Models are about 29 GB (37 GB with optional extras), plus ComfyUI and its CUDA torch venv"
+  },
+  {
+    "order": 3,
+    "need": "Tools",
+    "minimum": "git, Node.js 20+, Python 3.11 to 3.13 (3.13 recommended, as ComfyUI recommends), `gh` (optional, for GitHub)",
+    "notes": ""
+  },
+  {
+    "order": 4,
+    "need": "Accounts",
+    "minimum": "A free Hugging Face account, **only for a fresh ComfyUI install**",
+    "notes": "FLUX Klein is only in Black Forest Labs' gated repo: accept its licence once and set a read token as `HF_TOKEN` (see step 2)"
+  }
+]

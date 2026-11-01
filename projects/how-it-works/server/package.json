@@ -1,0 +1,18 @@
+{
+  "name": "how-it-works-server",
+  "private": true,
+  "type": "module",
+  "description": "Content contract, loaders and checks for the how-it-works site. Imported by ../web at build time; not deployed on its own.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.ts\"",
+    "sync": "node scripts/sync-kit-facts.ts",
+    "sync:check": "node scripts/sync-kit-facts.ts --check"
+  },
+  "devDependencies": {
+    "yaml": "2.9.1",
+    "zod": "4.6.7"
+  }
+}

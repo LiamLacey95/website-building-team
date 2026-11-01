@@ -1,0 +1,16 @@
+{
+  "main": {
+    "licences": [
+      { "name": "Website Building Team", "what": "This kit and this site's source code", "licence": "Apache-2.0", "url": "https://www.apache.org/licenses/LICENSE-2.0", "note": "See LICENSE and NOTICE in the repo." },
+      { "name": "Impeccable", "what": "The design skills and slop detector the agents use", "licence": "Apache-2.0", "url": "https://github.com/pbakaus/impeccable", "note": "© Paul Bakaus. Its NOTICE travels with the vendored copy; it includes platform-design-skills (MIT) and modern-screenshot (MIT)." },
+      { "name": "FLUX 3 Image Klein", "what": "Key art and imagery generated for this site", "licence": "FLUX Kommunity License v1.0", "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein", "note": "Commercial use of outputs is allowed for businesses under US$5M annual revenue, including affiliates." },
+      { "name": "Z-Image Turbo", "what": "Fast exploration renders", "licence": "Apache-2.0", "url": "https://huggingface.co/Tongyi-MAI/Z-Image-Turbo", "note": "" },
+      { "name": "Real-ESRGAN x4plus", "what": "Upscaling shipped images", "licence": "BSD-3-Clause", "url": "https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE", "note": "Its authors don't endorse this site." },
+      { "name": "Double Diamond", "what": "The diagram this site's story runs along", "licence": "CC BY 4.0", "url": "https://creativecommons.org/licenses/by/4.0/", "note": "Design Council. Adapted: gates and loop-backs added." }
+    ],
+    "aiDisclosure": "The imagery on this site was generated on a local GPU with ComfyUI, using FLUX 3 Image Klein and Z-Image Turbo, then art-directed and chosen by people. The site's words, code and design were produced by AI agents and approved by a person at four gates. Every generated image's prompt, model and licence is recorded beside it in the repo.",
+    "diamondCredit": "Double Diamond by the Design Council, CC BY 4.0, adapted.",
+    "privacy": "This site uses no analytics, no cookies and no tracking, so there's no banner to dismiss. It's hosted on Vercel, which keeps standard server logs (including IP addresses) to run and protect the service. A motion preference you set here is stored only in your own browser.",
+    "accessibility": "We aim for WCAG 2.2 AA. Every chapter works with a keyboard, with a screen reader and without JavaScript, and all motion stops when your system asks for reduced motion or when you use the motion toggle. If something doesn't work for you, please open an issue on the GitHub repo."
+  }
+}
