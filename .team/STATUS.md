@@ -24,7 +24,7 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | how-it-works/02-research-define | Research | done (8c81a8d) |
 | how-it-works/02-backend-stack-proposal | Backend + Front-end | done (6990cf9) |
 | how-it-works/03-review-gate1 | Review | done: REVISE, then PASS WITH NOTES after the packet revision (71e1b37) |
-| how-it-works/04-define-alignment | Research, Backend | in progress (not blocking) |
+| how-it-works/04-define-alignment | Research, Backend | done (9c48e5c, d5f0dbc) |
 | 05-frontend-telemetry-off | Front-end | done (945a8b7) |
 | 03-concept-comfyui-installer | Concept | done (1980bdb) |
 | concept no-GPU fallback note | Concept | done (fc7fc3f); option B (remote GPU support) is a Gate 1 question |
