@@ -23,14 +23,14 @@ PM thread id: `fa660062-b3b4-4292-a789-b6fb4858c4e7` (environment `07d2d828-3e5c
 | how-it-works/01-research-discover | Research | done (7ae9124, 32f3abc) |
 | how-it-works/02-research-define | Research | done (8c81a8d) |
 | how-it-works/02-backend-stack-proposal | Backend + Front-end | done (6990cf9) |
-| how-it-works/03-review-gate1 | Review | queued after 04-review-kit-audit |
+| how-it-works/03-review-gate1 | Review | in progress (paused 13:54 to 16:10 by a usage limit) |
 | 05-frontend-telemetry-off | Front-end | done (945a8b7) |
 | 03-concept-comfyui-installer | Concept | done (1980bdb) |
 | concept no-GPU fallback note | Concept | done (fc7fc3f); option B (remote GPU support) is a Gate 1 question |
 | 03-backend-bootstrap | Backend | done (through 2bfed09) |
 | 03-review-portability | Review | done (016d9cd, c92a44d) |
 | 04-review-kit-audit | Review | done: REVISE (1 blocker, 4 major); report in history |
-| 06-kit-fixes | Front-end, Research, Backend, Concept, PM | PM done (0b6a9fa); Research done (5041947); Backend done (96f534a); Front-end and Concept in progress |
+| 06-kit-fixes | Front-end, Research, Backend, Concept, PM | all done (9e79e97, 5041947, 96f534a, 777a087, 0b6a9fa, 106d3a3) |
 | 06 re-test | Review | after 06-kit-fixes |
 
 Note: before Phase 4, confirm the Impeccable hook fires in the Front-end thread (it was added mid-session); if it doesn't, start a fresh Front-end thread.
