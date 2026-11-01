@@ -11,15 +11,18 @@ root.classList.add('js');
 export const motionOff = (): boolean =>
   root.dataset.motion === 'off' || matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/** Run a DOM change through a same-document View Transition when motion is on and supported. */
-export function transition(update: () => void): void {
-  if (motionOff() || !('startViewTransition' in document)) { update(); return; }
+/**
+ * Run a DOM change through a same-document View Transition when motion is on and supported.
+ * Resolves once the DOM update has run (a transition runs it asynchronously): focus and measure after it.
+ */
+export function transition(update: () => void): Promise<void> {
+  if (motionOff() || !('startViewTransition' in document)) { update(); return Promise.resolve(); }
   // A newer transition skips an older one (fast paging, a re-skin mid-change): the DOM update still runs,
   // so the rejected animation promises are expected and must not surface as errors.
   const t = document.startViewTransition(update);
   t.ready.catch(() => {});
   t.finished.catch(() => {});
-  t.updateCallbackDone.catch(() => {});
+  return t.updateCallbackDone.catch(() => {});
 }
 
 // --- Reduce motion ---------------------------------------------------------------------------
