@@ -35,6 +35,9 @@ test('slots: pending, filled and strict modes', () => {
   assert.ok(Object.values(filled).every((s) => s.status === 'filled' && s.items.every((i) => i.alt.length > 0)));
   assert.deepEqual(filled['g2-key-art'].items[0].provenance?.workflows.map((w) => w.slice(0, 4)), ['WEB1']);
   assert.throws(() => resolveSlots('pending', true), /STRICT_SLOTS=1/);
+  assert.throws(() => resolveSlots('filled', true), /fixture images/, 'stand-ins never pass a release build');
+  delete process.env.CONTENT_SLOTS;
+  assert.ok(Object.values(resolveSlots(undefined, false)).every((s) => s.items.every((i) => !i.src.includes('fixtures'))), 'default mode never uses fixtures');
 });
 
 test('licence guard walks nested provenance', () => {

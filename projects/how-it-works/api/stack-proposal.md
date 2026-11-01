@@ -119,7 +119,7 @@ The full contract is in `api/contract.md`. In short:
   - headers (below).
 
   The post-build check runs inside the Vercel build, so a page with an inline script, a leaked path or an over-budget `dist/` never deploys.
-- **Node:** 22.x (22.18 or later) or 24.x in Project Settings. The check script is TypeScript run directly by Node.
+- **Node: 24.x**, set in Project Settings to match local builds (Front-end's request). `vercel.json` can't pin it, and there's no `package.json` at the Root Directory. The check script is TypeScript run directly by Node.
 - **Git history:** Vercel clones with `--depth=10` (same page). Nothing in the build needs more, because counts come from the snapshot.
 
 **Headers (all routes):**
@@ -163,7 +163,7 @@ The plan:
 4. **Settings:**
    - Root Directory `projects/how-it-works`;
    - Framework "Other" (`vercel.json` overrides it);
-   - Node 22.x or 24.x;
+   - Node 24.x;
    - Deployment Protection "All Deployments" until go-live;
    - no environment variables are needed: there are no secrets.
 5. **Connect Git:** grant the Vercel GitHub app access to `LiamLacey95/website-building-team`; the production branch is `master`.

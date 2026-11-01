@@ -9,6 +9,12 @@ Every MAJOR change is announced to Front-end before it merges, and the entry rec
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-01
+
+### Changed
+- `STRICT_SLOTS=1` also fails if any slot item comes from `server/contracts/fixtures/`, so stand-ins can never reach a release build. The default (no `CONTENT_SLOTS`) already resolves only real files; tests cover both (Front-end's request).
+- Vercel Node version: 24.x in Project Settings, to match local builds.
+
 ## [0.3.0] - 2026-11-01
 
 ### Changed

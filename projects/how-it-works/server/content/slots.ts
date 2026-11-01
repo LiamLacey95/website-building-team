@@ -108,5 +108,8 @@ export function resolveSlots(mode = process.env.CONTENT_SLOTS ?? 'auto', strict 
   if (problems.length) throw new Error(`Licence guard failed:\n- ${problems.join('\n- ')}`);
   const pending = Object.entries(out).filter(([, s]) => s.status === 'pending').map(([id]) => id);
   if (strict && pending.length) throw new Error(`STRICT_SLOTS=1 but these slots are still pending: ${pending.join(', ')}`);
+  // Stand-in images must never reach a release build, whatever CONTENT_SLOTS says.
+  const fromFixtures = Object.entries(out).flatMap(([id, s]) => s.items.filter((i) => i.src.startsWith(FIXTURES)).map(() => id));
+  if (strict && fromFixtures.length) throw new Error(`STRICT_SLOTS=1 but these slots use fixture images: ${[...new Set(fromFixtures)].join(', ')} (unset CONTENT_SLOTS)`);
   return out;
 }

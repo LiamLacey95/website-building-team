@@ -182,7 +182,7 @@ They are written for the story. Render them as a chat, a log or a script; the sh
 | unset | Real sources: everything is pending today |
 | `CONTENT_SLOTS=filled` | Every slot uses `server/contracts/fixtures/` (our own kit smoke-test renders, about 300 KB). Captions say "stand-in". **Use this for the Gate 3 variations** |
 | `CONTENT_SLOTS=pending` | Every slot pending (test the placeholders) |
-| `STRICT_SLOTS=1` | A pending slot fails the build (release, Gate 4) |
+| `STRICT_SLOTS=1` | A pending slot fails the build (release, Gate 4), and so does any item served from `fixtures/`, even with `CONTENT_SLOTS=filled` |
 
 ### `numbers` (computed, 1 entry, `main`)
 
