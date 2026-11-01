@@ -329,6 +329,11 @@ def verify(comfy_dir, manifest, quick=False, python=None, with_extras=False):
 
     def add(item, status, detail):
         checks.append({"item": item, "status": status, "detail": detail})
+        models_fix = f'python artgen/setup/install_comfyui.py --models-only "{comfy_dir}"'
+        if status in ("error", "warn") and item.startswith("model ") and "missing" in detail:
+            checks[-1]["fix"] = models_fix
+        elif status == "error" and item == "comfyui version":
+            checks[-1]["fix"] = f'git -C "{comfy_dir}" pull, then reinstall requirements.txt in its venv'
 
     comfy_dir = os.path.abspath(comfy_dir)
     info = {"path": comfy_dir}
@@ -433,7 +438,9 @@ def verify(comfy_dir, manifest, quick=False, python=None, with_extras=False):
 def summarise(checks, info):
     statuses = {c["status"] for c in checks}
     status = "red" if "error" in statuses else ("amber" if "warn" in statuses else "green")
-    return {"status": status, "comfyui": info, "checks": checks}
+    # "items" is the shape scripts/bootstrap.mjs reads: status ok|warn|fail (info counts as ok).
+    items = [dict(c, status={"error": "fail", "info": "ok"}.get(c["status"], c["status"])) for c in checks]
+    return {"status": status, "comfyui": info, "checks": checks, "items": items}
 
 
 def print_verify(res):
