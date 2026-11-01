@@ -1,6 +1,6 @@
-# Extra model folders for this project only (the shared install in F:\ArtGen\ComfyUI stays untouched).
-# Passed with --extra-model-paths-config by both launchers and by generate.py. base_path is relative to this file.
-# Contents of models/ are git-ignored; README.md records where each file comes from and its SHA-256.
+# Extra model folders for this project only, so a shared ComfyUI install stays untouched.
+# Passed with --extra-model-paths-config by the launchers and by generate.py. base_path is relative to this file.
+# Contents of models/ are git-ignored; artgen/setup/models.json lists each file with its source and SHA-256.
 website_test:
     base_path: models/
     upscale_models: upscale_models/

@@ -4,3 +4,9 @@ user/comfyui_headless.pid
 user/default/comfy.settings.json
 user/default/comfy.templates.json
 models/
+setup/.hashcache.json
+# Generated per machine by artgen/setup/configure.py (templates in artgen/setup/templates/)
+Launch ComfyUI (Website).bat
+Launch ComfyUI (Website, headless).bat
+launch-comfyui.sh
+launch-comfyui-headless.sh

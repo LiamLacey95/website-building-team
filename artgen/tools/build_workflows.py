@@ -6,7 +6,9 @@ Writes:
   artgen/api/manifest.json                  which node/input generate.py patches per workflow
 
 Needs a running ComfyUI (reads /object_info for socket types and widget order):
-  F:\\ArtGen\\ComfyUI\\venv\\Scripts\\python.exe artgen\\tools\\build_workflows.py
+  python artgen/generate.py --start
+  python artgen/tools/build_workflows.py
+  python artgen/generate.py --stop
 
 Edit the workflow definitions below, not the generated JSON. If you change a workflow
 in the UI and want to keep it, port the change back here and rebuild.
@@ -21,7 +23,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ARTGEN = os.path.dirname(HERE)
 UI_DIR = os.path.join(ARTGEN, "user", "default", "workflows")
 API_DIR = os.path.join(ARTGEN, "api")
-SERVER = os.environ.get("COMFY_URL", "http://127.0.0.1:8188")
+sys.path.insert(0, ARTGEN)
+import comfy_config  # noqa: E402
+
+SERVER = os.environ.get("COMFY_URL") or comfy_config.load(require_path=False)["url"]
 
 # Nodes that only exist in the UI: dropped from the API export.
 UI_ONLY = {"MarkdownNote", "PreviewImage", "ImageCompare"}

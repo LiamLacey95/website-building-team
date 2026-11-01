@@ -1,9 +1,11 @@
 """Headless image generation for the website team, through the ComfyUI HTTP API.
 
-Stdlib only. Run with any Python 3.9+, e.g. the ComfyUI venv:
-  F:\\ArtGen\\ComfyUI\\venv\\Scripts\\python.exe artgen\\generate.py WEB1 --prompt "..." --size 16:9
+Stdlib only. Run from the repo root with any Python 3.9+ (the ComfyUI venv works too):
+  python artgen/generate.py WEB1 --prompt "..." --size 16:9
+The ComfyUI location comes from team.config.json (comfyui.path, comfyui.python, comfyui.port, comfyui.profile).
 
 Examples:
+  generate.py --smoke                                   (first-start check: WEB1, WEB3, WEB6b, timings)
   generate.py --list
   generate.py WEB3 --prompt "..." --count 8 --out design/concepts/a-calm/explore
   generate.py WEB1 --prompt "..." --size 21:9 --mp 2 --seed 42
@@ -11,7 +13,7 @@ Examples:
   generate.py WEB2 --image pick.png --ref hero.png --prompt "... <ref_image_1> ..."
   generate.py WEB5 --prompt "Seamless tileable ..." --size 768x768
   generate.py WEB6 --image artgen/output/web1/web1_00001_.png            (boards: 4x-UltraSharp, non-commercial)
-  generate.py WEB6b --image ... --out web/public/assets/generated       (shipped: RealESRGAN_x4plus, BSD-3)
+  generate.py WEB6b --image ... --out projects/<slug>/web/public/assets/generated   (shipped: RealESRGAN, BSD-3)
   generate.py --jobs batch.json                         (list of job objects, same keys as the flags)
   generate.py --start / --stop                          (start or stop the headless server by hand)
 
@@ -38,8 +40,13 @@ import uuid
 
 ARTGEN = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(ARTGEN)
-COMFY = r"F:\ArtGen\ComfyUI"
-COMFY_PY = os.path.join(COMFY, "venv", "Scripts", "python.exe")
+sys.path.insert(0, ARTGEN)
+import comfy_config  # noqa: E402
+
+# Set from team.config.json by apply_config().
+COMFY = COMFY_PY = None
+PORT = 8188
+PROFILE = "12gb"
 API_DIR = os.path.join(ARTGEN, "api")
 USER_DIR = os.path.join(ARTGEN, "user")
 INPUT_DIR = os.path.join(ARTGEN, "input")
@@ -47,7 +54,6 @@ OUTPUT_DIR = os.path.join(ARTGEN, "output")
 LOG_FILE = os.path.join(USER_DIR, "comfyui_headless.log")
 PID_FILE = os.path.join(USER_DIR, "comfyui_headless.pid")
 EXTRA_MODEL_PATHS = os.path.join(ARTGEN, "extra_model_paths.yaml")
-WEB_DIR = os.path.join(REPO, "web")
 SERVER = os.environ.get("COMFY_URL", "http://127.0.0.1:8188")
 
 MODELS = {
@@ -70,6 +76,16 @@ LICENCES = {
 # Upscalers that must never produce files for web/ (anything shipped on the site).
 NONCOMMERCIAL_UPSCALERS = {"4x-UltraSharp.safetensors"}
 COMMERCIAL_UPSCALER = "RealESRGAN_x4plus.pth"
+SMOKE_PROMPTS = {
+    "WEB3": "Wide landscape photograph. Rolling green hills at golden hour with a single winding gravel path, low warm "
+            "sun, long soft shadows, light haze over distant hills. The upper half of the frame is open pale sky with "
+            "lots of empty space. Natural muted palette, fine photographic grain. No text, no people.",
+    "WEB1": "Wide editorial photograph. A ceramicist's bright studio: hands shaping a pale clay bowl on a wheel on the "
+            "right third of the frame, shelves of unglazed pots softly out of focus behind, diffuse north-window "
+            "light. The left half of the frame is a clean, softly lit plaster wall with plenty of negative space for "
+            "a headline. Palette of warm clay, bone white and dusty blue. Shot on a 50 mm lens at f/2.8, shallow "
+            "depth of field, true-to-life colour, subtle film grain. No text, no letters, no logos.",
+}
 JOB_KEYS = ["workflow", "prompt", "negative", "size", "mp", "seed", "count", "out", "name", "steps", "cfg",
             "model", "image", "refs", "scale", "upscale_model", "seam_denoise", "ref_mp"]
 
@@ -77,6 +93,17 @@ JOB_KEYS = ["workflow", "prompt", "negative", "size", "mp", "seed", "count", "ou
 # ---------------------------------------------------------------------------------------------
 # HTTP
 # ---------------------------------------------------------------------------------------------
+
+def apply_config(require=True):
+    global COMFY, COMFY_PY, PORT, PROFILE, SERVER
+    try:
+        c = comfy_config.load(require_path=require)
+    except comfy_config.ConfigError as e:
+        sys.exit(str(e))
+    COMFY, COMFY_PY, PORT, PROFILE = c["path"], c["python"], c["port"], c["profile"]
+    SERVER = os.environ.get("COMFY_URL", c["url"])
+    return c
+
 
 def http(method, path, body=None, timeout=30):
     data = json.dumps(body).encode() if body is not None else None
@@ -111,6 +138,10 @@ def server_is_ours(stats):
 # ---------------------------------------------------------------------------------------------
 
 def start_server(wait=240):
+    if not COMFY or not os.path.isfile(os.path.join(COMFY, "main.py")):
+        sys.exit(f"no ComfyUI at {COMFY} (comfyui.path in team.config.json)")
+    if not os.path.isfile(COMFY_PY):
+        sys.exit(f"ComfyUI python not found at {COMFY_PY} (comfyui.python in team.config.json)")
     os.makedirs(USER_DIR, exist_ok=True)
     log = open(LOG_FILE, "w", encoding="utf-8", errors="replace")
     flags = 0
@@ -119,7 +150,7 @@ def start_server(wait=240):
     proc = subprocess.Popen(
         [COMFY_PY, "main.py", "--preview-method", "none", "--user-directory", USER_DIR,
          "--input-directory", INPUT_DIR, "--output-directory", OUTPUT_DIR,
-         "--extra-model-paths-config", EXTRA_MODEL_PATHS],
+         "--extra-model-paths-config", EXTRA_MODEL_PATHS, "--listen", "127.0.0.1", "--port", str(PORT)],
         cwd=COMFY, stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=flags)
     with open(PID_FILE, "w") as f:
         f.write(str(proc.pid))
@@ -208,8 +239,9 @@ def getv(api, ref):
 
 
 def is_shipping(out_dir):
-    """True for anything written under web/ (assets that ship on the site)."""
-    return norm(out_dir) == norm(WEB_DIR) or norm(out_dir).startswith(norm(WEB_DIR) + os.sep)
+    """True for anything written into a site's web/ folder (projects/<slug>/web/..., a variant worktree's web/)."""
+    parts = [p.lower() for p in os.path.normpath(os.path.abspath(out_dir)).split(os.sep)]
+    return "web" in parts
 
 
 def round16(v):
@@ -246,10 +278,27 @@ def stage_input(path):
     return f"_generate/{name}", src
 
 
+def profile_defaults(m, base, job):
+    """comfyui.profile "8gb": distilled Klein instead of full, and at most 1 MP, unless the job says otherwise."""
+    if PROFILE != "8gb":
+        return job
+    job = dict(job)
+    if m.get("model") and getv(base, m["model"]) == MODELS["full"] and not job.get("model"):
+        job["model"] = "fast"
+    if m["kind"] == "txt2img" and not job.get("mp"):
+        job["mp"] = min(1.0, base[str(m["resolution"])]["inputs"]["megapixels"])
+    if m["kind"] == "edit" and not job.get("ref_mp"):
+        job["ref_mp"] = 1.0
+    return job
+
+
 def build_prompt(m, base, job, seed):
     api = copy.deepcopy(base)
     kind = m["kind"]
     info = {} if kind == "upscale" else {"seed": seed}
+    job = profile_defaults(m, base, job)
+    if PROFILE != "12gb":
+        info["profile"] = PROFILE
 
     if m.get("prompt"):
         if job.get("prompt"):
@@ -524,6 +573,40 @@ def replay(sidecar, client_id, comfy_version, out=None):
         say(f"replayed: {rel(path)}")
 
 
+def smoke(manifest, client_id, comfy_version, server_start_s, timeout):
+    """One image each from WEB3, WEB1 and WEB6b (in model-family order); timings to stdout and smoke.json."""
+    out = os.path.join(OUTPUT_DIR, "_smoke", dt.datetime.now().strftime("%Y%m%d-%H%M%S"))
+    report = {"status": "running", "out": rel(out), "profile": PROFILE, "comfyui_version": comfy_version,
+              "server_start_s": server_start_s, "images": []}
+    t0 = time.time()
+    try:
+        for key in ("WEB3", "WEB1", "WEB6b"):
+            job = {"workflow": key, "out": out, "count": 1, "timeout": timeout, "name": f"smoke_{key.lower()}"}
+            if key in SMOKE_PROMPTS:
+                job.update(prompt=SMOKE_PROMPTS[key], seed=101 if key == "WEB3" else 102, size="16:9")
+            else:
+                job["image"] = os.path.join(REPO, report["images"][-1]["file"])
+            res = run_job(manifest, job, client_id, comfy_version)[0]
+            report["images"].append({"workflow": key, "file": res["file"], "seconds": res["elapsed_s"],
+                                     "size": png_size(os.path.join(REPO, res["file"]))})
+        report["status"] = "ok"
+    except SystemExit as e:
+        report.update(status="failed", error=str(e))
+        raise
+    finally:
+        report["total_s"] = round(time.time() - t0, 1)
+        os.makedirs(out, exist_ok=True)
+        with open(os.path.join(out, "smoke.json"), "w", encoding="utf-8") as f:
+            json.dump(report, f, indent=1)
+        print("\nSmoke test: " + report["status"].upper())
+        if server_start_s is not None:
+            print(f"  server start      {server_start_s:6.1f} s")
+        for im in report["images"]:
+            size = "x".join(map(str, im["size"])) if im["size"] else "?"
+            print(f"  {im['workflow']:6} {size:>11}  {im['seconds']:6.1f} s  {im['file']}")
+        print(f"  total             {report['total_s']:6.1f} s  ->  {rel(os.path.join(out, 'smoke.json'))}")
+
+
 # ---------------------------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------------------------
@@ -567,6 +650,8 @@ def main():
     ap.add_argument("--keep-server", action="store_true", help="leave a server this run started running")
     ap.add_argument("--start", action="store_true", help="start this team's headless ComfyUI (if down) and exit")
     ap.add_argument("--stop", action="store_true", help="stop this team's headless ComfyUI and exit")
+    ap.add_argument("--smoke", action="store_true",
+                    help="first-start check: one image each from WEB3, WEB1 and WEB6b, timings, smoke.json")
     ap.add_argument("--list", action="store_true", help="list workflows and exit")
     ap.add_argument("--dry-run", action="store_true", help="print the patched API graph instead of running")
     ap.add_argument("--timeout", type=int, default=900, help="seconds per image")
@@ -579,6 +664,7 @@ def main():
         for k, m in manifest.items():
             print(f"{k:6} {m['name']:38} kind={m['kind']}")
         return
+    apply_config(require=not args.dry_run)
     if args.stop:
         stop_server()
         return
@@ -597,22 +683,27 @@ def main():
         jobs = [dict(defaults, **j) for j in jobs]
     elif args.workflow:
         jobs = [{k: getattr(args, k) for k in JOB_KEYS}]
+    elif args.smoke:
+        jobs = []
     elif not args.replay:
-        ap.error("give a workflow, --jobs, --replay, --list or --stop")
+        ap.error("give a workflow, --jobs, --replay, --smoke, --list, --start or --stop")
     for j in jobs if not args.replay else []:
         j.setdefault("count", 1)
         j["dry_run"], j["timeout"] = args.dry_run, args.timeout
 
     started = None
+    server_start_s = None
     stats = server_stats()
     if args.dry_run:
         pass
     elif stats is None:
+        t_start = time.time()
         started = start_server()
+        server_start_s = round(time.time() - t_start, 1)
         stats = server_stats()
     elif not server_is_ours(stats) and not args.allow_foreign_server:
-        sys.exit("ComfyUI on :8188 was started by another project (e.g. Safeguard): its input/output folders "
-                 "are not artgen/. Close it, or pass --allow-foreign-server.")
+        sys.exit(f"ComfyUI on port {PORT} was started by another project (e.g. Safeguard): its input/output "
+                 "folders are not artgen/. Close it, set another comfyui.port, or pass --allow-foreign-server.")
     comfy_version = (stats or {}).get("system", {}).get("comfyui_version")
     if stats:
         OBJECT_INFO["ResolutionSelector"] = http("GET", "/object_info/ResolutionSelector")["ResolutionSelector"]
@@ -624,7 +715,9 @@ def main():
     client_id = str(uuid.uuid4())
     t0 = time.time()
     try:
-        if args.replay:
+        if args.smoke:
+            smoke(manifest, client_id, comfy_version, server_start_s, args.timeout)
+        elif args.replay:
             replay(args.replay, client_id, comfy_version, args.out)
         else:
             total = []
