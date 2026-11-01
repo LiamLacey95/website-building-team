@@ -6,6 +6,7 @@
   "comfyui": {
     "path": "",
     "python": "",
-    "port": 8188
+    "port": 8188,
+    "profile": "12gb"
   }
 }
