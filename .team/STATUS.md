@@ -24,7 +24,7 @@ Setup complete. Team idle and ready for intake.
 |---|---|---|
 | 01-research-setup | Research | done (cc6600a) |
 | 01-concept-setup | Concept | done (94d1c50) |
-| 02-concept-commercial-upscaler | Concept | in progress |
+| 02-concept-commercial-upscaler | Concept | done (17c1e1e) |
 | 01-frontend-setup | Front-end | done (4bd9e26) |
 | 01-backend-setup | Backend | done (d5fea90) |
 | 01-review-setup | Review | done (e406ccf) |
