@@ -102,7 +102,7 @@ Narrow targets beat whole pages: critique one section at a time.
 ## Repo and git conventions
 
 - Main branch is `master`. The PM merges approved work into it and pushes to `origin` (GitHub). Agents commit locally; only the PM pushes.
-- Commit only paths you own: `git add <your paths>` then `git commit`. Never `git add -A` at the root, because other agents have uncommitted work there. If `index.lock` exists, wait a few seconds and retry; do not delete it unless it is over five minutes old.
+- Commit only paths you own, and **always name them in the commit itself**: `git add <your paths>` then `git commit -m "<role>: <what>" -- <your paths>`. The index is shared by every agent, so a bare `git commit` sweeps in whatever another agent has staged. Never `git add -A` or `git commit -a` at the root. Before committing, check `git diff --cached --name-only` shows only your files. If `index.lock` exists, wait a few seconds and retry; do not delete it unless it is over five minutes old.
 - Commit messages: `<role>: <what>` (for example `frontend: hero section for variant B`).
 - Variation worktrees live outside the repo in the folder named by `worktreesDir` in `team.config.json` (default: a sibling folder `<repo-folder>.worktrees`). Branches are `variant/<slug>-g3-a-<name>`, `-b-`, `-c-`. Manage them with `node tools/variants.mjs`. The chosen one is merged to `master` after Gate 3; the others are kept until Gate 4, then removed.
 - Raw generated images (`artgen/output/`), models, `node_modules`, and `team.config.json` are git-ignored. Only curated picks are committed.

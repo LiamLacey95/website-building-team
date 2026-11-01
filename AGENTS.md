@@ -8,5 +8,5 @@ This repo is worked on by a team of agent threads managed by a project manager (
 Rules for every agent:
 - Write only to the paths your role owns (see the playbook table). Project work lives in `projects/<slug>/`.
 - Never hard-code machine paths in committed files; read them from `team.config.json`.
-- Commit only your own paths; never `git add -A` at the repo root. Only the PM pushes.
+- Commit only your own paths, named in the commit: `git commit -m "..." -- <your paths>`. The index is shared; a bare `git commit` takes other agents' staged files. Never `git add -A` or `git commit -a`. Only the PM pushes.
 - Report to the PM thread as described in the playbook, then stop and wait.
