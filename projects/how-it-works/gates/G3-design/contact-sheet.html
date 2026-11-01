@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gate 3: design selection</title><style>
+body{margin:0;padding:2rem clamp(1rem,3vw,3rem);font:15px/1.5 system-ui,sans-serif;background:#f4f4f2;color:#1a1a1a}
+.wrap{display:flex;flex-direction:column;gap:1.25rem;max-width:1100px}
+.card{background:#fff;border:1px solid #d6d6d2;border-radius:10px;padding:1rem 1.25rem}
+.rec{border:2px solid #1b2a4a}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;flex-wrap:wrap}
+h2{margin:0;font-size:1.15rem}
+.score{font-size:1.5rem;font-weight:700}
+.tag{font-size:.75rem;padding:2px 8px;border-radius:999px;background:#e8e8e4;margin-left:6px}
+.ok{color:#17663a}.bad{color:#a3241b}
+.shots{display:grid;grid-template-columns:3fr 1fr;gap:.75rem;margin:.75rem 0}
+.shots img{width:100%;display:block;border-radius:6px;border:1px solid #d6d6d2}
+p{margin:.25rem 0}.muted{color:#5c5c5c}
+</style></head><body><div class="wrap"><h1 style="margin:0">Gate 3: design selection</h1><p class="muted">First screens at 1440 and 390 px. Bar: weighted 7.0, no axis below 6. Full evidence: ../../screenshots/g3/contact-sheet.html</p><section class="card rec">
+<div class="top"><h2>C · The table<span class="tag">Recommended</span></h2><div><span class="score">7.85</span> <span class="ok">passes</span></div></div>
+<div class="shots"><img src="img/c-1440-top.jpg" alt="C · The table, first screen at 1440 px"><img src="img/c-390-top.jpg" alt="C · The table, first screen at 390 px"></div>
+<p>Whole run on one tabletop: drop the marble, open any station, lift the barriers.</p>
+<p><b>Strength:</b> Most original; first screen is the explanation. Perf 96, axe 0.</p>
+<p><b>Weakness:</b> Thinner story; small portholes; 390 label collision.</p>
+<p class="muted">Design / Creativity / Story / Polish / Usability: 8 / 9 / 7 / 7 / 8 · live at localhost:4323</p>
+</section><section class="card">
+<div class="top"><h2>A · The long run</h2><div><span class="score">7.05</span> <span class="ok">passes</span></div></div>
+<div class="shots"><img src="img/a-1440-top.jpg" alt="A · The long run, first screen at 1440 px"><img src="img/a-390-top.jpg" alt="A · The long run, first screen at 390 px"></div>
+<p>One continuous track down a long page; the marble waits at each barrier.</p>
+<p><b>Strength:</b> Deepest story: gate cards, the "second opinion" exchange.</p>
+<p><b>Weakness:</b> 25,000 px tall; 5.4 s blocking on mobile; overflows at 390.</p>
+<p class="muted">Design / Creativity / Story / Polish / Usability: 8 / 7 / 8 / 6 / 6 · live at localhost:4321</p>
+</section><section class="card">
+<div class="top"><h2>B · Stations</h2><div><span class="score">6.65</span> <span class="bad">fails (U 5)</span></div></div>
+<div class="shots"><img src="img/b-1440-top.jpg" alt="B · Stations, first screen at 1440 px"><img src="img/b-390-top.jpg" alt="B · Stations, first screen at 390 px"></div>
+<p>A full-screen scene per station; Next locked until you lift the barrier.</p>
+<p><b>Strength:</b> Most cinematic single frames.</p>
+<p><b>Weakness:</b> Slide-deck feel; slow first image; tiny dots.</p>
+<p class="muted">Design / Creativity / Story / Polish / Usability: 8 / 6 / 7 / 7 / 5 · live at localhost:4322</p>
+</section><section class="card q"><b>Q1. Which layout?</b> C · The table (recommended) / A · The long run / B · Stations<br>
+<b>Q2. Fold in the best of the others?</b> A · Yes, Review's hybrid (recommended): A's gate cards and dialogue, B's stage images, a marble that pauses and lights each station / B · Only the fixes / C · Your own mix</section></div></body></html>
