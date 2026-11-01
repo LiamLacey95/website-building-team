@@ -14,7 +14,7 @@ Front-end signed off §1 and §4 of version 1 ("OK with notes"). The Gate 1 chan
 | **Q2 C: Vercel** | **Hosting is Vercel at the site root**, not GitHub Pages. That means:<br>- no base path;<br>- a real `Content-Security-Policy` **header** from `vercel.json` instead of a meta tag;<br>- private preview deployments per branch.<br>The repo doesn't have to be public. Going live needs the human's Vercel account at Gate 4 (§3). |
 | **Q3 A as a creative showcase** | **Creativity, interest and polish are the measure.**<br>- The 10 KB JavaScript cap is gone. The playbook budget (JS under 150 KB gzipped on content pages, LCP under 2.5 s, CLS under 0.1) stays as the ceiling, and a set piece may spend most of it.<br>- Accessibility and reduced motion still apply (§4). |
 | **Q5: quotes made up** | **The verbatim-excerpt pipeline is removed:** no heading or marker extraction, no "from `<path>` at `<sha>`" captions.<br>- Dialogue, agent messages and gate decisions are authored content (`server/content/`), written for the story.<br>- File views on the site show real paths with lines written for the story.<br>- Real imagery and screenshots still come from the repo through slots. |
-| **Q6: no time or cost** | Nothing on the site shows a timing, duration, cost or token figure.<br>- The "receipt" chapter becomes **The paper trail**: counts of commits by role, briefs, reports, images and gates, with no dates.<br>- A test fails if authored copy contains a time or cost figure. |
+| **Q6: no time or cost** | Nothing on the site shows a timing, duration, cost or token figure.<br>- The "receipt" chapter becomes **The record** (working title; "Paper Trail" is Concept's Direction A): counts of commits by role, briefs, reports, images and gates, with no dates.<br>- A test fails if authored copy contains a time or cost figure. |
 | **Q7 D: NVIDIA GPU required** | The site and setup copy say so plainly (`site.gpuNotice`, the FAQ). |
 | **Q9: no analytics** | No analytics, no cookies, no banner. The CSP allows no third-party origin at all. |
 | **Q10 C: history rewrite at G4** | The real git log stays. Vercel builds clone only 10 commits, so counts come from a **committed snapshot** (§2), not a live `git log` in CI. The version 1 snapshot plan for a squashed public repo isn't needed. |
@@ -101,7 +101,7 @@ The full contract is in `api/contract.md`. In short:
 **Removed (Q5, Q6, Q10):**
 - excerpt markers and verbatim quotes;
 - source captions with commit hashes;
-- dates and durations in the paper trail;
+- dates and durations in chapter 8;
 - the squashed-repo git-log snapshot plan.
 
 **Second outputs (kept, Front-end builds them from the same collections):** `llms.txt`, `story.md`, `sitemap-index.xml` (`@astrojs/sitemap`), `robots.txt`, and JSON-LD `SoftwareSourceCode`.

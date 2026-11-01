@@ -5,8 +5,8 @@
  *      <meta http-equiv="Content-Security-Policy"> (Astro security.csp) both apply. An inline <script> or
  *      <style> passes only if every policy that governs it (script-src / style-src, else default-src) allows
  *      it, which with hashes means listing its sha256/384/512. With today's strict header ('self', no
- *      hashes) that means no inline code at all. style="" attributes are always flagged (hashes don't cover
- *      them).
+ *      hashes) that means no inline code at all. style="" attributes and on*= event-handler attributes are
+ *      always flagged (hashes don't cover them).
  *   2. Redaction: no machine paths, T3 ids, UUIDs or emails in any text file (same patterns as redact.ts).
  *   3. Size budget: dist/ under 150 MB.
  *
@@ -93,6 +93,7 @@ for (const f of all) {
       if (by.length) findings.push(`${relp(f)}: inline <style> would be blocked by ${by.join(' and ')}`);
     }
     for (const m of text.matchAll(/\sstyle=["'][^"']*["']/gi)) findings.push(`${relp(f)}: style attribute ${m[0].trim().slice(0, 60)} (no CSP hash covers it)`);
+    for (const m of text.matchAll(/<[a-z][\w-]*\b[^>]*?\s(on[a-z]+)\s*=/gi)) findings.push(`${relp(f)}: inline event handler ${m[1]}= (blocked by script-src 'self')`);
   }
   for (const h of scan(text)) findings.push(`${relp(f)}: ${h.name} "${h.match.slice(0, 60)}"`);
 }

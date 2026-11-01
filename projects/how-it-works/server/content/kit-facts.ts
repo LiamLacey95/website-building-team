@@ -1,6 +1,6 @@
 /**
  * Facts read from the kit outside this project: the requirements table in BOOTSTRAP.md section 1, and
- * counts for "The paper trail" (commits by role, briefs, reports, concept images, gates decided).
+ * counts for chapter 8, "The record" (commits by role, briefs, reports, concept images, gates decided).
  *
  * Vercel builds see only projects/how-it-works (Root Directory) and a 10-commit shallow clone, so both are
  * also kept as committed snapshots in server/content/generated/, refreshed by

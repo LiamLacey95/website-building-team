@@ -9,6 +9,15 @@ Every MAJOR change is announced to Front-end before it merges, and the entry rec
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-01
+
+### Changed
+- Chapter 8 is renamed **"The record"**: entry id `08-the-record` (was `08-paper-trail`), slug `the-record` (was `paper-trail`). "Paper Trail" is the name of Concept's Direction A (Front-end's note). Nothing consumed the old id or slug yet; it is pre-1.0, so this is a minor bump, announced to Front-end.
+
+### Added
+- `check-dist.ts` now also flags inline event-handler attributes (`on…=`), as Front-end asked.
+- The contract records `vercel.json`'s location (the project root, Backend-owned) and the exact CSP header, compared with the one Front-end tested.
+
 ## [0.2.1] - 2026-11-01
 
 ### Changed (copy only)

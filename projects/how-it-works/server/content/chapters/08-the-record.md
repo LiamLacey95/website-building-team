@@ -1,8 +1,8 @@
 ---
 order: 8
-slug: paper-trail
+slug: the-record
 label: Chapter 8
-kicker: The paper trail
+kicker: The record
 title: Every step left a file you can open.
 dek: Briefs, reports, gate packets, image labels and commits, each one signed by the role that made it.
 phase: deliver

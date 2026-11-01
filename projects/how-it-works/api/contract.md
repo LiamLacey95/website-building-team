@@ -1,6 +1,6 @@
 # Content contract: how-it-works
 
-Owner: Backend. Consumer: Front-end. Status: **draft, published for Gate 3 work**. Version: **0.2.0**.
+Owner: Backend. Consumer: Front-end. Status: **draft, published for Gate 3 work**. Version: **0.3.0**.
 Lives at `projects/how-it-works/api/contract.md`.
 - **Source of truth:** `projects/how-it-works/server/contracts/schema.ts` (Zod 4 schemas and inferred types). If this doc and the code disagree, the code wins and this doc is a bug.
 - **Changes:** `api/CHANGELOG.md`. Breaking changes are announced to Front-end before they merge.
@@ -38,7 +38,24 @@ export const collections = {
 };
 ```
 
-Required in `astro.config`: `vite.resolve.dedupe: ['zod']` (the schemas import `zod` from outside `web/`), plus the CSP settings in `api/stack-proposal.md` §1. Types come from `astro:content` (`CollectionEntry<'chapters'>`), or import `Chapter`, `Gate` and the other types from `schema.ts`.
+Required in `astro.config`:
+- `vite.resolve.dedupe: ['zod']`: the schemas import `zod` from outside `web/`, and this makes it resolve to Astro's copy. Front-end calls the exported schemas directly; there is no `defineSchemas(z, …)` factory. Only `slotSchema(image)` takes Astro's `image` helper.
+- `vite.server.fs.allow: ['..']` for the dev server.
+- The CSP settings in `api/stack-proposal.md` §1. Front-end has them (2c74ad3).
+
+**Deploy config ownership:** `projects/how-it-works/vercel.json` is Backend's (playbook table). It sits at the project root, not in `web/`, because the Vercel Root Directory is `projects/how-it-works` so the build can read `../server`. Backend tells Front-end before any header changes.
+
+**CSP header** (in `vercel.json`):
+
+```
+default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests
+```
+
+It is the header Front-end tested in its behaviour suite (0 violations), plus three directives:
+- `media-src 'self'` and `worker-src 'self'` change nothing, because `default-src 'self'` already covers both; they're explicit for readers.
+- `upgrade-insecure-requests` is harmless on an HTTPS-only site.
+
+`check-dist.ts` fails a build that has inline scripts, inline `<style>`, `style=` attributes or `on…=` event-handler attributes. Types come from `astro:content` (`CollectionEntry<'chapters'>`), or import `Chapter`, `Gate` and the other types from `schema.ts`.
 
 ## Conventions
 

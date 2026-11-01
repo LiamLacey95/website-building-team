@@ -21,7 +21,7 @@ import { z } from 'zod';
 export const ROLE_IDS = ['pm', 'research', 'concept', 'frontend', 'backend', 'review'] as const;
 export const GATE_IDS = ['G1', 'G2', 'G3', 'G4'] as const;
 export const PHASES = ['intake', 'discover', 'define', 'develop', 'deliver', 'setup'] as const;
-/** Where a chapter sits on the double diamond. `null` = off the diagram (intake, the paper trail, setup). */
+/** Where a chapter sits on the double diamond. `null` = off the diagram (intake, the record, setup). */
 export const DIAMOND_STAGES = ['d1-diverge', 'd1-converge', 'd2-diverge', 'd2-converge'] as const;
 export const SLOT_IDS = [
   'g1-packet',        // Gate 1 contact sheet / packet thumbnail

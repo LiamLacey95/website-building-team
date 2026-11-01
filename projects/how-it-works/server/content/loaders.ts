@@ -1,6 +1,6 @@
 /**
  * Astro Content Loader API objects for the collections that are computed, not authored:
- * requirements (BOOTSTRAP.md section 1), slots (real imagery) and numbers (paper-trail counts).
+ * requirements (BOOTSTRAP.md section 1), slots (real imagery) and numbers (chapter 8 counts).
  *
  * Use in web/src/content.config.ts:
  *   requirements: defineCollection({ loader: requirementsLoader(), schema: requirementSchema }),
