@@ -9,6 +9,16 @@ Every MAJOR change is announced to Front-end before it merges, and the entry rec
 
 ## [Unreleased]
 
+## [0.3.3] - 2026-11-01
+
+### Changed (copy only)
+- Gate 2 chose Direction C, Marble Run (`gates/G2-direction/DECISION.md`). `site.heroLine` and chapter 0's title are now C's line: "We dropped one sentence in at the top. Watch where it rolls."
+- A Marble Run pass across the copy:
+  - the prologue and gate chapters (4 to 7, and 9) use the marble, the stations, the barriers and a human hand;
+  - chapter 5's file view shows the real Marble Run key art's label (WEB4, seed 3301);
+  - the old placeholder direction names are gone from the Concept scene, the G2 decision, Concept's line and the variant branch names;
+  - chapter 9 is retitled "Drop yours in."
+
 ## [0.3.2] - 2026-11-01
 
 ### Changed

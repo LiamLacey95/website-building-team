@@ -14,9 +14,9 @@ artefacts:
   - kind: terminal
     command: "node tools/variants.mjs list"
     output:
-      - "A  variant/how-it-works-g3-a-field-notes   :4321"
-      - "B  variant/how-it-works-g3-b-control-room  :4322"
-      - "C  variant/how-it-works-g3-c-pop-up        :4323"
+      - "A  variant/how-it-works-g3-a-long-run     :4321"
+      - "B  variant/how-it-works-g3-b-switchbacks  :4322"
+      - "C  variant/how-it-works-g3-c-tabletop     :4323"
   - kind: slot
     slot: g3-contact-sheet
     caption: Every variation at 390, 768, 1440 and 1920 pixels
@@ -27,4 +27,4 @@ Pictures of websites lie. So Front-end builds three real ones, each on its own g
 
 All three use **Impeccable**: a shared design vocabulary the agents speak, and a detector that flags the tells of generic AI design before a person has to. A variation doesn't reach you until the detector is clean or every finding has a reason.
 
-At **Gate 3** you see a contact sheet: three sites, four screen widths, side by side. Pick one, or name the parts you want combined.
+At **Gate 3** you see a contact sheet: three tracks, four screen widths, side by side. The marble waits at the third barrier while you pick one, or name the parts you want combined.

@@ -35,4 +35,4 @@ No style guide. No sitemap. No audience. Just a person who wanted a website and 
 
 The project manager's first move is unglamorous on purpose: it puts the sentence at the top of a brief and writes underneath it what it *thinks* success means, flagged as a guess. Everything the team does from here can be traced back to this file.
 
-Then it lists what it doesn't know, and saves those questions for you.
+Then it lists what it doesn't know, and saves those questions for the first barrier.

@@ -3,8 +3,8 @@ order: 0
 slug: start
 label: Prologue
 kicker: Website Building Team
-title: This website started as one sentence. Here's everything that happened next.
-dek: Six agent threads, four human decisions, and one prompt that walked all the way to the page you're reading.
+title: We dropped one sentence in at the top. Watch where it rolls.
+dek: Six agents work the stations. Four barriers only a human can lift. One sentence rolled all the way to the page you're reading.
 phase: intake
 diamond: null
 cast: []
@@ -15,8 +15,8 @@ artefacts:
 draft: true
 ---
 
-Somebody typed a sentence into a chat window. A thread read it, decided it was now a project manager, and opened five more: one to research, one to imagine, one to build the front, one to build the back, and one whose whole job is to say *not yet*.
+Somebody dropped a sentence in at the top. A thread caught it, decided it was now a project manager, and opened five more stations down the track: one to research, one to imagine, one to build the front, one to build the back, and one whose whole job is to wave a red flag and say *not yet*.
 
-Between that sentence and this page are two diamonds, four gates, three creative directions, three coded websites, and a person who had the final word every time it mattered.
+Between that sentence and this page the track splits and funnels twice, three creative directions get painted, three websites get built side by side, and four times the marble stops at a barrier that only a person can lift.
 
-Scroll down and follow the sentence. When you get to the end, there's one for you.
+Scroll, and follow the marble. When it reaches the bottom, there's one for you to drop in.

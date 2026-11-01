@@ -1,6 +1,6 @@
 # Content contract: how-it-works
 
-Owner: Backend. Consumer: Front-end. Status: **draft, published for Gate 3 work**. Version: **0.3.2**.
+Owner: Backend. Consumer: Front-end. Status: **draft, published for Gate 3 work**. Version: **0.3.3**.
 Lives at `projects/how-it-works/api/contract.md`.
 - **Source of truth:** `projects/how-it-works/server/contracts/schema.ts` (Zod 4 schemas and inferred types). If this doc and the code disagree, the code wins and this doc is a bug.
 - **Changes:** `api/CHANGELOG.md`. Breaking changes are announced to Front-end before they merge.
@@ -76,7 +76,7 @@ It is the header Front-end tested in its behaviour suite (0 violations), plus th
 | Field | Type | Notes |
 |---|---|---|
 | `name` | string | "Website Building Team" (G1 Q1 A) |
-| `heroLine` | string | Working hero line (G1 Q8); Concept may replace it at G2 |
+| `heroLine` | string | Direction C's line, chosen at Gate 2 |
 | `shareLine` | string | OG card and meta title line |
 | `setupSentence` | string | The call to action, which visitors copy exactly as shown. Show it with a copy button and a selectable `<code>` fallback |
 | `setupIntro` | string | Line before the setup block |

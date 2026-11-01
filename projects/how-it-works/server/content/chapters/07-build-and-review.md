@@ -37,4 +37,4 @@ The chosen variation becomes the real site: every page, real words, the final ar
 
 **Review** reads everything and can change nothing. It runs the accessibility audit, measures performance on a phone-sized screen, checks every colour pair in both themes, runs the slop detector again, and walks every image's history back to the model that made it. Then it writes down what's wrong and who owns it.
 
-Only after Review passes does the project manager bring you **Gate 4**: the finished site on a private link, and one question. Is it ready?
+Only after Review lowers its flag does the project manager bring you **Gate 4**: the finished site on a private link, one barrier left, and one question. Is it ready?

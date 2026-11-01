@@ -18,16 +18,16 @@ artefacts:
     slot: g2-key-art
     caption: Key art, with its label
   - kind: file
-    path: projects/how-it-works/concepts/b/key-art.json
+    path: projects/how-it-works/concepts/c-marble-run/images/c-frame-home.json
     title: The label on the back of the picture
     lang: json
     lines:
       - "{"
-      - "  \"workflow\": \"WEB1 Klein - Key Art\","
+      - "  \"workflow\": \"WEB4 Klein - Style Frame\","
       - "  \"model\": \"flux3_image_klein\","
-      - "  \"seed\": 418,"
-      - "  \"prompt\": \"A control room at dawn, every screen showing"
-      - "             the same diamond, warm paper light…\","
+      - "  \"seed\": 3301,"
+      - "  \"prompt\": \"A wooden marble track with a glass marble"
+      - "             runs down a sunflower-yellow page…\","
       - "  \"licence\": \"FLUX Kommunity License v1.0\""
       - "}"
 draft: true
@@ -37,4 +37,4 @@ The second diamond opens wide again. Concept makes three directions that would e
 
 Each direction gets a moodboard, a palette, a type pairing, a style tile and a piece of key art. The art is rendered here, on a local GPU, with ComfyUI. Every image gets a sidecar file: the workflow, the model, the seed, the prompt and the licence. If an image can't say where it came from, it doesn't ship.
 
-At **Gate 2** you see all three side by side. Pick one, or take one's palette and another's type and let Concept merge them.
+At **Gate 2** you see all three side by side: a paper trail, a signal path, and a marble run on a sunflower-yellow wall. A hand lifts the second barrier for one of them. Or you take one's palette and another's type, and Concept merges them.

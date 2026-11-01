@@ -34,6 +34,6 @@ draft: true
 
 Narrowing is harder than widening. Research turns forty pages of findings into one positioning sentence, a sitemap, and a story told in chapters. Backend proposes the stack: what it's built with, where it lives, and what you'll have to look after. Review reads all of it before you do and sends it back if a single option is unclear.
 
-Then everything goes into a **gate packet**: one page, every open question, lettered options, a recommendation, and Review's verdict. The team doesn't move until you answer.
+Then everything goes into a **gate packet**: one page, every open question, lettered options, a recommendation, and Review's verdict. The marble rolls up to the first barrier and waits. Nobody on the track can lift it but you.
 
-You can accept everything, pick question by question, or say *revise* and explain why. A revise doesn't add a gate. It's another round inside this one.
+You can accept everything, pick question by question, or say *revise* and explain why. A revise doesn't add a gate: the bucket lift carries the marble back up a station, and it comes round again.

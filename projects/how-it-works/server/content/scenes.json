@@ -43,9 +43,9 @@
     "chapter": 5,
     "title": "Three roads",
     "lines": [
-      { "speaker": "concept", "to": "pm", "kind": "report", "text": "Three directions ready. A is a field notebook. B is a control room. C is a pop-up book. Each has key art made on the local GPU, and every image has its prompt and licence beside it." },
-      { "speaker": "review", "to": "pm", "kind": "report", "text": "Licence walk is clean: no non-commercial model anywhere in any image's history. B's contrast needs one fix before the human sees it." },
-      { "speaker": "concept", "kind": "aside", "text": "Fixed B. Kept the arrow." }
+      { "speaker": "concept", "to": "pm", "kind": "report", "text": "Three directions ready. A is a paper trail. B is a signal path. C is a marble run on a sunflower-yellow wall. Each has key art made on the local GPU, and every image has its prompt and licence beside it." },
+      { "speaker": "review", "to": "pm", "kind": "report", "text": "Licence walk is clean: no non-commercial model anywhere in any image's history. C's hero shows a dozen clay figures; the cast is six. Fix that before the human sees it." },
+      { "speaker": "concept", "kind": "aside", "text": "Six figures. Counted twice." }
     ]
   },
   "variations-three-branches": {
